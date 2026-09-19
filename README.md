@@ -121,22 +121,44 @@ git push -u origin main
 
 ---
 
-## Zaroori: Naya SQL Update Chalayen (agar pehle se Supabase set kar chuke hain)
+## Zaroori: Freelancer Login System Ke Liye Extra Supabase Setup
 
-Agar aap pehle se `supabase-schema.sql` run kar chuke hain, to ek chota
-extra SQL chalana zaroori hai taake freelancer profiles turant live ho
-sakein (approval ke bina). Supabase SQL Editor mein `supabase-migration-instant-live.sql`
-file ki content copy-paste kar ke Run kar dain — ek dafa hi karna hai.
+Ab freelancers apna email+password account bana kar khud apni profile
+edit/delete kar sakte hain. Isay chalane ke liye 2 cheezein karni hain:
 
-## System kaise kaam karta hai
+**1 — Naya SQL chalayen**
 
-**Freelancer registration (turant live):**
-`/register` py form fill (photo ke saath) → profile foran Supabase mein
-save ho kar `/hire-freelancers/[category]` py show hone lagti hai — koi
-approval step nahi. Aapko sirf ek info email milti hai "naya profile aaya
-hai" — sirf awareness ke liye. Agar aap kisi profile ko hataana ya edit
-karna chahain, `/admin` py login kar ke "Freelancers" tab se Edit ya Delete
-kar sakte hain.
+`supabase-migration-freelancer-accounts.sql` file ki poori content copy
+kar ke Supabase SQL Editor mein paste kar ke Run kar dain.
+
+**2 — Email confirmation OFF karain (zaroori)**
+
+Taake account banate hi user turant login ho jaye (bina email verify
+kiye), ye setting off karni hai:
+
+1. Supabase dashboard → left sidebar → **Authentication**
+2. **Providers** (ya "Sign In / Providers") → **Email**
+3. **"Confirm email"** ka toggle **OFF** kar dain
+4. Save kar dain
+
+Agar ye ON rahega, to naya account banate waqt user ko email confirm
+karna parega, aur profile turant publish nahi hogi (dashboard py "check
+your email" jaisa message aayega).
+
+---
+
+## Naya Freelancer System Kaise Kaam Karta Hai
+
+- **`/register`** — naya freelancer email+password se account banata hai
+  aur sath hi profile bhi fill karta hai → profile turant live ho jati
+  hai aur wo apne dashboard py chala jata hai
+- **`/login`** — jo pehle se account bana chuke hain, wo yahan se login
+  karte hain
+- **`/dashboard`** — login hone ke baad, yahan se woh apni profile edit
+  ya poori tarah delete kar sakte hain (koi admin approval nahi chahiye)
+- **`/admin`** — aap (site owner) ab bhi kisi bhi freelancer ki profile
+  dekh, edit, ya delete kar sakte hain — oversight ke liye, freelancer
+  system se independent
 
 **Business registration:**
 `/businesses` py form fill → same tarha pending → email → admin approve →

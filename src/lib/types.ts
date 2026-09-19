@@ -3,6 +3,7 @@ export type FreelancerStatus = "pending" | "approved" | "rejected";
 export interface Freelancer {
   id: string;
   created_at: string;
+  user_id: string | null;
   full_name: string;
   email: string;
   phone: string | null;

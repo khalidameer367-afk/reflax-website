@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 const SERVICES = [
   { label: "Recruitment Services", href: "/services/recruitment-services" },
@@ -20,7 +21,16 @@ const NAV = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setLoggedIn(!!session?.user);
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -102,10 +112,10 @@ export default function Header() {
 
         <div className="hidden lg:block">
           <Link
-            href="/register"
+            href={loggedIn ? "/dashboard" : "/register"}
             className="inline-flex items-center border border-ink px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-ink hover:text-paper"
           >
-            Register
+            {loggedIn ? "My Dashboard" : "Register"}
           </Link>
         </div>
 
@@ -150,11 +160,11 @@ export default function Header() {
               Profiles
             </Link>
             <Link
-              href="/register"
+              href={loggedIn ? "/dashboard" : "/register"}
               onClick={() => setOpen(false)}
               className="mt-4 inline-flex items-center justify-center border border-ink px-5 py-3 text-sm font-medium text-ink"
             >
-              Register
+              {loggedIn ? "My Dashboard" : "Register"}
             </Link>
           </div>
         </div>
