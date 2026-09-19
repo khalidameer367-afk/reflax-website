@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import type { EntrepreneurProfile } from "@/lib/types";
 
@@ -45,9 +46,18 @@ export default async function ProfilesPage() {
             <h2 className="display text-xl font-semibold text-ink mb-6">{cat}</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
               {grouped[cat].map((p) => (
-                <div key={p.id} className="border border-line p-7">
-                  <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink">
-                    {p.full_name.charAt(0)}
+                <Link
+                  key={p.id}
+                  href={`/profiles/${p.slug || p.id}`}
+                  className="border border-line p-7 block hover:border-ink transition-colors"
+                >
+                  <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">
+                    {p.avatar_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={p.avatar_url} alt={p.full_name} className="h-full w-full object-cover" />
+                    ) : (
+                      p.full_name.charAt(0)
+                    )}
                   </div>
                   <h3 className="display mt-5 text-lg font-semibold text-ink">{p.full_name}</h3>
                   <p className="mt-1 text-sm text-muted">{p.title}</p>
@@ -55,19 +65,10 @@ export default async function ProfilesPage() {
                     <p className="mt-1 text-sm text-muted">{p.company_name}</p>
                   )}
                   <p className="mt-4 text-sm leading-relaxed text-muted line-clamp-3">{p.bio}</p>
-                  <div className="mt-4 flex gap-4">
-                    {p.website && (
-                      <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-xs font-medium underline underline-offset-4">
-                        Website
-                      </a>
-                    )}
-                    {p.linkedin_url && (
-                      <a href={p.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-xs font-medium underline underline-offset-4">
-                        LinkedIn
-                      </a>
-                    )}
-                  </div>
-                </div>
+                  <span className="mt-4 inline-block text-xs font-medium underline underline-offset-4">
+                    View profile
+                  </span>
+                </Link>
               ))}
             </div>
           </div>

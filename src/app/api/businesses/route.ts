@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { notifyAdminNewBusiness } from "@/lib/mailer";
+import { generateUniqueSlug } from "@/lib/slug";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,6 +16,7 @@ export async function POST(req: NextRequest) {
       company_size,
       location,
       description,
+      logo_url,
     } = body;
 
     if (!company_name || !contact_person || !email || !industry || !description) {
@@ -25,6 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
     const db = supabaseAdmin();
+    const slug = await generateUniqueSlug(db, "businesses", company_name);
     const { data, error } = await db
       .from("businesses")
       .insert({
@@ -37,6 +40,8 @@ export async function POST(req: NextRequest) {
         company_size: company_size || null,
         location: location || null,
         description,
+        logo_url: logo_url || null,
+        slug,
         status: "pending",
       })
       .select()
@@ -57,3 +62,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+

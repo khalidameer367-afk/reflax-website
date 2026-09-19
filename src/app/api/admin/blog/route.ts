@@ -9,11 +9,11 @@ export async function GET(req: NextRequest) {
   }
   const db = supabaseAdmin();
   const { data, error } = await db
-    .from("profiles")
+    .from("blog_posts")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ profiles: data });
+  return NextResponse.json({ posts: data });
 }
 
 export async function POST(req: NextRequest) {
@@ -21,33 +21,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json();
-  const { full_name, category, title, bio, company_name, location, website, linkedin_url, avatar_url } = body;
-
-  if (!full_name || !category || !title || !bio) {
-    return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
+  const { title, excerpt, content, featured_image_url, author } = body;
+  if (!title || !content) {
+    return NextResponse.json({ error: "Title and content are required." }, { status: 400 });
   }
 
   const db = supabaseAdmin();
-  const slug = await generateUniqueSlug(db, "profiles", full_name);
+  const slug = await generateUniqueSlug(db, "blog_posts", title);
   const { data, error } = await db
-    .from("profiles")
+    .from("blog_posts")
     .insert({
-      full_name,
-      category,
       title,
-      bio,
-      company_name: company_name || null,
-      location: location || null,
-      website: website || null,
-      linkedin_url: linkedin_url || null,
-      avatar_url: avatar_url || null,
       slug,
+      excerpt: excerpt || null,
+      content,
+      featured_image_url: featured_image_url || null,
+      author: author || null,
     })
     .select()
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ success: true, profile: data });
+  return NextResponse.json({ success: true, post: data });
 }
 
 export async function PUT(req: NextRequest) {
@@ -58,24 +53,14 @@ export async function PUT(req: NextRequest) {
   const { id, ...fields } = body;
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-  const allowed = [
-    "full_name",
-    "category",
-    "title",
-    "bio",
-    "company_name",
-    "location",
-    "website",
-    "linkedin_url",
-    "avatar_url",
-  ];
+  const allowed = ["title", "excerpt", "content", "featured_image_url", "author"];
   const update: Record<string, unknown> = {};
   for (const key of allowed) {
     if (key in fields) update[key] = fields[key] || null;
   }
 
   const db = supabaseAdmin();
-  const { error } = await db.from("profiles").update(update).eq("id", id);
+  const { error } = await db.from("blog_posts").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
 }
@@ -86,7 +71,7 @@ export async function DELETE(req: NextRequest) {
   }
   const { id } = await req.json();
   const db = supabaseAdmin();
-  const { error } = await db.from("profiles").delete().eq("id", id);
+  const { error } = await db.from("blog_posts").delete().eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
 }

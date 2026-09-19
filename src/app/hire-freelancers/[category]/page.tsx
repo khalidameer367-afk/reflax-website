@@ -86,7 +86,7 @@ export default async function CategoryPage({
             {freelancers.map((f) => (
               <Link
                 key={f.id}
-                href={`/hire-freelancers/${category}/${f.id}`}
+                href={`/hire-freelancers/${category}/${f.slug || f.id}`}
                 className="group border border-line p-7 hover:border-ink transition-colors"
               >
                 <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">

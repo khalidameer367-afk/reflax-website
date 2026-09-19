@@ -6,6 +6,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import FreelancerProfileFields from "@/components/FreelancerProfileFields";
 import { parseFreelancerFormData } from "@/lib/formHelpers";
+import { generateUniqueSlug } from "@/lib/slug";
 
 const inputCls =
   "w-full border border-line px-4 py-3 text-[15px] text-ink placeholder:text-muted/70 focus:outline-none focus:border-ink transition-colors bg-paper";
@@ -42,14 +43,16 @@ export default function RegisterPage() {
         );
       }
 
-      // 2. Create the profile, linked to this account, live immediately.
+      // 2. Create the profile, linked to this account. Goes to admin for review.
       const profileFields = parseFreelancerFormData(form);
+      const slug = await generateUniqueSlug(supabase, "freelancers", profileFields.full_name);
       const { error: insertError } = await supabase.from("freelancers").insert({
         ...profileFields,
         email,
         avatar_url: avatarPreview,
         user_id: userId,
-        status: "approved",
+        slug,
+        status: "pending",
       });
       if (insertError) throw insertError;
 
@@ -76,8 +79,9 @@ export default function RegisterPage() {
             Create your account &amp; profile.
           </h1>
           <p className="mt-5 text-[15px] leading-relaxed text-muted max-w-lg">
-            Your profile goes live immediately. You can log in any time
-            afterwards to edit or remove it from your dashboard.
+            Our team reviews every profile before it goes live. Once
+            approved, you can always come back to your dashboard to edit
+            or update it.
           </p>
           <p className="mt-3 text-sm text-muted">
             Already have an account?{" "}
@@ -110,7 +114,7 @@ export default function RegisterPage() {
             disabled={status === "submitting"}
             className="inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors disabled:opacity-50"
           >
-            {status === "submitting" ? "Creating..." : "Create account & publish profile"}
+            {status === "submitting" ? "Creating..." : "Create account & submit for review"}
           </button>
         </form>
       </section>

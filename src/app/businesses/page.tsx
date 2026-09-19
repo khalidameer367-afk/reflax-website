@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import BusinessForm from "@/components/BusinessForm";
 import { supabase } from "@/lib/supabase";
@@ -37,21 +38,26 @@ export default async function BusinessesPage() {
           <SectionHeading eyebrow="Directory" title="Registered businesses" />
           <div className="mt-10 grid sm:grid-cols-2 md:grid-cols-3 gap-8">
             {businesses.map((b) => (
-              <div key={b.id} className="border border-line p-7">
+              <Link
+                key={b.id}
+                href={`/businesses/${b.slug || b.id}`}
+                className="border border-line p-7 block hover:border-ink transition-colors"
+              >
+                {b.logo_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={b.logo_url} alt={b.company_name} className="h-12 w-auto max-w-[140px] object-contain mb-4" />
+                ) : (
+                  <div className="h-12 w-12 border border-line flex items-center justify-center text-lg font-semibold text-ink mb-4">
+                    {b.company_name.charAt(0)}
+                  </div>
+                )}
                 <h3 className="display text-lg font-semibold text-ink">{b.company_name}</h3>
                 <p className="mt-1 text-sm text-muted">{b.industry}</p>
                 <p className="mt-4 text-sm leading-relaxed text-muted line-clamp-3">{b.description}</p>
-                {b.website && (
-                  <a
-                    href={b.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-block text-sm font-medium underline underline-offset-4"
-                  >
-                    Visit website
-                  </a>
-                )}
-              </div>
+                <span className="mt-4 inline-block text-sm font-medium underline underline-offset-4">
+                  View profile
+                </span>
+              </Link>
             ))}
           </div>
         </section>

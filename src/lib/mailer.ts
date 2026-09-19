@@ -22,15 +22,27 @@ export async function sendMail(to: string, subject: string, html: string) {
   });
 }
 
+export async function notifyContactForm(name: string, email: string, subject: string, message: string) {
+  const adminEmail = process.env.ADMIN_EMAIL || process.env.GMAIL_USER;
+  if (!adminEmail) return;
+  await sendMail(
+    adminEmail,
+    `Contact form: ${subject || "New message"}`,
+    `<p><strong>From:</strong> ${name} (${email})</p>
+     <p><strong>Message:</strong></p>
+     <p>${message.replace(/\n/g, "<br/>")}</p>`
+  );
+}
+
 export async function notifyAdminNewFreelancer(name: string, category: string, id: string) {
   const adminEmail = process.env.ADMIN_EMAIL || process.env.GMAIL_USER;
   if (!adminEmail) return;
   await sendMail(
     adminEmail,
-    `New freelancer profile live: ${name}`,
-    `<p><strong>${name}</strong> just joined Reflax under <strong>${category}</strong>
-     and their profile is live on the site now.</p>
-     <p>You can edit or remove it any time from the admin panel.</p>
+    `New freelancer application: ${name}`,
+    `<p><strong>${name}</strong> applied under <strong>${category}</strong> and is
+     waiting for review.</p>
+     <p>Approve or reject it from the admin panel.</p>
      <p style="color:#888;font-size:12px">Profile ID: ${id}</p>`
   );
 }

@@ -4,6 +4,7 @@ export interface Freelancer {
   id: string;
   created_at: string;
   user_id: string | null;
+  slug: string | null;
   full_name: string;
   email: string;
   phone: string | null;
@@ -23,6 +24,7 @@ export interface Freelancer {
 export interface Business {
   id: string;
   created_at: string;
+  slug: string | null;
   company_name: string;
   contact_person: string;
   email: string;
@@ -39,6 +41,7 @@ export interface Business {
 export interface EntrepreneurProfile {
   id: string;
   created_at: string;
+  slug: string | null;
   full_name: string;
   category: string;
   title: string;
@@ -49,6 +52,17 @@ export interface EntrepreneurProfile {
   linkedin_url: string | null;
   avatar_url: string | null;
   featured: boolean;
+}
+
+export interface BlogPost {
+  id: string;
+  created_at: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content: string;
+  featured_image_url: string | null;
+  author: string | null;
 }
 
 export const CATEGORIES = [

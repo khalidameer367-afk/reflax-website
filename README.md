@@ -121,44 +121,57 @@ git push -u origin main
 
 ---
 
-## Zaroori: Freelancer Login System Ke Liye Extra Supabase Setup
+## Zaroori: Naye SQL Migrations Chalayen (order mein)
 
-Ab freelancers apna email+password account bana kar khud apni profile
-edit/delete kar sakte hain. Isay chalane ke liye 2 cheezein karni hain:
+Jitni baar naya feature add hua hai, ek chota SQL file bhi banaya gaya hai.
+Supabase SQL Editor mein in sab ko **isi order mein**, ek ek karke, copy-paste
+kar ke Run karain (agar pehle se kar chuke hain to skip kar dain):
 
-**1 — Naya SQL chalayen**
+1. `supabase-schema.sql` — mool tables (sirf naye/fresh setup ke liye)
+2. `supabase-migration-instant-live.sql`
+3. `supabase-migration-freelancer-accounts.sql` — freelancer login system
+4. `supabase-migration-freelancer-pending.sql` — freelancer wapis admin-approval flow
+5. `supabase-migration-slugs-and-blog.sql` — naam-wali URLs + blog table
 
-`supabase-migration-freelancer-accounts.sql` file ki poori content copy
-kar ke Supabase SQL Editor mein paste kar ke Run kar dain.
+## Zaroori: Email Confirmation OFF Karain
 
-**2 — Email confirmation OFF karain (zaroori)**
+Supabase → **Authentication** → **Sign In / Providers** → **Email** →
+**"Confirm email"** ka toggle **OFF** karain, warna naya account signup
+turant kaam nahi karega.
 
-Taake account banate hi user turant login ho jaye (bina email verify
-kiye), ye setting off karni hai:
+## Naya System Kaise Kaam Karta Hai
 
-1. Supabase dashboard → left sidebar → **Authentication**
-2. **Providers** (ya "Sign In / Providers") → **Email**
-3. **"Confirm email"** ka toggle **OFF** kar dain
-4. Save kar dain
+**Freelancers:**
+- `/register` — account (email+password) + profile ek sath banate hain →
+  status "pending" ho kar admin ke paas jata hai
+- `/login` → `/dashboard` — freelancer khud login kar ke apni profile edit
+  ya delete kar sakta hai (status jo bhi ho)
+- `/admin` → Freelancers tab — Approve/Reject (jab tak pending hai),
+  aur Edit/Delete hamesha available hai
 
-Agar ye ON rahega, to naya account banate waqt user ko email confirm
-karna parega, aur profile turant publish nahi hogi (dashboard py "check
-your email" jaisa message aayega).
+**Businesses:** (waisa hi flow, ab logo upload bhi)
+- `/businesses` py form fill (logo ke saath) → pending → admin approve/reject
+  karta hai `/admin` se, Edit bhi kar sakta hai
+- Approved businesses ka apna detail page hota hai:
+  `/businesses/company-name`
 
----
+**Profiles (entrepreneurs):**
+- `/admin` → Profiles tab se admin khud add karta hai (photo ke saath),
+  Edit bhi kar sakta hai
+- Har profile ka apna page: `/profiles/person-name`
 
-## Naya Freelancer System Kaise Kaam Karta Hai
+**Blog:**
+- `/admin` → Blog tab se naya post likhain (featured image, title, excerpt,
+  content)
+- `/blog` — saari posts ki listing
+- `/blog/post-slug` — single post: bayen taraf (70%) featured image + poora
+  content, dayen taraf (30%) sticky sidebar mein 3 recent posts
 
-- **`/register`** — naya freelancer email+password se account banata hai
-  aur sath hi profile bhi fill karta hai → profile turant live ho jati
-  hai aur wo apne dashboard py chala jata hai
-- **`/login`** — jo pehle se account bana chuke hain, wo yahan se login
-  karte hain
-- **`/dashboard`** — login hone ke baad, yahan se woh apni profile edit
-  ya poori tarah delete kar sakte hain (koi admin approval nahi chahiye)
-- **`/admin`** — aap (site owner) ab bhi kisi bhi freelancer ki profile
-  dekh, edit, ya delete kar sakte hain — oversight ke liye, freelancer
-  system se independent
+**Contact Us:**
+- `/contact` — form submit karte hi aapko email milti hai
+
+Footer mein "Blog" aur "Contact Us" links add ho chuke hain (header mein
+nahi, jaisa aapne kaha tha).
 
 **Business registration:**
 `/businesses` py form fill → same tarha pending → email → admin approve →

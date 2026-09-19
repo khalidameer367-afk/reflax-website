@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase";
 import type { Freelancer } from "@/lib/types";
 import FreelancerProfileFields from "@/components/FreelancerProfileFields";
 import { parseFreelancerFormData } from "@/lib/formHelpers";
+import { generateUniqueSlug } from "@/lib/slug";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -65,6 +66,7 @@ export default function DashboardPage() {
         setMessage("Profile updated.");
       }
     } else {
+      const slug = await generateUniqueSlug(supabase, "freelancers", fields.full_name);
       const { data, error } = await supabase
         .from("freelancers")
         .insert({
@@ -72,7 +74,8 @@ export default function DashboardPage() {
           email: user.email,
           avatar_url: avatarPreview,
           user_id: user.id,
-          status: "approved",
+          slug,
+          status: "pending",
         })
         .select()
         .single();
@@ -80,7 +83,7 @@ export default function DashboardPage() {
         setMessage("Something went wrong: " + error.message);
       } else {
         setProfile(data);
-        setMessage("Profile published.");
+        setMessage("Submitted! It will show publicly once approved by our team.");
       }
     }
     setSaving(false);
@@ -108,6 +111,22 @@ export default function DashboardPage() {
         </button>
       </div>
       <p className="text-muted text-sm mb-10">{user?.email}</p>
+
+      {profile && (
+        <p className="text-sm mb-6">
+          Status:{" "}
+          <span className={
+            profile.status === "approved" ? "text-green-600 font-medium" :
+            profile.status === "pending" ? "text-amber-600 font-medium" :
+            "text-red-600 font-medium"
+          }>
+            {profile.status}
+          </span>
+          {profile.status === "pending" && (
+            <span className="text-muted"> — our team will review it shortly.</span>
+          )}
+        </p>
+      )}
 
       {!profile && (
         <p className="text-muted text-sm mb-6">
