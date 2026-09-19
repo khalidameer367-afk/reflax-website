@@ -2,6 +2,9 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { CATEGORIES } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function slugify(cat: string) {
   return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }

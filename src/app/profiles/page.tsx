@@ -3,6 +3,9 @@ import type { EntrepreneurProfile } from "@/lib/types";
 
 export const metadata = { title: "Profiles — Reflax" };
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ProfilesPage() {
   const { data: profiles } = await supabase
     .from("profiles")

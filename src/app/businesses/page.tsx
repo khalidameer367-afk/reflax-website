@@ -4,6 +4,11 @@ import { supabase } from "@/lib/supabase";
 
 export const metadata = { title: "Businesses — Reflax" };
 
+// Always fetch fresh data — without this, Next.js caches this page at
+// build time and newly-approved businesses won't show up until redeploy.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function BusinessesPage() {
   const { data: businesses } = await supabase
     .from("businesses")
