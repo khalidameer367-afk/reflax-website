@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/types";
 import type { Freelancer, Business, EntrepreneurProfile, BlogPost } from "@/lib/types";
 import { resizeImageToDataUrl } from "@/lib/image";
+import RichTextEditor from "@/components/RichTextEditor";
 
 const statusColor: Record<string, string> = {
   pending: "text-amber-600",
@@ -823,7 +824,16 @@ function BlogPostForm({
       <input required name="title" defaultValue={post?.title} placeholder="Post title" className={inputCls} />
       <input name="author" defaultValue={post?.author || ""} placeholder="Author name (optional)" className={inputCls} />
       <textarea name="excerpt" defaultValue={post?.excerpt || ""} rows={2} placeholder="Short excerpt (shown in listing)" className={inputCls} />
-      <textarea required name="content" defaultValue={post?.content} rows={12} placeholder="Full post content" className={inputCls} />
+      <div>
+        <label className="block text-sm font-medium text-ink mb-2">Content</label>
+        <RichTextEditor name="content" defaultValue={post?.content} />
+        <p className="mt-2 text-xs text-muted">
+          Use H2/H3 for headings, the Image button to drop a picture in the
+          middle of the post, and Link to turn selected text into a
+          clickable link (paste any URL on your own site for internal
+          linking, e.g. /hire-freelancers/seo).
+        </p>
+      </div>
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
           {saving ? "Saving..." : post ? "Save changes" : "Publish post"}

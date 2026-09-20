@@ -65,8 +65,15 @@ export default function RegisterPage() {
 
       router.push("/dashboard");
     } catch (err) {
+      const rawMsg = err instanceof Error ? err.message : "Something went wrong.";
+      if (rawMsg.toLowerCase().includes("already registered")) {
+        setErrorMsg(
+          "This email already has an account. Please log in instead and add your profile from your dashboard."
+        );
+      } else {
+        setErrorMsg(rawMsg);
+      }
       setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 

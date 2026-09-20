@@ -61,9 +61,10 @@ export default async function BlogPostPage({
             {new Date(post.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
             {post.author ? ` · ${post.author}` : ""}
           </p>
-          <div className="mt-8 text-[16px] leading-relaxed text-ink whitespace-pre-line">
-            {post.content}
-          </div>
+          <div
+            className="mt-8 blog-content text-[16px] leading-relaxed text-ink"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
         </article>
 
         {/* Sidebar — 30%, sticky */}
