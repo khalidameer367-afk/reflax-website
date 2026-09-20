@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { isUuid } from "@/lib/isUuid";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -14,7 +15,7 @@ export default async function EntrepreneurProfilePage({
   const { data: p, error } = await supabase
     .from("profiles")
     .select("*")
-    .or(`slug.eq.${slug},id.eq.${slug}`)
+    .eq(isUuid(slug) ? "id" : "slug", slug)
     .single();
 
   if (error || !p) {
