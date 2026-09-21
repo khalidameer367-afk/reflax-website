@@ -38,6 +38,10 @@ export async function PUT(req: NextRequest) {
     "portfolio_url",
     "linkedin_url",
     "avatar_url",
+    "meta_title",
+    "meta_description",
+    "canonical_url",
+    "focus_keyword",
   ];
   const update: Record<string, unknown> = {};
   for (const key of allowed) {

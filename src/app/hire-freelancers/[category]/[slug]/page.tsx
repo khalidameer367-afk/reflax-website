@@ -1,9 +1,27 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { isUuid } from "@/lib/isUuid";
+import { buildMetadata } from "@/lib/seoMeta";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+async function getFreelancer(slug: string) {
+  const { data } = await supabase
+    .from("freelancers")
+    .select("*")
+    .eq(isUuid(slug) ? "id" : "slug", slug)
+    .eq("status", "approved")
+    .single();
+  return data;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }) {
+  const { slug } = await params;
+  const f = await getFreelancer(slug);
+  if (!f) return { title: "Freelancer — Reflax" };
+  return buildMetadata(f, `${f.full_name} — ${f.title} — Reflax`, f.bio?.slice(0, 160));
+}
 
 export default async function FreelancerProfile({
   params,
@@ -11,20 +29,14 @@ export default async function FreelancerProfile({
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { category, slug } = await params;
+  const f = await getFreelancer(slug);
 
-  const { data: f, error } = await supabase
-    .from("freelancers")
-    .select("*")
-    .eq(isUuid(slug) ? "id" : "slug", slug)
-    .eq("status", "approved")
-    .single();
-
-  if (error || !f) {
+  if (!f) {
     return (
       <div className="container-x py-24">
         <p className="text-muted">This profile isn&apos;t available.</p>
         <Link href={`/hire-freelancers/${category}`} className="text-sm underline underline-offset-4 mt-4 inline-block">
-          ← Back to {f?.category || "category"}
+          ← Back to category
         </Link>
       </div>
     );
@@ -92,6 +104,12 @@ export default async function FreelancerProfile({
                 <dd className="mt-1 text-ink font-medium">{f.hourly_rate}</dd>
               </div>
             )}
+            {f.phone && (
+              <div>
+                <dt className="text-muted">Phone</dt>
+                <dd className="mt-1 text-ink font-medium">{f.phone}</dd>
+              </div>
+            )}
             {f.location && (
               <div>
                 <dt className="text-muted">Location</dt>
@@ -111,12 +129,20 @@ export default async function FreelancerProfile({
             >
               Contact via email
             </a>
+            {f.phone && (
+              <a
+                href={`tel:${f.phone}`}
+                className="inline-flex items-center justify-center border border-ink px-5 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+              >
+                Call {f.phone}
+              </a>
+            )}
             {f.portfolio_url && (
               <a
                 href={f.portfolio_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center border border-ink px-5 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="inline-flex items-center justify-center border border-line px-5 py-3 text-sm font-medium text-muted hover:text-ink hover:border-ink transition-colors"
               >
                 View portfolio
               </a>

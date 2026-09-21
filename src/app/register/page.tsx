@@ -36,14 +36,27 @@ export default function RegisterPage() {
       });
       if (signUpError) throw signUpError;
 
-      const userId = signUpData.user?.id;
+      // 2. Make sure we have an active, authenticated session before
+      // inserting the profile — signUp doesn't always establish one
+      // immediately, and RLS requires auth.uid() to match user_id.
+      let userId = signUpData.session?.user.id;
       if (!userId) {
-        throw new Error(
-          "Account created — please check your email to confirm it, then log in and finish your profile from your dashboard."
-        );
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (signInError) {
+          throw new Error(
+            "Account created, but couldn't log you in automatically (" +
+              signInError.message +
+              "). Please go to the Log in page and sign in, then finish your profile from your dashboard."
+          );
+        }
+        userId = signInData.user?.id;
       }
+      if (!userId) throw new Error("Something went wrong creating your account. Please try logging in.");
 
-      // 2. Create the profile, linked to this account. Goes to admin for review.
+      // 3. Create the profile, linked to this account. Goes to admin for review.
       const profileFields = parseFreelancerFormData(form);
       const slug = await generateUniqueSlug(supabase, "freelancers", profileFields.full_name);
       const { error: insertError } = await supabase.from("freelancers").insert({
@@ -56,7 +69,7 @@ export default function RegisterPage() {
       });
       if (insertError) throw insertError;
 
-      // 3. Notify admin (informational, non-blocking).
+      // 4. Notify admin (informational, non-blocking).
       fetch("/api/notify-admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

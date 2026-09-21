@@ -3,6 +3,18 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/adminAuth";
 import { generateUniqueSlug } from "@/lib/slug";
 
+const allowedFields = [
+  "title",
+  "excerpt",
+  "content",
+  "featured_image_url",
+  "author",
+  "meta_title",
+  "meta_description",
+  "canonical_url",
+  "focus_keyword",
+];
+
 export async function GET(req: NextRequest) {
   if (!isAdminAuthed(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -21,26 +33,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json();
-  const { title, excerpt, content, featured_image_url, author } = body;
+  const { title, content } = body;
   if (!title || !content) {
     return NextResponse.json({ error: "Title and content are required." }, { status: 400 });
   }
 
   const db = supabaseAdmin();
   const slug = await generateUniqueSlug(db, "blog_posts", title);
-  const { data, error } = await db
-    .from("blog_posts")
-    .insert({
-      title,
-      slug,
-      excerpt: excerpt || null,
-      content,
-      featured_image_url: featured_image_url || null,
-      author: author || null,
-    })
-    .select()
-    .single();
+  const insertData: Record<string, unknown> = { slug };
+  for (const key of allowedFields) {
+    if (key in body) insertData[key] = body[key] || null;
+  }
 
+  const { data, error } = await db.from("blog_posts").insert(insertData).select().single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true, post: data });
 }
@@ -53,9 +58,8 @@ export async function PUT(req: NextRequest) {
   const { id, ...fields } = body;
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-  const allowed = ["title", "excerpt", "content", "featured_image_url", "author"];
   const update: Record<string, unknown> = {};
-  for (const key of allowed) {
+  for (const key of allowedFields) {
     if (key in fields) update[key] = fields[key] || null;
   }
 

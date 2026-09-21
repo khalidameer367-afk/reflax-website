@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/types";
-import type { Freelancer, Business, EntrepreneurProfile, BlogPost } from "@/lib/types";
+import type { Freelancer, Business, EntrepreneurProfile, BlogPost, PageSeo } from "@/lib/types";
 import { resizeImageToDataUrl } from "@/lib/image";
 import RichTextEditor from "@/components/RichTextEditor";
+import SeoFieldsSection from "@/components/SeoFieldsSection";
+import { PAGE_KEYS } from "@/lib/pageSeo";
 
 const statusColor: Record<string, string> = {
   pending: "text-amber-600",
@@ -18,7 +20,7 @@ export default function AdminPanel() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [tab, setTab] = useState<"freelancers" | "businesses" | "profiles" | "blog">("freelancers");
+  const [tab, setTab] = useState<"freelancers" | "businesses" | "profiles" | "blog" | "pages">("freelancers");
 
   const [freelancers, setFreelancers] = useState<Freelancer[]>([]);
   const [businesses, setBusinesses] = useState<Business[]>([]);
@@ -144,7 +146,7 @@ export default function AdminPanel() {
       <h1 className="display text-3xl font-semibold text-ink mb-8">Admin panel</h1>
 
       <div className="flex gap-6 border-b border-line mb-10 text-sm overflow-x-auto">
-        {(["freelancers", "businesses", "profiles", "blog"] as const).map((t) => (
+        {(["freelancers", "businesses", "profiles", "blog", "pages"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -184,6 +186,8 @@ export default function AdminPanel() {
       {tab === "blog" && (
         <BlogTab posts={posts} onChanged={loadPosts} onDelete={deletePost} />
       )}
+
+      {tab === "pages" && <PagesTab />}
     </div>
   );
 }
@@ -331,6 +335,7 @@ function EditFreelancerForm({
         <input name="portfolio_url" defaultValue={freelancer.portfolio_url || ""} placeholder="Portfolio URL" className={inputCls} />
         <input name="linkedin_url" defaultValue={freelancer.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
       </div>
+      <SeoFieldsSection defaults={freelancer} />
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
           {saving ? "Saving..." : "Save changes"}
@@ -357,133 +362,194 @@ function BusinessesTab({
   onReview: (id: string, action: "approved" | "rejected") => void;
 }) {
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
   return (
-    <div className="space-y-4">
-      {businesses.length === 0 && <p className="text-muted text-sm">No registrations yet.</p>}
-      {businesses.map((b) =>
-        editingId === b.id ? (
-          <EditBusinessForm
-            key={b.id}
-            business={b}
-            onCancel={() => setEditingId(null)}
-            onSaved={() => { setEditingId(null); onChanged(); }}
-          />
-        ) : (
-          <div key={b.id} className="border border-line p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="h-12 w-12 border border-line bg-ink/5 flex items-center justify-center text-sm font-semibold text-ink overflow-hidden shrink-0">
-                {b.logo_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={b.logo_url} alt={b.company_name} className="h-full w-full object-contain" />
-                ) : (
-                  b.company_name.charAt(0)
-                )}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-ink">{b.company_name}</span>
-                  <span className={`text-xs font-medium uppercase ${statusColor[b.status]}`}>{b.status}</span>
-                </div>
-                <p className="text-sm text-muted mt-0.5">{b.industry} · {b.contact_person}</p>
-                <p className="text-sm text-muted mt-0.5">{b.email}</p>
-              </div>
-            </div>
-            <div className="flex gap-3 shrink-0 flex-wrap">
-              {b.status === "pending" && (
-                <>
-                  <button onClick={() => onReview(b.id, "approved")} className="border border-ink px-4 py-2 text-sm hover:bg-ink hover:text-paper transition-colors">
-                    Approve
-                  </button>
-                  <button onClick={() => onReview(b.id, "rejected")} className="border border-line px-4 py-2 text-sm text-muted hover:text-ink hover:border-ink transition-colors">
-                    Reject
-                  </button>
-                </>
-              )}
-              <button onClick={() => setEditingId(b.id)} className="border border-line px-4 py-2 text-sm hover:border-ink transition-colors">
-                Edit
-              </button>
-              <button onClick={() => onDelete(b.id)} className="border border-line px-4 py-2 text-sm text-muted hover:text-red-600 hover:border-red-600 transition-colors">
-                Delete
-              </button>
-            </div>
-          </div>
-        )
+    <div>
+      <button
+        onClick={() => { setShowForm((v) => !v); setEditingId(null); }}
+        className="mb-8 border border-ink px-5 py-2.5 text-sm hover:bg-ink hover:text-paper transition-colors"
+      >
+        {showForm ? "Cancel" : "+ Add business"}
+      </button>
+
+      {showForm && (
+        <BusinessForm onCancel={() => setShowForm(false)} onSaved={() => { setShowForm(false); onChanged(); }} />
       )}
+
+      <div className="space-y-4">
+        {businesses.length === 0 && <p className="text-muted text-sm">No businesses yet.</p>}
+        {businesses.map((b) =>
+          editingId === b.id ? (
+            <BusinessForm
+              key={b.id}
+              business={b}
+              onCancel={() => setEditingId(null)}
+              onSaved={() => { setEditingId(null); onChanged(); }}
+            />
+          ) : (
+            <div key={b.id} className="border border-line p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 border border-line bg-ink/5 flex items-center justify-center text-sm font-semibold text-ink overflow-hidden shrink-0">
+                  {b.logo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={b.logo_url} alt={b.company_name} className="h-full w-full object-contain" />
+                  ) : (
+                    b.company_name.charAt(0)
+                  )}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-ink">{b.company_name}</span>
+                    <span className={`text-xs font-medium uppercase ${statusColor[b.status]}`}>{b.status}</span>
+                  </div>
+                  <p className="text-sm text-muted mt-0.5">{b.industry} · {b.contact_person}</p>
+                  <p className="text-sm text-muted mt-0.5">{b.email}</p>
+                </div>
+              </div>
+              <div className="flex gap-3 shrink-0 flex-wrap">
+                {b.status === "pending" && (
+                  <>
+                    <button onClick={() => onReview(b.id, "approved")} className="border border-ink px-4 py-2 text-sm hover:bg-ink hover:text-paper transition-colors">
+                      Approve
+                    </button>
+                    <button onClick={() => onReview(b.id, "rejected")} className="border border-line px-4 py-2 text-sm text-muted hover:text-ink hover:border-ink transition-colors">
+                      Reject
+                    </button>
+                  </>
+                )}
+                <button onClick={() => { setEditingId(b.id); setShowForm(false); }} className="border border-line px-4 py-2 text-sm hover:border-ink transition-colors">
+                  Edit
+                </button>
+                <button onClick={() => onDelete(b.id)} className="border border-line px-4 py-2 text-sm text-muted hover:text-red-600 hover:border-red-600 transition-colors">
+                  Delete
+                </button>
+              </div>
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }
 
-function EditBusinessForm({
+function BusinessForm({
   business,
   onCancel,
   onSaved,
 }: {
-  business: Business;
+  business?: Business;
   onCancel: () => void;
   onSaved: () => void;
 }) {
   const [saving, setSaving] = useState(false);
-  const [logoPreview, setLogoPreview] = useState<string | null>(business.logo_url || null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(business?.logo_url || null);
+  const [featuredPreview, setFeaturedPreview] = useState<string | null>(business?.featured_image_url || null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
+  const featuredInputRef = useRef<HTMLInputElement>(null);
 
   async function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setLogoPreview(await resizeImageToDataUrl(file, 500, 0.85));
   }
+  async function handleFeaturedChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setFeaturedPreview(await resizeImageToDataUrl(file, 1200, 0.85));
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
-    data.id = business.id;
     if (logoPreview) data.logo_url = logoPreview;
-    await fetch("/api/admin/businesses", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    if (featuredPreview) data.featured_image_url = featuredPreview;
+
+    if (business) {
+      data.id = business.id;
+      await fetch("/api/admin/businesses", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    } else {
+      await fetch("/api/admin/businesses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    }
     setSaving(false);
     onSaved();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-ink p-6 space-y-4">
-      <div className="flex items-center gap-5">
-        <div onClick={() => fileInputRef.current?.click()} className="h-16 w-16 border border-line bg-ink/5 flex items-center justify-center overflow-hidden cursor-pointer shrink-0">
-          {logoPreview ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={logoPreview} alt="Preview" className="h-full w-full object-contain" />
-          ) : (
-            <span className="text-xs text-muted">Logo</span>
-          )}
+    <form onSubmit={handleSubmit} className="border border-ink p-6 mb-8 space-y-4">
+      <div className="grid sm:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-ink mb-2">Logo</label>
+          <div className="flex items-center gap-4">
+            <div onClick={() => logoInputRef.current?.click()} className="h-16 w-16 border border-line bg-ink/5 flex items-center justify-center overflow-hidden cursor-pointer shrink-0">
+              {logoPreview ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={logoPreview} alt="Preview" className="h-full w-full object-contain" />
+              ) : (
+                <span className="text-xs text-muted">Logo</span>
+              )}
+            </div>
+            <input ref={logoInputRef} type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
+            <button type="button" onClick={() => logoInputRef.current?.click()} className="border border-line px-4 py-2 text-sm hover:border-ink transition-colors">
+              Upload logo
+            </button>
+          </div>
         </div>
-        <input ref={fileInputRef} type="file" accept="image/*" onChange={handleLogoChange} className="hidden" />
-        <button type="button" onClick={() => fileInputRef.current?.click()} className="border border-line px-4 py-2 text-sm hover:border-ink transition-colors">
-          Change logo
-        </button>
+        <div>
+          <label className="block text-sm font-medium text-ink mb-2">Featured image (banner)</label>
+          <div className="flex items-center gap-4">
+            <div onClick={() => featuredInputRef.current?.click()} className="h-16 w-24 border border-line bg-ink/5 flex items-center justify-center overflow-hidden cursor-pointer shrink-0">
+              {featuredPreview ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={featuredPreview} alt="Preview" className="h-full w-full object-cover" />
+              ) : (
+                <span className="text-xs text-muted">Banner</span>
+              )}
+            </div>
+            <input ref={featuredInputRef} type="file" accept="image/*" onChange={handleFeaturedChange} className="hidden" />
+            <button type="button" onClick={() => featuredInputRef.current?.click()} className="border border-line px-4 py-2 text-sm hover:border-ink transition-colors">
+              Upload banner
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        <input required name="company_name" defaultValue={business?.company_name} placeholder="Company name" className={inputCls} />
+        <input required name="contact_person" defaultValue={business?.contact_person} placeholder="Contact person" className={inputCls} />
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
-        <input required name="company_name" defaultValue={business.company_name} placeholder="Company name" className={inputCls} />
-        <input required name="contact_person" defaultValue={business.contact_person} placeholder="Contact person" className={inputCls} />
+        <input required type="email" name="email" defaultValue={business?.email} placeholder="Email" className={inputCls} />
+        <input name="phone" defaultValue={business?.phone || ""} placeholder="Phone" className={inputCls} />
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
-        <input required type="email" name="email" defaultValue={business.email} placeholder="Email" className={inputCls} />
-        <input name="phone" defaultValue={business.phone || ""} placeholder="Phone" className={inputCls} />
+        <input required name="industry" defaultValue={business?.industry} placeholder="Industry" className={inputCls} />
+        <input name="company_size" defaultValue={business?.company_size || ""} placeholder="Company size" className={inputCls} />
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
-        <input required name="industry" defaultValue={business.industry} placeholder="Industry" className={inputCls} />
-        <input name="company_size" defaultValue={business.company_size || ""} placeholder="Company size" className={inputCls} />
+        <input name="website" defaultValue={business?.website || ""} placeholder="Website" className={inputCls} />
+        <input name="location" defaultValue={business?.location || ""} placeholder="Location" className={inputCls} />
       </div>
-      <div className="grid sm:grid-cols-2 gap-4">
-        <input name="website" defaultValue={business.website || ""} placeholder="Website" className={inputCls} />
-        <input name="location" defaultValue={business.location || ""} placeholder="Location" className={inputCls} />
+
+      <div>
+        <label className="block text-sm font-medium text-ink mb-2">Description / content</label>
+        <RichTextEditor name="description" defaultValue={business?.description} />
       </div>
-      <textarea required name="description" defaultValue={business.description} rows={5} placeholder="Description" className={inputCls} />
+
+      <SeoFieldsSection defaults={business} />
+
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
-          {saving ? "Saving..." : "Save changes"}
+          {saving ? "Saving..." : business ? "Save changes" : "Add business"}
         </button>
         <button type="button" onClick={onCancel} className="border border-line px-5 py-2.5 text-sm text-muted hover:text-ink hover:border-ink transition-colors">
           Cancel
@@ -506,32 +572,6 @@ function ProfilesTab({
 }) {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setAvatarPreview(await resizeImageToDataUrl(file, 400, 0.8));
-  }
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSubmitting(true);
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
-    if (avatarPreview) data.avatar_url = avatarPreview;
-    await fetch("/api/admin/profiles", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    setSubmitting(false);
-    setShowForm(false);
-    setAvatarPreview(null);
-    e.currentTarget.reset();
-    onChanged();
-  }
 
   return (
     <div>
@@ -543,43 +583,14 @@ function ProfilesTab({
       </button>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="border border-line p-6 mb-10 space-y-4 max-w-lg">
-          <div className="flex items-center gap-5">
-            <div onClick={() => fileInputRef.current?.click()} className="h-16 w-16 rounded-full border border-line bg-ink/5 flex items-center justify-center overflow-hidden cursor-pointer shrink-0">
-              {avatarPreview ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={avatarPreview} alt="Preview" className="h-full w-full object-cover" />
-              ) : (
-                <span className="text-xs text-muted">Photo</span>
-              )}
-            </div>
-            <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
-            <button type="button" onClick={() => fileInputRef.current?.click()} className="border border-line px-4 py-2 text-sm hover:border-ink transition-colors">
-              Upload photo
-            </button>
-          </div>
-          <input required name="full_name" placeholder="Full name" className={inputCls} />
-          <select required name="category" className={inputCls} defaultValue="">
-            <option value="" disabled>Category</option>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-          <input required name="title" placeholder="Title (e.g. Founder & CEO)" className={inputCls} />
-          <input name="company_name" placeholder="Company name" className={inputCls} />
-          <textarea required name="bio" rows={3} placeholder="Short bio" className={inputCls} />
-          <input name="location" placeholder="Location" className={inputCls} />
-          <input name="website" placeholder="Website URL" className={inputCls} />
-          <input name="linkedin_url" placeholder="LinkedIn URL" className={inputCls} />
-          <button disabled={submitting} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
-            {submitting ? "Adding..." : "Add profile"}
-          </button>
-        </form>
+        <ProfileForm onCancel={() => setShowForm(false)} onSaved={() => { setShowForm(false); onChanged(); }} />
       )}
 
       <div className="space-y-3">
         {profiles.length === 0 && <p className="text-muted text-sm">No profiles added yet.</p>}
         {profiles.map((p) =>
           editingId === p.id ? (
-            <EditProfileForm
+            <ProfileForm
               key={p.id}
               profile={p}
               onCancel={() => setEditingId(null)}
@@ -617,44 +628,53 @@ function ProfilesTab({
   );
 }
 
-function EditProfileForm({
+function ProfileForm({
   profile,
   onCancel,
   onSaved,
 }: {
-  profile: EntrepreneurProfile;
+  profile?: EntrepreneurProfile;
   onCancel: () => void;
   onSaved: () => void;
 }) {
   const [saving, setSaving] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(profile.avatar_url || null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(profile?.avatar_url || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setAvatarPreview(await resizeImageToDataUrl(file, 400, 0.8));
+    setAvatarPreview(await resizeImageToDataUrl(file, 500, 0.85));
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
-    data.id = profile.id;
     if (avatarPreview) data.avatar_url = avatarPreview;
-    await fetch("/api/admin/profiles", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+
+    if (profile) {
+      data.id = profile.id;
+      await fetch("/api/admin/profiles", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    } else {
+      await fetch("/api/admin/profiles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    }
     setSaving(false);
     onSaved();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-ink p-6 space-y-4">
+    <form onSubmit={handleSubmit} className="border border-ink p-6 mb-8 space-y-4">
       <div className="flex items-center gap-5">
-        <div onClick={() => fileInputRef.current?.click()} className="h-16 w-16 rounded-full border border-line bg-ink/5 flex items-center justify-center overflow-hidden cursor-pointer shrink-0">
+        <div onClick={() => fileInputRef.current?.click()} className="h-20 w-20 rounded-full border border-line bg-ink/5 flex items-center justify-center overflow-hidden cursor-pointer shrink-0">
           {avatarPreview ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={avatarPreview} alt="Preview" className="h-full w-full object-cover" />
@@ -664,22 +684,32 @@ function EditProfileForm({
         </div>
         <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
         <button type="button" onClick={() => fileInputRef.current?.click()} className="border border-line px-4 py-2 text-sm hover:border-ink transition-colors">
-          Change photo
+          {avatarPreview ? "Change photo" : "Upload photo"}
         </button>
       </div>
-      <input required name="full_name" defaultValue={profile.full_name} placeholder="Full name" className={inputCls} />
-      <select required name="category" defaultValue={profile.category} className={inputCls}>
+
+      <input required name="full_name" defaultValue={profile?.full_name} placeholder="Full name" className={inputCls} />
+      <select required name="category" defaultValue={profile?.category || ""} className={inputCls}>
+        <option value="" disabled>Category</option>
         {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
       </select>
-      <input required name="title" defaultValue={profile.title} placeholder="Title" className={inputCls} />
-      <input name="company_name" defaultValue={profile.company_name || ""} placeholder="Company name" className={inputCls} />
-      <textarea required name="bio" defaultValue={profile.bio} rows={3} placeholder="Bio" className={inputCls} />
-      <input name="location" defaultValue={profile.location || ""} placeholder="Location" className={inputCls} />
-      <input name="website" defaultValue={profile.website || ""} placeholder="Website URL" className={inputCls} />
-      <input name="linkedin_url" defaultValue={profile.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
+      <input required name="title" defaultValue={profile?.title} placeholder="Title (e.g. Founder & CEO)" className={inputCls} />
+      <input name="company_name" defaultValue={profile?.company_name || ""} placeholder="Company name" className={inputCls} />
+
+      <div>
+        <label className="block text-sm font-medium text-ink mb-2">Bio / full profile content</label>
+        <RichTextEditor name="bio" defaultValue={profile?.bio} />
+      </div>
+
+      <input name="location" defaultValue={profile?.location || ""} placeholder="Location" className={inputCls} />
+      <input name="website" defaultValue={profile?.website || ""} placeholder="Website URL" className={inputCls} />
+      <input name="linkedin_url" defaultValue={profile?.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
+
+      <SeoFieldsSection defaults={profile} />
+
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
-          {saving ? "Saving..." : "Save changes"}
+          {saving ? "Saving..." : profile ? "Save changes" : "Add profile"}
         </button>
         <button type="button" onClick={onCancel} className="border border-line px-5 py-2.5 text-sm text-muted hover:text-ink hover:border-ink transition-colors">
           Cancel
@@ -688,6 +718,9 @@ function EditProfileForm({
     </form>
   );
 }
+
+/* ---------------- Blog ---------------- */
+
 
 /* ---------------- Blog ---------------- */
 
@@ -834,6 +867,7 @@ function BlogPostForm({
           linking, e.g. /hire-freelancers/seo).
         </p>
       </div>
+      <SeoFieldsSection defaults={post} />
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
           {saving ? "Saving..." : post ? "Save changes" : "Publish post"}
@@ -842,6 +876,86 @@ function BlogPostForm({
           Cancel
         </button>
       </div>
+    </form>
+  );
+}
+
+/* ---------------- Pages (static page SEO) ---------------- */
+
+function PagesTab() {
+  const [pages, setPages] = useState<PageSeo[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function load() {
+    setLoading(true);
+    const res = await fetch("/api/admin/pages");
+    if (res.ok) {
+      const json = await res.json();
+      setPages(json.pages);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function save(page_key: string, fields: Record<string, string>) {
+    await fetch("/api/admin/pages", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page_key, ...fields }),
+    });
+    load();
+  }
+
+  return (
+    <div className="space-y-6">
+      <p className="text-sm text-muted max-w-xl">
+        Set the meta title, description, canonical URL and focus keyword
+        for each main page on the site. These are used by search engines
+        — they don&apos;t change what visitors see on the page itself.
+      </p>
+      {loading && <p className="text-sm text-muted">Loading...</p>}
+      {PAGE_KEYS.map(({ key, label }) => {
+        const existing = pages.find((p) => p.page_key === key);
+        return <PageSeoForm key={key} pageKey={key} label={label} existing={existing} onSave={save} />;
+      })}
+    </div>
+  );
+}
+
+function PageSeoForm({
+  pageKey,
+  label,
+  existing,
+  onSave,
+}: {
+  pageKey: string;
+  label: string;
+  existing?: PageSeo;
+  onSave: (pageKey: string, fields: Record<string, string>) => void;
+}) {
+  const [saving, setSaving] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSaving(true);
+    const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
+    onSave(pageKey, data);
+    setSaving(false);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="border border-line p-5 space-y-3">
+      <h3 className="font-medium text-ink">{label}</h3>
+      <input name="meta_title" defaultValue={existing?.meta_title || ""} placeholder="Meta title" className={inputCls} />
+      <textarea name="meta_description" defaultValue={existing?.meta_description || ""} rows={2} placeholder="Meta description" className={inputCls} />
+      <input name="canonical_url" defaultValue={existing?.canonical_url || ""} placeholder="Canonical URL (optional)" className={inputCls} />
+      <input name="focus_keyword" defaultValue={existing?.focus_keyword || ""} placeholder="Focus keyword" className={inputCls} />
+      <button disabled={saving} className="bg-ink text-paper px-5 py-2 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
+        {saving ? "Saving..." : "Save"}
+      </button>
     </form>
   );
 }

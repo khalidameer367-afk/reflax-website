@@ -1,8 +1,16 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import type { EntrepreneurProfile } from "@/lib/types";
+import { stripHtml } from "@/lib/stripHtml";
+import { getPageMetadata } from "@/lib/pageSeo";
 
-export const metadata = { title: "Profiles — Reflax" };
+export async function generateMetadata() {
+  return getPageMetadata(
+    "profiles",
+    "Profiles — Reflax",
+    "Entrepreneurs and business leaders, by category."
+  );
+}
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -64,7 +72,7 @@ export default async function ProfilesPage() {
                   {p.company_name && (
                     <p className="mt-1 text-sm text-muted">{p.company_name}</p>
                   )}
-                  <p className="mt-4 text-sm leading-relaxed text-muted line-clamp-3">{p.bio}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-muted line-clamp-3">{stripHtml(p.bio)}</p>
                   <span className="mt-4 inline-block text-xs font-medium underline underline-offset-4">
                     View profile
                   </span>

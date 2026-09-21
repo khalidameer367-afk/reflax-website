@@ -1,9 +1,27 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { isUuid } from "@/lib/isUuid";
+import { buildMetadata } from "@/lib/seoMeta";
+import { stripHtml } from "@/lib/stripHtml";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+async function getProfile(slug: string) {
+  const { data } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq(isUuid(slug) ? "id" : "slug", slug)
+    .single();
+  return data;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const p = await getProfile(slug);
+  if (!p) return { title: "Profile — Reflax" };
+  return buildMetadata(p, `${p.full_name} — ${p.title} — Reflax`, stripHtml(p.bio, 160));
+}
 
 export default async function EntrepreneurProfilePage({
   params,
@@ -11,14 +29,9 @@ export default async function EntrepreneurProfilePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const p = await getProfile(slug);
 
-  const { data: p, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq(isUuid(slug) ? "id" : "slug", slug)
-    .single();
-
-  if (error || !p) {
+  if (!p) {
     return (
       <div className="container-x py-24">
         <p className="text-muted">This profile isn&apos;t available.</p>
@@ -31,14 +44,17 @@ export default async function EntrepreneurProfilePage({
 
   return (
     <div>
-      <section className="border-b border-line">
-        <div className="container-x py-16 md:py-20">
-          <Link href="/profiles" className="text-sm text-muted hover:text-ink transition-colors">
+      {/* Premium hero */}
+      <section className="relative border-b border-line overflow-hidden bg-ink text-paper">
+        <div className="absolute -left-16 -top-16 h-72 w-72 rounded-full bg-paper/[0.04] blur-3xl" />
+        <div className="absolute -right-16 -bottom-16 h-80 w-80 rounded-full bg-paper/[0.04] blur-3xl" />
+        <div className="container-x py-20 md:py-28 relative">
+          <Link href="/profiles" className="text-sm text-paper/50 hover:text-paper transition-colors">
             ← {p.category}
           </Link>
 
-          <div className="mt-6 flex flex-col md:flex-row md:items-center gap-6">
-            <div className="h-20 w-20 rounded-full bg-ink/5 border border-line flex items-center justify-center text-2xl font-semibold text-ink shrink-0 overflow-hidden">
+          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center gap-8">
+            <div className="h-28 w-28 md:h-36 md:w-36 rounded-full border-4 border-paper/10 bg-paper/5 flex items-center justify-center text-4xl font-semibold text-paper shrink-0 overflow-hidden">
               {p.avatar_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={p.avatar_url} alt={p.full_name} className="h-full w-full object-cover" />
@@ -47,10 +63,13 @@ export default async function EntrepreneurProfilePage({
               )}
             </div>
             <div>
-              <h1 className="display text-3xl md:text-4xl font-semibold tracking-tight text-ink">
+              <div className="text-sm text-paper/50 mb-2 uppercase tracking-wide">{p.category}</div>
+              <h1 className="display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight text-paper">
                 {p.full_name}
               </h1>
-              <p className="mt-2 text-muted">{p.title}{p.company_name ? ` · ${p.company_name}` : ""}</p>
+              <p className="mt-3 text-lg text-paper/70">
+                {p.title}{p.company_name ? ` · ${p.company_name}` : ""}
+              </p>
             </div>
           </div>
         </div>
@@ -59,9 +78,10 @@ export default async function EntrepreneurProfilePage({
       <section className="container-x py-16 md:py-20 grid md:grid-cols-[1fr_320px] gap-14">
         <div>
           <h2 className="display text-lg font-semibold text-ink">About</h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted whitespace-pre-line">
-            {p.bio}
-          </p>
+          <div
+            className="mt-4 blog-content text-[16px] leading-relaxed text-ink"
+            dangerouslySetInnerHTML={{ __html: p.bio }}
+          />
         </div>
 
         <aside className="border border-line p-7 h-fit">
@@ -70,6 +90,12 @@ export default async function EntrepreneurProfilePage({
               <dt className="text-muted">Category</dt>
               <dd className="mt-1 text-ink font-medium">{p.category}</dd>
             </div>
+            {p.company_name && (
+              <div>
+                <dt className="text-muted">Company</dt>
+                <dd className="mt-1 text-ink font-medium">{p.company_name}</dd>
+              </div>
+            )}
             {p.location && (
               <div>
                 <dt className="text-muted">Location</dt>

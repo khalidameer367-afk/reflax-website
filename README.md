@@ -132,6 +132,28 @@ kar ke Run karain (agar pehle se kar chuke hain to skip kar dain):
 3. `supabase-migration-freelancer-accounts.sql` — freelancer login system
 4. `supabase-migration-freelancer-pending.sql` — freelancer wapis admin-approval flow
 5. `supabase-migration-slugs-and-blog.sql` — naam-wali URLs + blog table
+6. `supabase-migration-backfill-slugs.sql`
+7. `supabase-migration-fix-policies.sql`
+8. `supabase-migration-seo-fields.sql` — **naya**, SEO fields + business featured image + page_seo table
+
+## Naya Kya Hai (is update mein)
+
+- **SEO system** — `/admin` mein har Freelancer/Business/Profile/Blog post ke
+  edit form mein ek "SEO settings" section hai (meta title, description,
+  canonical URL, focus keyword). Sath hi `/admin` → **Pages** tab se Home,
+  About Us, Hire Freelancers, Businesses, Profiles, Blog, Contact — in sab
+  static pages ki SEO bhi set ho sakti hai.
+- **Business** ab sirf `/admin` se banta hai (public form hata diya gaya) —
+  rich content editor (headings, images, links) ke sath, logo + featured
+  banner image, aur naya detail page: 70% content (featured image + rich
+  description), 30% sticky sidebar (email/phone/website contact buttons).
+- **Freelancer detail page** par phone number ab dikhta hai.
+- **Entrepreneur Profiles** — premium dark hero design, rich bio content.
+- **Homepage** — nayi hero graphic, businesses + profiles ka continuous
+  moving slider, "How it works" section, zyada content.
+- **About Us** — decorative graphics, extra content section.
+- **Hire Freelancers** — bara prominent hero, har category page par ab
+  ek short description paragraph.
 
 ## Zaroori: Email Confirmation OFF Karain
 
@@ -149,11 +171,11 @@ turant kaam nahi karega.
 - `/admin` → Freelancers tab — Approve/Reject (jab tak pending hai),
   aur Edit/Delete hamesha available hai
 
-**Businesses:** (waisa hi flow, ab logo upload bhi)
-- `/businesses` py form fill (logo ke saath) → pending → admin approve/reject
-  karta hai `/admin` se, Edit bhi kar sakta hai
-- Approved businesses ka apna detail page hota hai:
-  `/businesses/company-name`
+**Businesses:** (ab sirf admin se banta hai, public form nahi)
+- `/admin` → Businesses tab → "+ Add business" se naya business add karain
+  (rich content editor, logo, featured banner image, SEO fields sab
+  saath mein)
+- Turant live ho jata hai: `/businesses/company-name`
 
 **Profiles (entrepreneurs):**
 - `/admin` → Profiles tab se admin khud add karta hai (photo ke saath),

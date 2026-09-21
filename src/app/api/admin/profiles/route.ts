@@ -3,6 +3,22 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/adminAuth";
 import { generateUniqueSlug } from "@/lib/slug";
 
+const allowedFields = [
+  "full_name",
+  "category",
+  "title",
+  "bio",
+  "company_name",
+  "location",
+  "website",
+  "linkedin_url",
+  "avatar_url",
+  "meta_title",
+  "meta_description",
+  "canonical_url",
+  "focus_keyword",
+];
+
 export async function GET(req: NextRequest) {
   if (!isAdminAuthed(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -21,7 +37,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json();
-  const { full_name, category, title, bio, company_name, location, website, linkedin_url, avatar_url } = body;
+  const { full_name, category, title, bio } = body;
 
   if (!full_name || !category || !title || !bio) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
@@ -29,23 +45,12 @@ export async function POST(req: NextRequest) {
 
   const db = supabaseAdmin();
   const slug = await generateUniqueSlug(db, "profiles", full_name);
-  const { data, error } = await db
-    .from("profiles")
-    .insert({
-      full_name,
-      category,
-      title,
-      bio,
-      company_name: company_name || null,
-      location: location || null,
-      website: website || null,
-      linkedin_url: linkedin_url || null,
-      avatar_url: avatar_url || null,
-      slug,
-    })
-    .select()
-    .single();
+  const insertData: Record<string, unknown> = { slug };
+  for (const key of allowedFields) {
+    if (key in body) insertData[key] = body[key] || null;
+  }
 
+  const { data, error } = await db.from("profiles").insert(insertData).select().single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true, profile: data });
 }
@@ -58,19 +63,8 @@ export async function PUT(req: NextRequest) {
   const { id, ...fields } = body;
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-  const allowed = [
-    "full_name",
-    "category",
-    "title",
-    "bio",
-    "company_name",
-    "location",
-    "website",
-    "linkedin_url",
-    "avatar_url",
-  ];
   const update: Record<string, unknown> = {};
-  for (const key of allowed) {
+  for (const key of allowedFields) {
     if (key in fields) update[key] = fields[key] || null;
   }
 

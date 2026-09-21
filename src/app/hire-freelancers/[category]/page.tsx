@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { CATEGORIES } from "@/lib/types";
+import { CATEGORIES, CATEGORY_DESCRIPTIONS } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -59,6 +59,11 @@ export default async function CategoryPage({
           <h1 className="display mt-4 text-3xl md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink">
             {cat}
           </h1>
+          {CATEGORY_DESCRIPTIONS[cat] && (
+            <p className="mt-5 text-[15px] leading-relaxed text-muted max-w-2xl">
+              {CATEGORY_DESCRIPTIONS[cat]}
+            </p>
+          )}
         </div>
       </section>
 
@@ -87,7 +92,7 @@ export default async function CategoryPage({
               <Link
                 key={f.id}
                 href={`/hire-freelancers/${category}/${f.slug || f.id}`}
-                className="group border border-line p-7 hover:border-ink transition-colors"
+                className="group border border-line p-7 hover:border-ink hover:shadow-[0_16px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">
                   {f.avatar_url ? (

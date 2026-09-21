@@ -1,8 +1,22 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { buildMetadata } from "@/lib/seoMeta";
+import { stripHtml } from "@/lib/stripHtml";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+async function getPost(slug: string) {
+  const { data } = await supabase.from("blog_posts").select("*").eq("slug", slug).single();
+  return data;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  if (!post) return { title: "Post — Reflax" };
+  return buildMetadata(post, `${post.title} — Reflax Blog`, post.excerpt || stripHtml(post.content, 160));
+}
 
 export default async function BlogPostPage({
   params,

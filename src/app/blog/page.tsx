@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { getPageMetadata } from "@/lib/pageSeo";
 
-export const metadata = { title: "Blog — Reflax" };
+export async function generateMetadata() {
+  return getPageMetadata("blog", "Blog — Reflax", "Insights on hiring, growth, and building teams.");
+}
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
