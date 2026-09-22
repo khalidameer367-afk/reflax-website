@@ -57,7 +57,7 @@ export default async function ProfilesPage() {
                 <Link
                   key={p.id}
                   href={`/profiles/${p.slug || p.id}`}
-                  className="border border-line p-7 block hover:border-ink transition-colors"
+                  className="tilt-3d border border-line p-7 block hover:border-ink transition-colors"
                 >
                   <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">
                     {p.avatar_url ? (

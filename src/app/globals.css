@@ -128,3 +128,56 @@ h1, h2, h3, h4, .display {
   background-image: radial-gradient(circle, rgba(10,10,10,0.12) 1px, transparent 1px);
   background-size: 22px 22px;
 }
+
+/* 3D tilt hover effect — used on cards throughout the site */
+.tilt-3d {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, border-color 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt-3d:hover {
+  transform: perspective(1000px) rotateX(3deg) rotateY(-4deg) translateY(-6px) scale(1.015);
+  box-shadow: 0 24px 48px rgba(10, 10, 10, 0.12);
+}
+
+/* Floating blob background animation */
+@keyframes float-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(16px, -20px) scale(1.06); }
+  66% { transform: translate(-14px, 14px) scale(0.96); }
+}
+.float-blob {
+  animation: float-blob 12s ease-in-out infinite;
+}
+.float-blob-slow {
+  animation: float-blob 18s ease-in-out infinite;
+}
+
+/* Scroll-triggered reveal */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Button micro-interaction */
+.btn-pop {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.btn-pop:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 24px rgba(10, 10, 10, 0.18);
+}
+
+/* Slow spin, used on decorative ring/circle graphics */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin-slow {
+  animation: spin-slow 40s linear infinite;
+}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/adminAuth";
+import { resolveSlug } from "@/lib/slug";
 
 export async function GET(req: NextRequest) {
   if (!isAdminAuthed(req)) {
@@ -60,6 +61,16 @@ export async function PUT(req: NextRequest) {
   }
 
   const db = supabaseAdmin();
+
+  if ("slug" in fields) {
+    try {
+      const nameForFallback = fields.full_name || "profile";
+      update.slug = await resolveSlug(db, "freelancers", nameForFallback, fields.slug, id);
+    } catch (err) {
+      return NextResponse.json({ error: err instanceof Error ? err.message : "Slug error" }, { status: 400 });
+    }
+  }
+
   const { error } = await db.from("freelancers").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });

@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/types";
-import type { Freelancer, Business, EntrepreneurProfile, BlogPost, PageSeo } from "@/lib/types";
+import type { Freelancer, Business, EntrepreneurProfile, BlogPost, PageSeo, PageContentRow } from "@/lib/types";
 import { resizeImageToDataUrl } from "@/lib/image";
 import RichTextEditor from "@/components/RichTextEditor";
 import SeoFieldsSection from "@/components/SeoFieldsSection";
+import SlugField from "@/components/SlugField";
 import { PAGE_KEYS } from "@/lib/pageSeo";
 
 const statusColor: Record<string, string> = {
@@ -273,6 +274,7 @@ function EditFreelancerForm({
   onSaved: () => void;
 }) {
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(freelancer.avatar_url || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -285,15 +287,21 @@ function EditFreelancerForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
+    setError("");
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     data.id = freelancer.id;
     if (avatarPreview) data.avatar_url = avatarPreview;
-    await fetch("/api/admin/freelancers", {
+    const res = await fetch("/api/admin/freelancers", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
+    const json = await res.json().catch(() => ({}));
     setSaving(false);
+    if (!res.ok) {
+      setError(json.error || "Something went wrong.");
+      return;
+    }
     onSaved();
   }
 
@@ -317,6 +325,7 @@ function EditFreelancerForm({
         <input required name="full_name" defaultValue={freelancer.full_name} placeholder="Full name" className={inputCls} />
         <input required type="email" name="email" defaultValue={freelancer.email} placeholder="Email" className={inputCls} />
       </div>
+      <SlugField defaultValue={freelancer.slug} urlPrefix={`/hire-freelancers/${freelancer.category ? freelancer.category.toLowerCase().replace(/[^a-z0-9]+/g, "-") : "category"}/`} />
       <div className="grid sm:grid-cols-2 gap-4">
         <input name="phone" defaultValue={freelancer.phone || ""} placeholder="Phone" className={inputCls} />
         <select required name="category" defaultValue={freelancer.category} className={inputCls}>
@@ -336,6 +345,7 @@ function EditFreelancerForm({
         <input name="linkedin_url" defaultValue={freelancer.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
       </div>
       <SeoFieldsSection defaults={freelancer} />
+      {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
           {saving ? "Saving..." : "Save changes"}
@@ -443,6 +453,7 @@ function BusinessForm({
   onSaved: () => void;
 }) {
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [logoPreview, setLogoPreview] = useState<string | null>(business?.logo_url || null);
   const [featuredPreview, setFeaturedPreview] = useState<string | null>(business?.featured_image_url || null);
   const logoInputRef = useRef<HTMLInputElement>(null);
@@ -462,25 +473,32 @@ function BusinessForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
+    setError("");
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     if (logoPreview) data.logo_url = logoPreview;
     if (featuredPreview) data.featured_image_url = featuredPreview;
 
+    let res: Response;
     if (business) {
       data.id = business.id;
-      await fetch("/api/admin/businesses", {
+      res = await fetch("/api/admin/businesses", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     } else {
-      await fetch("/api/admin/businesses", {
+      res = await fetch("/api/admin/businesses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     }
+    const json = await res.json().catch(() => ({}));
     setSaving(false);
+    if (!res.ok) {
+      setError(json.error || "Something went wrong.");
+      return;
+    }
     onSaved();
   }
 
@@ -527,6 +545,7 @@ function BusinessForm({
         <input required name="company_name" defaultValue={business?.company_name} placeholder="Company name" className={inputCls} />
         <input required name="contact_person" defaultValue={business?.contact_person} placeholder="Contact person" className={inputCls} />
       </div>
+      <SlugField defaultValue={business?.slug} urlPrefix="/businesses/" />
       <div className="grid sm:grid-cols-2 gap-4">
         <input required type="email" name="email" defaultValue={business?.email} placeholder="Email" className={inputCls} />
         <input name="phone" defaultValue={business?.phone || ""} placeholder="Phone" className={inputCls} />
@@ -546,6 +565,7 @@ function BusinessForm({
       </div>
 
       <SeoFieldsSection defaults={business} />
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
@@ -638,6 +658,7 @@ function ProfileForm({
   onSaved: () => void;
 }) {
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(profile?.avatar_url || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -650,24 +671,31 @@ function ProfileForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
+    setError("");
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     if (avatarPreview) data.avatar_url = avatarPreview;
 
+    let res: Response;
     if (profile) {
       data.id = profile.id;
-      await fetch("/api/admin/profiles", {
+      res = await fetch("/api/admin/profiles", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     } else {
-      await fetch("/api/admin/profiles", {
+      res = await fetch("/api/admin/profiles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     }
+    const json = await res.json().catch(() => ({}));
     setSaving(false);
+    if (!res.ok) {
+      setError(json.error || "Something went wrong.");
+      return;
+    }
     onSaved();
   }
 
@@ -689,6 +717,7 @@ function ProfileForm({
       </div>
 
       <input required name="full_name" defaultValue={profile?.full_name} placeholder="Full name" className={inputCls} />
+      <SlugField defaultValue={profile?.slug} urlPrefix="/profiles/" />
       <select required name="category" defaultValue={profile?.category || ""} className={inputCls}>
         <option value="" disabled>Category</option>
         {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -706,6 +735,7 @@ function ProfileForm({
       <input name="linkedin_url" defaultValue={profile?.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
 
       <SeoFieldsSection defaults={profile} />
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
@@ -802,6 +832,7 @@ function BlogPostForm({
   onSaved: () => void;
 }) {
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(post?.featured_image_url || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -814,24 +845,31 @@ function BlogPostForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
+    setError("");
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     if (imagePreview) data.featured_image_url = imagePreview;
 
+    let res: Response;
     if (post) {
       data.id = post.id;
-      await fetch("/api/admin/blog", {
+      res = await fetch("/api/admin/blog", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     } else {
-      await fetch("/api/admin/blog", {
+      res = await fetch("/api/admin/blog", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     }
+    const json = await res.json().catch(() => ({}));
     setSaving(false);
+    if (!res.ok) {
+      setError(json.error || "Something went wrong.");
+      return;
+    }
     onSaved();
   }
 
@@ -855,6 +893,7 @@ function BlogPostForm({
         </div>
       </div>
       <input required name="title" defaultValue={post?.title} placeholder="Post title" className={inputCls} />
+      <SlugField defaultValue={post?.slug} urlPrefix="/blog/" />
       <input name="author" defaultValue={post?.author || ""} placeholder="Author name (optional)" className={inputCls} />
       <textarea name="excerpt" defaultValue={post?.excerpt || ""} rows={2} placeholder="Short excerpt (shown in listing)" className={inputCls} />
       <div>
@@ -868,6 +907,7 @@ function BlogPostForm({
         </p>
       </div>
       <SeoFieldsSection defaults={post} />
+      {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
           {saving ? "Saving..." : post ? "Save changes" : "Publish post"}
@@ -884,15 +924,17 @@ function BlogPostForm({
 
 function PagesTab() {
   const [pages, setPages] = useState<PageSeo[]>([]);
+  const [contents, setContents] = useState<PageContentRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   async function load() {
     setLoading(true);
-    const res = await fetch("/api/admin/pages");
-    if (res.ok) {
-      const json = await res.json();
-      setPages(json.pages);
-    }
+    const [seoRes, contentRes] = await Promise.all([
+      fetch("/api/admin/pages"),
+      fetch("/api/admin/page-content"),
+    ]);
+    if (seoRes.ok) setPages((await seoRes.json()).pages);
+    if (contentRes.ok) setContents((await contentRes.json()).pages);
     setLoading(false);
   }
 
@@ -900,7 +942,7 @@ function PagesTab() {
     load();
   }, []);
 
-  async function save(page_key: string, fields: Record<string, string>) {
+  async function saveSeo(page_key: string, fields: Record<string, string>) {
     await fetch("/api/admin/pages", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -909,17 +951,40 @@ function PagesTab() {
     load();
   }
 
+  async function saveContent(page_key: string, content: string) {
+    await fetch("/api/admin/page-content", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page_key, content }),
+    });
+    load();
+  }
+
   return (
     <div className="space-y-6">
       <p className="text-sm text-muted max-w-xl">
         Set the meta title, description, canonical URL and focus keyword
-        for each main page on the site. These are used by search engines
-        — they don&apos;t change what visitors see on the page itself.
+        for each page — used by search engines. For Services pages, you
+        can also edit the actual page content below (the page layout
+        stays the same, only this text changes).
       </p>
       {loading && <p className="text-sm text-muted">Loading...</p>}
       {PAGE_KEYS.map(({ key, label }) => {
-        const existing = pages.find((p) => p.page_key === key);
-        return <PageSeoForm key={key} pageKey={key} label={label} existing={existing} onSave={save} />;
+        const existingSeo = pages.find((p) => p.page_key === key);
+        const existingContent = contents.find((c) => c.page_key === key);
+        const hasContentEditor = key.includes("services") || key === "recruitment-services" || key === "talent-acquisition" || key === "business-growth-consultancy";
+        return (
+          <PageSeoForm
+            key={key}
+            pageKey={key}
+            label={label}
+            existingSeo={existingSeo}
+            existingContent={existingContent?.content}
+            showContentEditor={hasContentEditor}
+            onSaveSeo={saveSeo}
+            onSaveContent={saveContent}
+          />
+        );
       })}
     </div>
   );
@@ -928,34 +993,62 @@ function PagesTab() {
 function PageSeoForm({
   pageKey,
   label,
-  existing,
-  onSave,
+  existingSeo,
+  existingContent,
+  showContentEditor,
+  onSaveSeo,
+  onSaveContent,
 }: {
   pageKey: string;
   label: string;
-  existing?: PageSeo;
-  onSave: (pageKey: string, fields: Record<string, string>) => void;
+  existingSeo?: PageSeo;
+  existingContent?: string | null;
+  showContentEditor?: boolean;
+  onSaveSeo: (pageKey: string, fields: Record<string, string>) => void;
+  onSaveContent: (pageKey: string, content: string) => void;
 }) {
   const [saving, setSaving] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
-    onSave(pageKey, data);
+    const { content, ...seoFields } = data;
+    onSaveSeo(pageKey, seoFields);
+    if (showContentEditor) onSaveContent(pageKey, content || "");
     setSaving(false);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-line p-5 space-y-3">
-      <h3 className="font-medium text-ink">{label}</h3>
-      <input name="meta_title" defaultValue={existing?.meta_title || ""} placeholder="Meta title" className={inputCls} />
-      <textarea name="meta_description" defaultValue={existing?.meta_description || ""} rows={2} placeholder="Meta description" className={inputCls} />
-      <input name="canonical_url" defaultValue={existing?.canonical_url || ""} placeholder="Canonical URL (optional)" className={inputCls} />
-      <input name="focus_keyword" defaultValue={existing?.focus_keyword || ""} placeholder="Focus keyword" className={inputCls} />
-      <button disabled={saving} className="bg-ink text-paper px-5 py-2 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
-        {saving ? "Saving..." : "Save"}
+    <div className="border border-line">
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left"
+      >
+        <h3 className="font-medium text-ink">{label}</h3>
+        <span className="text-muted text-sm">{expanded ? "−" : "+"}</span>
       </button>
-    </form>
+      {expanded && (
+        <form onSubmit={handleSubmit} className="p-5 pt-0 space-y-3 border-t border-line">
+          <input name="meta_title" defaultValue={existingSeo?.meta_title || ""} placeholder="Meta title" className={inputCls} />
+          <textarea name="meta_description" defaultValue={existingSeo?.meta_description || ""} rows={2} placeholder="Meta description" className={inputCls} />
+          <input name="canonical_url" defaultValue={existingSeo?.canonical_url || ""} placeholder="Canonical URL (optional)" className={inputCls} />
+          <input name="focus_keyword" defaultValue={existingSeo?.focus_keyword || ""} placeholder="Focus keyword" className={inputCls} />
+          {showContentEditor && (
+            <div>
+              <label className="block text-sm font-medium text-ink mb-2">
+                Page content (leave empty to use the default text)
+              </label>
+              <RichTextEditor name="content" defaultValue={existingContent || ""} />
+            </div>
+          )}
+          <button disabled={saving} className="bg-ink text-paper px-5 py-2 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
+            {saving ? "Saving..." : "Save"}
+          </button>
+        </form>
+      )}
+    </div>
   );
 }

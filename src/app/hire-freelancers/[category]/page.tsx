@@ -92,7 +92,7 @@ export default async function CategoryPage({
               <Link
                 key={f.id}
                 href={`/hire-freelancers/${category}/${f.slug || f.id}`}
-                className="group border border-line p-7 hover:border-ink hover:shadow-[0_16px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300"
+                className="tilt-3d group border border-line p-7 hover:border-ink transition-all duration-300"
               >
                 <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">
                   {f.avatar_url ? (

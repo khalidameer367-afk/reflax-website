@@ -51,7 +51,7 @@ export default async function BusinessesPage() {
                 <Link
                   key={b.id}
                   href={`/businesses/${b.slug || b.id}`}
-                  className="group border border-line block hover:border-ink transition-all duration-300 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1"
+                  className="tilt-3d group border border-line block hover:border-ink transition-all duration-300"
                 >
                   {b.featured_image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element

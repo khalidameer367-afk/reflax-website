@@ -44,6 +44,23 @@ export default async function EntrepreneurProfilePage({
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: p.full_name,
+            jobTitle: p.title,
+            worksFor: p.company_name ? { "@type": "Organization", name: p.company_name } : undefined,
+            description: stripHtml(p.bio, 300),
+            image: p.avatar_url || undefined,
+            url: p.website || undefined,
+            address: p.location ? { "@type": "PostalAddress", addressLocality: p.location } : undefined,
+            sameAs: p.linkedin_url ? [p.linkedin_url] : undefined,
+          }),
+        }}
+      />
       {/* Premium hero */}
       <section className="relative border-b border-line overflow-hidden bg-ink text-paper">
         <div className="absolute -left-16 -top-16 h-72 w-72 rounded-full bg-paper/[0.04] blur-3xl" />

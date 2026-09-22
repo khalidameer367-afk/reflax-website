@@ -1,7 +1,8 @@
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
-import Marquee from "@/components/Marquee";
 import HeroGraphic from "@/components/HeroGraphic";
+import Marquee from "@/components/Marquee";
+import Reveal from "@/components/Reveal";
 import { CATEGORIES } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { getPageMetadata } from "@/lib/pageSeo";
@@ -73,8 +74,10 @@ export default async function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.15fr_1fr] gap-12 items-center">
+      <section className="relative border-b border-line overflow-hidden">
+        <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-ink/[0.04] blur-3xl float-blob" />
+        <div className="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-ink/[0.03] blur-3xl float-blob-slow" />
+        <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.15fr_1fr] gap-12 items-center relative">
           <div>
             <div className="text-sm text-muted mb-5">
               A hiring platform for experts &amp; freelancers
@@ -92,13 +95,13 @@ export default async function Home() {
             <div className="mt-9 flex flex-wrap gap-4">
               <Link
                 href="/hire-freelancers"
-                className="inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+                className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
               >
                 Hire a freelancer
               </Link>
               <Link
                 href="/register"
-                className="inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="btn-pop inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
               >
                 Join as a professional
               </Link>
@@ -114,14 +117,14 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="border border-line p-8 hidden md:flex items-center justify-center aspect-square">
-            <HeroGraphic className="w-full h-full" />
+          <div className="tilt-3d border border-line p-8 hidden md:flex items-center justify-center aspect-square">
+            <HeroGraphic className="w-full h-full spin-slow" />
           </div>
         </div>
       </section>
 
       {/* Businesses & Profiles marquee */}
-      <section className="py-14 border-b border-line bg-ink/[0.015]">
+      <section className="py-14 border-b border-line bg-ink/[0.015] overflow-hidden">
         <div className="container-x mb-6 flex items-center justify-between">
           <span className="text-xs uppercase tracking-wide text-muted">Businesses on Reflax</span>
         </div>
@@ -133,136 +136,148 @@ export default async function Home() {
       </section>
 
       {/* Mission */}
-      <section className="container-x py-20 md:py-24 border-b border-line">
-        <div className="grid md:grid-cols-2 gap-14 items-start">
-          <SectionHeading
-            eyebrow="Why Reflax"
-            title="We remove the complexity from hiring."
-          />
-          <div className="text-[15px] leading-relaxed text-muted space-y-4">
-            <p>
-              Whether you're a startup, a small business, or an established
-              enterprise, Reflax makes it simple to discover, compare, and
-              hire the right experts for your needs. Every listing is curated
-              for quality, credibility, and transparency — so your hiring
-              decisions are always informed and secure.
-            </p>
-            <p>
-              We built Reflax because hiring shouldn't mean scrolling
-              through hundreds of unverified profiles, or businesses
-              disappearing after a first message. Every freelancer,
-              business and entrepreneur profile here is reviewed by a real
-              person on our team — so what you see is what you get.
-            </p>
+      <Reveal className="block">
+        <section className="container-x py-20 md:py-24 border-b border-line">
+          <div className="grid md:grid-cols-2 gap-14 items-start">
+            <SectionHeading
+              eyebrow="Why Reflax"
+              title="We remove the complexity from hiring."
+            />
+            <div className="text-[15px] leading-relaxed text-muted space-y-4">
+              <p>
+                Whether you're a startup, a small business, or an established
+                enterprise, Reflax makes it simple to discover, compare, and
+                hire the right experts for your needs. Every listing is curated
+                for quality, credibility, and transparency — so your hiring
+                decisions are always informed and secure.
+              </p>
+              <p>
+                We built Reflax because hiring shouldn't mean scrolling
+                through hundreds of unverified profiles, or businesses
+                disappearing after a first message. Every freelancer,
+                business and entrepreneur profile here is reviewed by a real
+                person on our team — so what you see is what you get.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
 
       {/* How it works */}
-      <section className="container-x py-20 md:py-24 border-b border-line">
-        <SectionHeading eyebrow="How it works" title="Simple, transparent, and fast." />
-        <div className="mt-12 grid md:grid-cols-3 gap-10">
-          {HOW_IT_WORKS.map((s) => (
-            <div key={s.step} className="fade-in-up">
-              <div className="display text-4xl font-semibold text-ink/15 mb-3">{s.step}</div>
-              <h3 className="display text-lg font-semibold text-ink">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{s.copy}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <Reveal className="block">
+        <section className="container-x py-20 md:py-24 border-b border-line">
+          <SectionHeading eyebrow="How it works" title="Simple, transparent, and fast." />
+          <div className="mt-12 grid md:grid-cols-3 gap-10">
+            {HOW_IT_WORKS.map((s, i) => (
+              <Reveal key={s.step} delay={i * 120}>
+                <div className="display text-4xl font-semibold text-ink/15 mb-3">{s.step}</div>
+                <h3 className="display text-lg font-semibold text-ink">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{s.copy}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      </Reveal>
 
       {/* Categories */}
-      <section className="container-x py-20 md:py-24 border-b border-line">
-        <SectionHeading
-          eyebrow="Browse talent"
-          title="Freelancers across every category you need."
-          description="From SEO and web development to marketing and design — explore verified professionals by specialty."
-        />
-        <div className="mt-12 grid sm:grid-cols-2 md:grid-cols-3 gap-px bg-line border border-line">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat}
-              href={`/hire-freelancers/${encodeURIComponent(
-                cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-              )}`}
-              className="group bg-paper p-7 flex items-center justify-between hover:bg-ink transition-colors"
-            >
-              <span className="text-[15px] font-medium text-ink group-hover:text-paper transition-colors">
-                {cat}
-              </span>
-              <span className="text-muted group-hover:text-paper transition-colors">→</span>
+      <Reveal className="block">
+        <section className="container-x py-20 md:py-24 border-b border-line">
+          <SectionHeading
+            eyebrow="Browse talent"
+            title="Freelancers across every category you need."
+            description="From SEO and web development to marketing and design — explore verified professionals by specialty."
+          />
+          <div className="mt-12 grid sm:grid-cols-2 md:grid-cols-3 gap-px bg-line border border-line">
+            {CATEGORIES.map((cat) => (
+              <Link
+                key={cat}
+                href={`/hire-freelancers/${encodeURIComponent(
+                  cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+                )}`}
+                className="tilt-3d group bg-paper p-7 flex items-center justify-between hover:bg-ink transition-colors relative z-0 hover:z-10"
+              >
+                <span className="text-[15px] font-medium text-ink group-hover:text-paper transition-colors">
+                  {cat}
+                </span>
+                <span className="text-muted group-hover:text-paper transition-colors">→</span>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-8">
+            <Link href="/hire-freelancers" className="text-sm font-medium underline underline-offset-4">
+              View all freelancers
             </Link>
-          ))}
-        </div>
-        <div className="mt-8">
-          <Link href="/hire-freelancers" className="text-sm font-medium underline underline-offset-4">
-            View all freelancers
-          </Link>
-        </div>
-      </section>
+          </div>
+        </section>
+      </Reveal>
 
       {/* Services */}
-      <section className="container-x py-20 md:py-24 border-b border-line">
-        <SectionHeading eyebrow="What we offer" title="Services built for growing businesses." />
-        <div className="mt-12 grid md:grid-cols-3 gap-8">
-          {SERVICES.map((s) => (
-            <Link key={s.href} href={s.href} className="group block border border-line p-8 hover:border-ink hover:shadow-[0_16px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300">
-              <h3 className="display text-xl font-semibold text-ink">{s.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{s.copy}</p>
-              <span className="mt-6 inline-block text-sm font-medium text-ink underline underline-offset-4">
-                Learn more
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <Reveal className="block">
+        <section className="container-x py-20 md:py-24 border-b border-line">
+          <SectionHeading eyebrow="What we offer" title="Services built for growing businesses." />
+          <div className="mt-12 grid md:grid-cols-3 gap-8">
+            {SERVICES.map((s) => (
+              <Link key={s.href} href={s.href} className="tilt-3d group block border border-line p-8 hover:border-ink transition-all duration-300">
+                <h3 className="display text-xl font-semibold text-ink">{s.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted">{s.copy}</p>
+                <span className="mt-6 inline-block text-sm font-medium text-ink underline underline-offset-4">
+                  Learn more
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </Reveal>
 
       {/* Businesses CTA */}
-      <section className="container-x py-20 md:py-24 border-b border-line">
-        <div className="grid md:grid-cols-2 gap-14 items-center">
-          <div>
-            <SectionHeading
-              eyebrow="For companies"
-              title="A directory of businesses across every industry."
-              description="Browse companies that are already part of the Reflax network, or get in touch if you'd like your business featured in our directory."
-            />
-            <Link
-              href="/businesses"
-              className="mt-8 inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
-            >
-              Browse businesses
-            </Link>
+      <Reveal className="block">
+        <section className="container-x py-20 md:py-24 border-b border-line">
+          <div className="grid md:grid-cols-2 gap-14 items-center">
+            <div>
+              <SectionHeading
+                eyebrow="For companies"
+                title="A directory of businesses across every industry."
+                description="Browse companies that are already part of the Reflax network, or get in touch if you'd like your business featured in our directory."
+              />
+              <Link
+                href="/businesses"
+                className="btn-pop mt-8 inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+              >
+                Browse businesses
+              </Link>
+            </div>
+            <div className="tilt-3d border border-line p-10">
+              <p className="display text-2xl leading-snug text-ink">
+                &ldquo;At Reflax, we go beyond being just another hiring
+                platform — we become your growth partner.&rdquo;
+              </p>
+            </div>
           </div>
-          <div className="border border-line p-10">
-            <p className="display text-2xl leading-snug text-ink">
-              &ldquo;At Reflax, we go beyond being just another hiring
-              platform — we become your growth partner.&rdquo;
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
 
       {/* Profiles CTA */}
-      <section className="container-x py-20 md:py-24">
-        <div className="border border-line p-10 md:p-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div>
-            <h2 className="display text-2xl md:text-3xl font-semibold text-ink max-w-md">
-              Explore entrepreneur profiles across every category.
-            </h2>
-            <p className="mt-3 text-sm text-muted max-w-sm">
-              A curated directory of standout entrepreneurs and business
-              leaders, organized by industry.
-            </p>
+      <Reveal className="block">
+        <section className="container-x py-20 md:py-24">
+          <div className="tilt-3d border border-line p-10 md:p-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div>
+              <h2 className="display text-2xl md:text-3xl font-semibold text-ink max-w-md">
+                Explore entrepreneur profiles across every category.
+              </h2>
+              <p className="mt-3 text-sm text-muted max-w-sm">
+                A curated directory of standout entrepreneurs and business
+                leaders, organized by industry.
+              </p>
+            </div>
+            <Link
+              href="/profiles"
+              className="btn-pop shrink-0 inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+            >
+              View profiles
+            </Link>
           </div>
-          <Link
-            href="/profiles"
-            className="shrink-0 inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
-          >
-            View profiles
-          </Link>
-        </div>
-      </section>
+        </section>
+      </Reveal>
     </div>
   );
 }

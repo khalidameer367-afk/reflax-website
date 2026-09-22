@@ -30,3 +30,32 @@ export async function generateUniqueSlug(
   while (existing.has(`${base}-${n}`)) n++;
   return `${base}-${n}`;
 }
+
+/**
+ * Resolves the final slug to save for a record. If the admin typed a
+ * custom slug, it's sanitized and checked for uniqueness (excluding the
+ * record's own current row on edits) — if taken, an error is thrown so
+ * the admin can pick a different one. If no custom slug was given, one
+ * is generated automatically from the name.
+ */
+export async function resolveSlug(
+  client: SupabaseClient,
+  table: string,
+  name: string,
+  customSlug?: string | null,
+  excludeId?: string
+): Promise<string> {
+  if (customSlug && customSlug.trim()) {
+    const clean = slugify(customSlug);
+    let query = client.from(table).select("id").eq("slug", clean);
+    if (excludeId) query = query.neq("id", excludeId);
+    const { data } = await query;
+    if (data && data.length > 0) {
+      throw new Error(
+        `The URL slug "${clean}" is already taken. Please choose a different one.`
+      );
+    }
+    return clean;
+  }
+  return generateUniqueSlug(client, table, name);
+}

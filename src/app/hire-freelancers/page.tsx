@@ -78,7 +78,7 @@ export default function HireFreelancers() {
             <Link
               key={cat}
               href={`/hire-freelancers/${slugify(cat)}`}
-              className="group bg-paper p-8 flex flex-col justify-between min-h-[140px] hover:bg-ink transition-colors"
+              className="tilt-3d group bg-paper p-8 flex flex-col justify-between min-h-[140px] hover:bg-ink transition-colors relative z-0 hover:z-10"
             >
               <span className="text-lg font-medium text-ink group-hover:text-paper transition-colors">
                 {cat}

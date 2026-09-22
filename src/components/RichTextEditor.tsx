@@ -25,17 +25,39 @@ export default function RichTextEditor({
   }
 
   function insertLink() {
+    const selection = window.getSelection();
+    const hasSelectedText = selection && selection.toString().trim().length > 0;
     const url = window.prompt("Link URL (e.g. https://reflax.org/hire-freelancers/seo, or any page):");
     if (!url) return;
-    // If text is selected, execCommand createLink turns it into anchor text.
-    exec("createLink", url);
+    editorRef.current?.focus();
+    if (hasSelectedText) {
+      exec("createLink", url);
+    } else {
+      const anchorText = window.prompt("Anchor text (the clickable words):", url) || url;
+      const safeText = anchorText.replace(/</g, "&lt;");
+      document.execCommand(
+        "insertHTML",
+        false,
+        `<a href="${url}">${safeText}</a>`
+      );
+      syncHtml();
+    }
   }
 
   async function insertImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     const dataUrl = await resizeImageToDataUrl(file, 900, 0.8);
-    exec("insertImage", dataUrl);
+    const altText = window.prompt("Alt text for this image (describe it for SEO/accessibility):", "") || "";
+    editorRef.current?.focus();
+    const safeAlt = altText.replace(/"/g, "&quot;");
+    document.execCommand(
+      "insertHTML",
+      false,
+      `<img src="${dataUrl}" alt="${safeAlt}" style="max-width:100%;height:auto;display:block;margin:1.5rem 0;" />`
+    );
+    syncHtml();
+    e.target.value = "";
   }
 
   return (

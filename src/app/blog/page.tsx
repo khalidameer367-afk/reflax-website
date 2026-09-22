@@ -32,7 +32,7 @@ export default async function BlogPage() {
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
           {posts?.map((post) => (
-            <Link key={post.id} href={`/blog/${post.slug}`} className="group block border border-line hover:border-ink transition-colors">
+            <Link key={post.id} href={`/blog/${post.slug}`} className="tilt-3d group block border border-line hover:border-ink transition-colors">
               {post.featured_image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={post.featured_image_url} alt={post.title} className="w-full h-44 object-cover" />

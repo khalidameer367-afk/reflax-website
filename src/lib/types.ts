@@ -78,6 +78,19 @@ export interface PageSeo extends SeoFields {
   page_key: string;
 }
 
+export interface PageContentRow {
+  id: string;
+  page_key: string;
+  content: string | null;
+}
+
+export interface Redirect {
+  id: string;
+  created_at: string;
+  source_path: string;
+  destination_path: string;
+}
+
 export const CATEGORIES = [
   "SEO",
   "WordPress Development",

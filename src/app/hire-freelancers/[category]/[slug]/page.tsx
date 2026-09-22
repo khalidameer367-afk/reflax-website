@@ -44,6 +44,24 @@ export default async function FreelancerProfile({
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: f.full_name,
+            jobTitle: f.title,
+            description: f.bio?.slice(0, 300),
+            image: f.avatar_url || undefined,
+            email: f.email || undefined,
+            telephone: f.phone || undefined,
+            url: f.portfolio_url || undefined,
+            address: f.location ? { "@type": "PostalAddress", addressLocality: f.location } : undefined,
+            knowsAbout: f.skills?.length > 0 ? f.skills : undefined,
+          }),
+        }}
+      />
       <section className="border-b border-line">
         <div className="container-x py-16 md:py-20">
           <Link href={`/hire-freelancers/${category}`} className="text-sm text-muted hover:text-ink transition-colors">

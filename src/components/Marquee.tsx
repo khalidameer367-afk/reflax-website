@@ -6,7 +6,6 @@ export default function Marquee({
   items: { id: string; href: string; name: string; image: string | null; sub?: string }[];
 }) {
   if (items.length === 0) return null;
-  // Duplicate the list so the CSS animation loops seamlessly.
   const doubled = [...items, ...items];
 
   return (
@@ -16,7 +15,7 @@ export default function Marquee({
           <Link
             key={`${item.id}-${i}`}
             href={item.href}
-            className="group flex items-center gap-3 border border-line px-5 py-4 mr-4 shrink-0 hover:border-ink transition-colors bg-paper"
+            className="tilt-3d group flex items-center gap-3 border border-line px-5 py-4 mr-4 shrink-0 hover:border-ink transition-colors bg-paper"
           >
             <div className="h-10 w-10 rounded-full bg-ink/5 border border-line flex items-center justify-center text-sm font-semibold text-ink overflow-hidden shrink-0">
               {item.image ? (

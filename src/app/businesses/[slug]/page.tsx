@@ -45,6 +45,22 @@ export default async function BusinessProfile({
 
   return (
     <div className="container-x py-12 md:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: b.company_name,
+            description: stripHtml(b.description, 300),
+            image: b.logo_url || b.featured_image_url || undefined,
+            email: b.email || undefined,
+            telephone: b.phone || undefined,
+            url: b.website || undefined,
+            address: b.location ? { "@type": "PostalAddress", addressLocality: b.location } : undefined,
+          }),
+        }}
+      />
       <Link href="/businesses" className="text-sm text-muted hover:text-ink transition-colors">
         ← All businesses
       </Link>

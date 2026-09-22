@@ -53,6 +53,20 @@ export default async function BlogPostPage({
 
   return (
     <div className="container-x py-12 md:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: post.title,
+            description: post.excerpt || stripHtml(post.content, 160),
+            image: post.featured_image_url || undefined,
+            datePublished: post.created_at,
+            author: post.author ? { "@type": "Person", name: post.author } : undefined,
+          }),
+        }}
+      />
       <Link href="/blog" className="text-sm text-muted hover:text-ink transition-colors">
         ← All posts
       </Link>

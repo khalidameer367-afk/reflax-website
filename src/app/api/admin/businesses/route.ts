@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/adminAuth";
-import { generateUniqueSlug } from "@/lib/slug";
+import { resolveSlug } from "@/lib/slug";
 import { notifyBusinessApproved } from "@/lib/mailer";
 
 const allowedFields = [
@@ -33,7 +33,12 @@ export async function POST(req: NextRequest) {
   }
 
   const db = supabaseAdmin();
-  const slug = await generateUniqueSlug(db, "businesses", company_name);
+  let slug: string;
+  try {
+    slug = await resolveSlug(db, "businesses", company_name, body.slug);
+  } catch (err) {
+    return NextResponse.json({ error: err instanceof Error ? err.message : "Slug error" }, { status: 400 });
+  }
   const insertData: Record<string, unknown> = { slug, status: "approved" };
   for (const key of allowedFields) {
     if (key in body) insertData[key] = body[key] || null;
@@ -61,6 +66,15 @@ export async function PUT(req: NextRequest) {
   }
 
   const db = supabaseAdmin();
+
+  if ("slug" in fields) {
+    try {
+      update.slug = await resolveSlug(db, "businesses", fields.company_name || "business", fields.slug, id);
+    } catch (err) {
+      return NextResponse.json({ error: err instanceof Error ? err.message : "Slug error" }, { status: 400 });
+    }
+  }
+
   const { error } = await db.from("businesses").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
