@@ -89,6 +89,8 @@ export interface Redirect {
   created_at: string;
   source_path: string;
   destination_path: string;
+  redirect_type: 301 | 302;
+  is_active: boolean;
 }
 
 export const CATEGORIES = [

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/types";
-import type { Freelancer, Business, EntrepreneurProfile, BlogPost, PageSeo, PageContentRow } from "@/lib/types";
+import type { Freelancer, Business, EntrepreneurProfile, BlogPost, PageSeo, PageContentRow, Redirect } from "@/lib/types";
 import { resizeImageToDataUrl } from "@/lib/image";
 import RichTextEditor from "@/components/RichTextEditor";
 import SeoFieldsSection from "@/components/SeoFieldsSection";
@@ -21,12 +21,13 @@ export default function AdminPanel() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [tab, setTab] = useState<"freelancers" | "businesses" | "profiles" | "blog" | "pages">("freelancers");
+  const [tab, setTab] = useState<"freelancers" | "businesses" | "profiles" | "blog" | "pages" | "redirects">("freelancers");
 
   const [freelancers, setFreelancers] = useState<Freelancer[]>([]);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [profiles, setProfiles] = useState<EntrepreneurProfile[]>([]);
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [redirects, setRedirects] = useState<Redirect[]>([]);
   const [loading, setLoading] = useState(false);
 
   async function login(e: React.FormEvent) {
@@ -57,10 +58,14 @@ export default function AdminPanel() {
     const res = await fetch("/api/admin/blog");
     if (res.ok) setPosts((await res.json()).posts);
   }
+  async function loadRedirects() {
+    const res = await fetch("/api/admin/redirects");
+    if (res.ok) setRedirects((await res.json()).redirects);
+  }
 
   async function loadAll() {
     setLoading(true);
-    await Promise.all([loadFreelancers(), loadBusinesses(), loadProfiles(), loadPosts()]);
+    await Promise.all([loadFreelancers(), loadBusinesses(), loadProfiles(), loadPosts(), loadRedirects()]);
     setLoading(false);
   }
 
@@ -120,6 +125,15 @@ export default function AdminPanel() {
     });
     loadPosts();
   }
+  async function deleteRedirect(id: string) {
+    if (!confirm("Delete this redirect?")) return;
+    await fetch("/api/admin/redirects", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    loadRedirects();
+  }
 
   if (!authed) {
     return (
@@ -147,7 +161,7 @@ export default function AdminPanel() {
       <h1 className="display text-3xl font-semibold text-ink mb-8">Admin panel</h1>
 
       <div className="flex gap-6 border-b border-line mb-10 text-sm overflow-x-auto">
-        {(["freelancers", "businesses", "profiles", "blog", "pages"] as const).map((t) => (
+        {(["freelancers", "businesses", "profiles", "blog", "pages", "redirects"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -189,6 +203,10 @@ export default function AdminPanel() {
       )}
 
       {tab === "pages" && <PagesTab />}
+
+      {tab === "redirects" && (
+        <RedirectsTab redirects={redirects} onChanged={loadRedirects} onDelete={deleteRedirect} />
+      )}
     </div>
   );
 }
@@ -1050,5 +1068,212 @@ function PageSeoForm({
         </form>
       )}
     </div>
+  );
+}
+
+/* ---------------- Redirects ---------------- */
+
+function RedirectsTab({
+  redirects,
+  onChanged,
+  onDelete,
+}: {
+  redirects: Redirect[];
+  onChanged: () => void;
+  onDelete: (id: string) => void;
+}) {
+  const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+
+  const filtered = redirects.filter((r) => {
+    const q = search.trim().toLowerCase();
+    if (!q) return true;
+    return r.source_path.toLowerCase().includes(q) || r.destination_path.toLowerCase().includes(q);
+  });
+
+  async function toggleActive(r: Redirect) {
+    await fetch("/api/admin/redirects", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: r.id, is_active: !r.is_active }),
+    });
+    onChanged();
+  }
+
+  return (
+    <div className="space-y-6">
+      <p className="text-sm text-muted max-w-xl">
+        Send visitors and search engines from an old URL to a new one. A{" "}
+        <strong>301</strong> redirect means &quot;this page has moved for
+        good&quot; (use this for almost everything). A <strong>302</strong>{" "}
+        means &quot;this is temporary.&quot; Turn a redirect off instead of
+        deleting it if you might need it again.
+      </p>
+
+      <div className="flex flex-wrap items-center gap-3 justify-between">
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by URL..."
+          className={`${inputCls} max-w-xs`}
+        />
+        {!showForm && (
+          <button
+            onClick={() => {
+              setEditingId(null);
+              setShowForm(true);
+            }}
+            className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors"
+          >
+            + Add redirect
+          </button>
+        )}
+      </div>
+
+      {showForm && (
+        <RedirectForm
+          redirect={editingId ? redirects.find((r) => r.id === editingId) : undefined}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingId(null);
+          }}
+          onSaved={() => {
+            setShowForm(false);
+            setEditingId(null);
+            onChanged();
+          }}
+        />
+      )}
+
+      <div className="border border-line divide-y divide-line">
+        {filtered.length === 0 && (
+          <p className="text-sm text-muted px-5 py-6">
+            {redirects.length === 0 ? "No redirects yet." : "No redirects match your search."}
+          </p>
+        )}
+        {filtered.map((r) => (
+          <div key={r.id} className="flex flex-wrap items-center gap-3 px-5 py-4 text-sm">
+            <div className="flex-1 min-w-[220px]">
+              <div className="flex items-center gap-2 flex-wrap">
+                <code className="text-ink font-medium">{r.source_path}</code>
+                <span className="text-muted">→</span>
+                <code className="text-muted">{r.destination_path}</code>
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-xs text-muted">
+                <span className="border border-line px-1.5 py-0.5">{r.redirect_type}</span>
+                <span className={r.is_active ? "text-green-600" : "text-amber-600"}>
+                  {r.is_active ? "Active" : "Inactive"}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-xs">
+              <button onClick={() => toggleActive(r)} className="text-muted hover:text-ink transition-colors">
+                {r.is_active ? "Disable" : "Enable"}
+              </button>
+              <button
+                onClick={() => {
+                  setEditingId(r.id);
+                  setShowForm(true);
+                }}
+                className="text-muted hover:text-ink transition-colors"
+              >
+                Edit
+              </button>
+              <button onClick={() => onDelete(r.id)} className="text-red-600 hover:text-red-700 transition-colors">
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RedirectForm({
+  redirect,
+  onCancel,
+  onSaved,
+}: {
+  redirect?: Redirect;
+  onCancel: () => void;
+  onSaved: () => void;
+}) {
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSaving(true);
+    setError("");
+    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+    const payload = {
+      source_path: String(data.source_path || ""),
+      destination_path: String(data.destination_path || ""),
+      redirect_type: Number(data.redirect_type) === 302 ? 302 : 301,
+      is_active: data.is_active === "on",
+    };
+    const res = await fetch("/api/admin/redirects", {
+      method: redirect ? "PATCH" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(redirect ? { id: redirect.id, ...payload } : payload),
+    });
+    setSaving(false);
+    if (res.ok) {
+      onSaved();
+    } else {
+      const body = await res.json().catch(() => ({}));
+      setError(body.error || "Something went wrong. Please try again.");
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="border border-line p-5 space-y-3">
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs text-muted mb-1">Source URL / path (the old one)</label>
+          <input
+            name="source_path"
+            defaultValue={redirect?.source_path || ""}
+            placeholder="/old-page"
+            required
+            className={inputCls}
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-muted mb-1">Destination URL / path (the new one)</label>
+          <input
+            name="destination_path"
+            defaultValue={redirect?.destination_path || ""}
+            placeholder="/new-page"
+            required
+            className={inputCls}
+          />
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-6">
+        <div>
+          <label className="block text-xs text-muted mb-1">Redirect type</label>
+          <select name="redirect_type" defaultValue={redirect?.redirect_type ?? 301} className={inputCls}>
+            <option value={301}>301 — Permanent</option>
+            <option value={302}>302 — Temporary</option>
+          </select>
+        </div>
+        <label className="flex items-center gap-2 text-sm text-ink mt-4 sm:mt-5">
+          <input type="checkbox" name="is_active" defaultChecked={redirect?.is_active ?? true} />
+          Active
+        </label>
+      </div>
+      <div className="flex items-center gap-3 pt-2">
+        <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
+          {saving ? "Saving..." : redirect ? "Save changes" : "Add redirect"}
+        </button>
+        <button type="button" onClick={onCancel} className="border border-line px-5 py-2.5 text-sm text-muted hover:text-ink hover:border-ink transition-colors">
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 }
