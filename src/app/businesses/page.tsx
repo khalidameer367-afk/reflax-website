@@ -2,6 +2,7 @@ import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import { supabase } from "@/lib/supabase";
 import { stripHtml } from "@/lib/stripHtml";
+import { shuffle } from "@/lib/shuffle";
 import { getPageMetadata } from "@/lib/pageSeo";
 
 export async function generateMetadata() {
@@ -16,11 +17,11 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function BusinessesPage() {
-  const { data: businesses } = await supabase
+  const { data: businessesRaw } = await supabase
     .from("businesses")
     .select("*")
-    .eq("status", "approved")
-    .order("created_at", { ascending: false });
+    .eq("status", "approved");
+  const businesses = shuffle(businessesRaw || []);
 
   return (
     <div>

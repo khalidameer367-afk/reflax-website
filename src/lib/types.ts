@@ -51,7 +51,7 @@ export interface EntrepreneurProfile extends SeoFields {
   created_at: string;
   slug: string | null;
   full_name: string;
-  category: string;
+  category: string | null;
   title: string;
   bio: string;
   company_name: string | null;
@@ -89,8 +89,6 @@ export interface Redirect {
   created_at: string;
   source_path: string;
   destination_path: string;
-  redirect_type: 301 | 302;
-  is_active: boolean;
 }
 
 export const CATEGORIES = [

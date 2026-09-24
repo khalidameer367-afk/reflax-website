@@ -67,7 +67,8 @@ export default function Header() {
             onMouseEnter={() => setServicesOpen(true)}
             onMouseLeave={() => setServicesOpen(false)}
           >
-            <button
+            <Link
+              href="/services"
               className={`flex items-center gap-1 transition-colors hover:text-ink ${
                 pathname.startsWith("/services") ? "text-ink" : "text-muted"
               }`}
@@ -76,7 +77,7 @@ export default function Header() {
               <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                 <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" />
               </svg>
-            </button>
+            </Link>
             {servicesOpen && (
               <div className="absolute left-0 top-full w-72 border border-line bg-paper pt-1 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
                 {SERVICES.map((s) => (
@@ -144,7 +145,9 @@ export default function Header() {
               </Link>
             ))}
             <div className="py-3 border-b border-line/70">
-              <div className="mb-2 text-muted">Services</div>
+              <Link href="/services" onClick={() => setOpen(false)} className="mb-2 text-ink font-medium block">
+                Services
+              </Link>
               <div className="flex flex-col gap-2 pl-3">
                 {SERVICES.map((s) => (
                   <Link key={s.href} href={s.href} onClick={() => setOpen(false)} className="text-ink">

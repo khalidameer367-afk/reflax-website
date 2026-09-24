@@ -67,7 +67,7 @@ export default async function EntrepreneurProfilePage({
         <div className="absolute -right-16 -bottom-16 h-80 w-80 rounded-full bg-paper/[0.04] blur-3xl" />
         <div className="container-x py-20 md:py-28 relative">
           <Link href="/profiles" className="text-sm text-paper/50 hover:text-paper transition-colors">
-            ← {p.category}
+            ← All profiles
           </Link>
 
           <div className="mt-8 flex flex-col md:flex-row items-start md:items-center gap-8">
@@ -80,7 +80,9 @@ export default async function EntrepreneurProfilePage({
               )}
             </div>
             <div>
-              <div className="text-sm text-paper/50 mb-2 uppercase tracking-wide">{p.category}</div>
+              {p.category && (
+                <div className="text-sm text-paper/50 mb-2 uppercase tracking-wide">{p.category}</div>
+              )}
               <h1 className="display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight text-paper">
                 {p.full_name}
               </h1>
@@ -103,10 +105,12 @@ export default async function EntrepreneurProfilePage({
 
         <aside className="border border-line p-7 h-fit">
           <dl className="space-y-5 text-sm">
-            <div>
-              <dt className="text-muted">Category</dt>
-              <dd className="mt-1 text-ink font-medium">{p.category}</dd>
-            </div>
+            {p.category && (
+              <div>
+                <dt className="text-muted">Category</dt>
+                <dd className="mt-1 text-ink font-medium">{p.category}</dd>
+              </div>
+            )}
             {p.company_name && (
               <div>
                 <dt className="text-muted">Company</dt>

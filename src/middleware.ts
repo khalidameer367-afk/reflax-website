@@ -11,14 +11,12 @@ export async function middleware(req: NextRequest) {
     );
     const { data } = await supabase
       .from("redirects")
-      .select("destination_path, redirect_type, is_active")
+      .select("destination_path")
       .eq("source_path", pathname)
-      .eq("is_active", true)
       .maybeSingle();
 
     if (data?.destination_path) {
-      const status = data.redirect_type === 302 ? 302 : 301;
-      return NextResponse.redirect(new URL(data.destination_path, req.url), status);
+      return NextResponse.redirect(new URL(data.destination_path, req.url));
     }
   } catch {
     // If the redirect lookup fails for any reason, don't block the request.

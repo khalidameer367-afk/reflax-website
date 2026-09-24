@@ -37,9 +37,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json();
-  const { full_name, category, title, bio } = body;
+  const { full_name, title, bio } = body;
 
-  if (!full_name || !category || !title || !bio) {
+  if (!full_name || !title || !bio) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
   }
 

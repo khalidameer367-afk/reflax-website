@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { CATEGORIES, CATEGORY_DESCRIPTIONS } from "@/lib/types";
+import { shuffle } from "@/lib/shuffle";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -42,12 +43,12 @@ export default async function CategoryPage({
     );
   }
 
-  const { data: freelancers, error } = await supabase
+  const { data: freelancersRaw, error } = await supabase
     .from("freelancers")
     .select("*")
     .eq("category", cat)
-    .eq("status", "approved")
-    .order("created_at", { ascending: false });
+    .eq("status", "approved");
+  const freelancers = freelancersRaw ? shuffle(freelancersRaw) : freelancersRaw;
 
   return (
     <div>
