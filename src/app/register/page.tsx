@@ -1,0 +1,143 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { supabase } from "@/lib/supabase";
+import FreelancerProfileFields from "@/components/FreelancerProfileFields";
+import { parseFreelancerFormData } from "@/lib/formHelpers";
+import { generateUniqueSlug } from "@/lib/slug";
+
+const inputCls =
+  "w-full border border-line px-4 py-3 text-[15px] text-ink placeholder:text-muted/70 focus:outline-none focus:border-ink transition-colors bg-paper";
+const labelCls = "block text-sm font-medium text-ink mb-2";
+
+export default function RegisterPage() {
+  const router = useRouter();
+  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("submitting");
+    setErrorMsg("");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      // 1. Create the account.
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (signUpError) throw signUpError;
+
+      // 2. Make sure we have an active, authenticated session before
+      // inserting the profile — signUp doesn't always establish one
+      // immediately, and RLS requires auth.uid() to match user_id.
+      let userId = signUpData.session?.user.id;
+      if (!userId) {
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (signInError) {
+          throw new Error(
+            "Account created, but couldn't log you in automatically (" +
+              signInError.message +
+              "). Please go to the Log in page and sign in, then finish your profile from your dashboard."
+          );
+        }
+        userId = signInData.user?.id;
+      }
+      if (!userId) throw new Error("Something went wrong creating your account. Please try logging in.");
+
+      // 3. Create the profile, linked to this account. Goes to admin for review.
+      const profileFields = parseFreelancerFormData(form);
+      const slug = await generateUniqueSlug(supabase, "freelancers", profileFields.full_name);
+      const { error: insertError } = await supabase.from("freelancers").insert({
+        ...profileFields,
+        email,
+        avatar_url: avatarPreview,
+        user_id: userId,
+        slug,
+        status: "pending",
+      });
+      if (insertError) throw insertError;
+
+      // 4. Notify admin (informational, non-blocking).
+      fetch("/api/notify-admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ full_name: profileFields.full_name, category: profileFields.category }),
+      }).catch(() => {});
+
+      router.push("/dashboard");
+    } catch (err) {
+      const rawMsg = err instanceof Error ? err.message : "Something went wrong.";
+      if (rawMsg.toLowerCase().includes("already registered")) {
+        setErrorMsg(
+          "This email already has an account. Please log in instead and add your profile from your dashboard."
+        );
+      } else {
+        setErrorMsg(rawMsg);
+      }
+      setStatus("error");
+    }
+  }
+
+  return (
+    <div>
+      <section className="border-b border-line">
+        <div className="container-x py-16 md:py-20">
+          <div className="text-sm text-muted mb-5">Join Reflax</div>
+          <h1 className="display text-[2.2rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-xl">
+            Create your account &amp; profile.
+          </h1>
+          <p className="mt-5 text-[15px] leading-relaxed text-muted max-w-lg">
+            Our team reviews every profile before it goes live. Once
+            approved, you can always come back to your dashboard to edit
+            or update it.
+          </p>
+          <p className="mt-3 text-sm text-muted">
+            Already have an account?{" "}
+            <Link href="/login" className="underline underline-offset-4 font-medium text-ink">
+              Log in
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="container-x py-16 md:py-20 max-w-2xl">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label className={labelCls}>Email *</label>
+              <input required type="email" name="email" className={inputCls} placeholder="you@example.com" />
+            </div>
+            <div>
+              <label className={labelCls}>Password *</label>
+              <input required type="password" name="password" minLength={6} className={inputCls} placeholder="At least 6 characters" />
+            </div>
+          </div>
+
+          <FreelancerProfileFields avatarPreview={avatarPreview} onAvatarChange={setAvatarPreview} />
+
+          {status === "error" && <p className="text-sm text-red-600">{errorMsg}</p>}
+
+          <button
+            type="submit"
+            disabled={status === "submitting"}
+            className="inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors disabled:opacity-50"
+          >
+            {status === "submitting" ? "Creating..." : "Create account & submit for review"}
+          </button>
+        </form>
+      </section>
+    </div>
+  );
+}
