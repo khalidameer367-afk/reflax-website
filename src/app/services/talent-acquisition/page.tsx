@@ -82,6 +82,11 @@ export default async function TalentAcquisition() {
         src: "/images/team-collaboration.jpg",
         alt: "Team collaborating together, representing long-term talent and workforce planning",
       }}
+      highlights={[
+        "Workforce planning built around where your business is headed, not just today's opening.",
+        "A steady pipeline of pre-qualified people, so you're never starting from zero.",
+        "Employer branding support that helps the right candidates find you first.",
+      ]}
     />
   );
 }

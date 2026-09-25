@@ -83,6 +83,11 @@ export default async function RecruitmentServices() {
         src: "/images/global-talent-network.jpg",
         alt: "Recruiter selecting the right candidate from a global professional network",
       }}
+      highlights={[
+        "Sourcing and screening handled for you, from a network of pre-verified professionals.",
+        "You only meet shortlisted candidates who actually match the role and your team.",
+        "Clear, ongoing communication — no black box, no radio silence between updates.",
+      ]}
     />
   );
 }

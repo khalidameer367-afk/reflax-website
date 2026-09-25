@@ -3,7 +3,6 @@ import SectionHeading from "@/components/SectionHeading";
 import HeroGraphic from "@/components/HeroGraphic";
 import Reveal from "@/components/Reveal";
 import { CATEGORIES } from "@/lib/types";
-import { supabase } from "@/lib/supabase";
 import { getPageMetadata } from "@/lib/pageSeo";
 
 export const dynamic = "force-dynamic";
@@ -49,27 +48,6 @@ const HOW_IT_WORKS = [
 ];
 
 export default async function Home() {
-  const [{ data: businesses }, { data: profiles }] = await Promise.all([
-    supabase.from("businesses").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(8),
-    supabase.from("profiles").select("*").order("created_at", { ascending: false }).limit(8),
-  ]);
-
-  const businessItems = (businesses || []).map((b) => ({
-    id: b.id,
-    href: `/businesses/${b.slug || b.id}`,
-    name: b.company_name,
-    image: b.logo_url,
-    sub: b.industry,
-  }));
-
-  const profileItems = (profiles || []).map((p) => ({
-    id: p.id,
-    href: `/profiles/${p.slug || p.id}`,
-    name: p.full_name,
-    image: p.avatar_url,
-    sub: p.title,
-  }));
-
   return (
     <div>
       {/* Hero */}
@@ -125,68 +103,18 @@ export default async function Home() {
       {/* Businesses & Profiles — network showcase */}
       <Reveal className="block">
         <section className="py-20 md:py-24 border-b border-line bg-ink/[0.015] overflow-hidden">
-          <div className="container-x grid md:grid-cols-[1fr_1.05fr] gap-14 items-center">
-            <div className="tilt-3d border border-line overflow-hidden flex items-center justify-center aspect-square order-2 md:order-1">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/network-professionals.jpg"
-                alt="A professional connecting with a network of businesses and verified experts on Reflax"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <div className="order-1 md:order-2">
-              <SectionHeading
-                eyebrow="On Reflax"
-                title="One network. Real businesses, real professionals."
-                description="Every company and entrepreneur profile here is personally reviewed by our team before it goes live — no fake accounts, no empty listings."
-              />
-
-              <div className="mt-9 space-y-3">
-                {(businessItems.length > 0 ? businessItems : DUMMY_BUSINESSES).slice(0, 2).map((b) => (
-                  <Link
-                    key={b.id}
-                    href={b.href}
-                    className="group flex items-center gap-4 border border-line bg-paper p-4 hover:border-ink transition-colors duration-300"
-                  >
-                    <div className="h-11 w-11 shrink-0 rounded-full bg-ink/5 border border-line flex items-center justify-center overflow-hidden">
-                      {b.image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={b.image} alt={b.name} className="h-full w-full object-cover" />
-                      ) : (
-                        <span className="text-sm font-semibold text-ink/30">{b.name.charAt(0)}</span>
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-ink truncate">{b.name}</div>
-                      {b.sub && <div className="text-xs text-muted truncate">{b.sub}</div>}
-                    </div>
-                    <span className="text-muted group-hover:text-ink transition-colors shrink-0">→</span>
-                  </Link>
-                ))}
-                {(profileItems.length > 0 ? profileItems : DUMMY_PROFILES).slice(0, 2).map((p) => (
-                  <Link
-                    key={p.id}
-                    href={p.href}
-                    className="group flex items-center gap-4 border border-line bg-paper p-4 hover:border-ink transition-colors duration-300"
-                  >
-                    <div className="h-11 w-11 shrink-0 rounded-full bg-ink/5 border border-line flex items-center justify-center overflow-hidden">
-                      {p.image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
-                      ) : (
-                        <span className="text-sm font-semibold text-ink/30">{p.name.charAt(0)}</span>
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-ink truncate">{p.name}</div>
-                      {p.sub && <div className="text-xs text-muted truncate">{p.sub}</div>}
-                    </div>
-                    <span className="text-muted group-hover:text-ink transition-colors shrink-0">→</span>
-                  </Link>
-                ))}
-              </div>
-
+          <div className="container-x grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
+            <div>
+              <div className="text-sm text-muted mb-5">On Reflax</div>
+              <h2 className="display text-[2rem] md:text-4xl font-semibold leading-[1.1] tracking-tight text-ink">
+                One network. Real businesses, real professionals.
+              </h2>
+              <p className="mt-6 text-[15px] leading-relaxed text-muted max-w-md">
+                Every company and entrepreneur profile here is personally
+                reviewed by our team before it goes live — no fake accounts,
+                no empty listings, just real businesses and real people worth
+                connecting with.
+              </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/businesses" className="text-sm font-medium underline underline-offset-4">
                   Browse businesses →
@@ -195,6 +123,15 @@ export default async function Home() {
                   View profiles →
                 </Link>
               </div>
+            </div>
+
+            <div className="tilt-3d border border-line overflow-hidden flex items-center justify-center aspect-square">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/network-professionals.jpg"
+                alt="A professional connecting with a network of businesses and verified experts on Reflax"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </section>
@@ -347,11 +284,3 @@ export default async function Home() {
   );
 }
 
-// Fallback placeholder items so this section never looks empty before
-// you've added real businesses/profiles — remove once you have enough real ones.
-const DUMMY_BUSINESSES = [
-  { id: "d1", href: "/businesses", name: "Your business here", image: null, sub: "Get listed" },
-];
-const DUMMY_PROFILES = [
-  { id: "d2", href: "/profiles", name: "Your profile here", image: null, sub: "Get featured" },
-];

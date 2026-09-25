@@ -9,6 +9,7 @@ export default function ServicePage({
   content,
   faqs,
   image,
+  highlights,
 }: {
   eyebrow: string;
   title: string;
@@ -16,6 +17,7 @@ export default function ServicePage({
   content: string;
   faqs: { question: string; answer: string }[];
   image?: { src: string; alt: string };
+  highlights?: string[];
 }) {
   return (
     <div>
@@ -40,6 +42,21 @@ export default function ServicePage({
           </div>
         </div>
       </section>
+
+      {highlights && highlights.length > 0 && (
+        <section className="border-b border-line bg-ink/[0.015]">
+          <div className="container-x py-14 md:py-16 grid sm:grid-cols-3 gap-6">
+            {highlights.map((h, i) => (
+              <div key={h} className="tilt-3d border border-line bg-paper p-6">
+                <div className="text-xs font-medium text-muted mb-3">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <p className="text-[15px] leading-relaxed text-ink">{h}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="container-x py-16 md:py-20 border-b border-line">
         <div

@@ -82,6 +82,11 @@ export default async function BusinessGrowthConsultancy() {
         src: "/images/business-growth-review.jpg",
         alt: "Business advisors reviewing growth and performance analytics together",
       }}
+      highlights={[
+        "Practical, honest advice on branding, marketing, and operations — not generic playbooks.",
+        "Recommendations grounded in what's actually happening in your business today.",
+        "A clear focus on what to prioritize next, instead of trying to fix everything at once.",
+      ]}
     />
   );
 }

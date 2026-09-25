@@ -75,15 +75,16 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 border-b border-line">
+      <section className="container-x py-16 md:py-20 border-b border-line bg-ink/[0.015]">
         <SectionHeading eyebrow="What we offer" title="Three ways we help businesses grow." />
         <div className="mt-12 grid md:grid-cols-3 gap-8">
-          {SERVICES.map((s) => (
-            <Link key={s.href} href={s.href} className="tilt-3d group block border border-line p-8 hover:border-ink transition-all duration-300">
+          {SERVICES.map((s, i) => (
+            <Link key={s.href} href={s.href} className="tilt-3d group block border border-line bg-paper p-8 hover:border-ink transition-all duration-300">
+              <div className="text-xs font-medium text-muted mb-4">{String(i + 1).padStart(2, "0")}</div>
               <h3 className="display text-xl font-semibold text-ink">{s.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">{s.copy}</p>
-              <span className="mt-6 inline-block text-sm font-medium text-ink underline underline-offset-4">
-                Learn more
+              <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-ink underline underline-offset-4 group-hover:gap-2.5 transition-all">
+                Learn more →
               </span>
             </Link>
           ))}
