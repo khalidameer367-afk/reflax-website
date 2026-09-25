@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import HeroGraphic from "@/components/HeroGraphic";
-import Marquee from "@/components/Marquee";
+import NetworkGraphic from "@/components/NetworkGraphic";
 import Reveal from "@/components/Reveal";
 import { CATEGORIES } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
@@ -123,17 +123,78 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Businesses & Profiles marquee */}
-      <section className="py-14 border-b border-line bg-ink/[0.015] overflow-hidden">
-        <div className="container-x mb-6 flex items-center justify-between">
-          <span className="text-xs uppercase tracking-wide text-muted">Businesses on Reflax</span>
-        </div>
-        <Marquee items={businessItems.length > 0 ? businessItems : DUMMY_BUSINESSES} />
-        <div className="container-x mt-10 mb-6 flex items-center justify-between">
-          <span className="text-xs uppercase tracking-wide text-muted">Featured profiles</span>
-        </div>
-        <Marquee items={profileItems.length > 0 ? profileItems : DUMMY_PROFILES} />
-      </section>
+      {/* Businesses & Profiles — network showcase */}
+      <Reveal className="block">
+        <section className="py-20 md:py-24 border-b border-line bg-ink/[0.015] overflow-hidden">
+          <div className="container-x grid md:grid-cols-[1fr_1.05fr] gap-14 items-center">
+            <div className="tilt-3d border border-line p-8 flex items-center justify-center aspect-square order-2 md:order-1">
+              <NetworkGraphic className="w-full h-full" />
+            </div>
+
+            <div className="order-1 md:order-2">
+              <SectionHeading
+                eyebrow="On Reflax"
+                title="One network. Real businesses, real professionals."
+                description="Every company and entrepreneur profile here is personally reviewed by our team before it goes live — no fake accounts, no empty listings."
+              />
+
+              <div className="mt-9 space-y-3">
+                {(businessItems.length > 0 ? businessItems : DUMMY_BUSINESSES).slice(0, 2).map((b) => (
+                  <Link
+                    key={b.id}
+                    href={b.href}
+                    className="group flex items-center gap-4 border border-line bg-paper p-4 hover:border-ink transition-colors duration-300"
+                  >
+                    <div className="h-11 w-11 shrink-0 rounded-full bg-ink/5 border border-line flex items-center justify-center overflow-hidden">
+                      {b.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={b.image} alt={b.name} className="h-full w-full object-cover" />
+                      ) : (
+                        <span className="text-sm font-semibold text-ink/30">{b.name.charAt(0)}</span>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-medium text-ink truncate">{b.name}</div>
+                      {b.sub && <div className="text-xs text-muted truncate">{b.sub}</div>}
+                    </div>
+                    <span className="text-muted group-hover:text-ink transition-colors shrink-0">→</span>
+                  </Link>
+                ))}
+                {(profileItems.length > 0 ? profileItems : DUMMY_PROFILES).slice(0, 2).map((p) => (
+                  <Link
+                    key={p.id}
+                    href={p.href}
+                    className="group flex items-center gap-4 border border-line bg-paper p-4 hover:border-ink transition-colors duration-300"
+                  >
+                    <div className="h-11 w-11 shrink-0 rounded-full bg-ink/5 border border-line flex items-center justify-center overflow-hidden">
+                      {p.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+                      ) : (
+                        <span className="text-sm font-semibold text-ink/30">{p.name.charAt(0)}</span>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-medium text-ink truncate">{p.name}</div>
+                      {p.sub && <div className="text-xs text-muted truncate">{p.sub}</div>}
+                    </div>
+                    <span className="text-muted group-hover:text-ink transition-colors shrink-0">→</span>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link href="/businesses" className="text-sm font-medium underline underline-offset-4">
+                  Browse businesses →
+                </Link>
+                <Link href="/profiles" className="text-sm font-medium underline underline-offset-4">
+                  View profiles →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Reveal>
 
       {/* Mission */}
       <Reveal className="block">
@@ -282,8 +343,8 @@ export default async function Home() {
   );
 }
 
-// Fallback placeholder items so the marquee never looks empty before you've
-// added real businesses/profiles — remove once you have enough real ones.
+// Fallback placeholder items so this section never looks empty before
+// you've added real businesses/profiles — remove once you have enough real ones.
 const DUMMY_BUSINESSES = [
   { id: "d1", href: "/businesses", name: "Your business here", image: null, sub: "Get listed" },
 ];

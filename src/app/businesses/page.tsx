@@ -16,12 +16,26 @@ export async function generateMetadata() {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default async function BusinessesPage() {
+const PAGE_SIZE = 12;
+
+export default async function BusinessesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+
   const { data: businessesRaw } = await supabase
     .from("businesses")
     .select("*")
     .eq("status", "approved");
-  const businesses = shuffle(businessesRaw || []);
+  const shuffled = shuffle(businessesRaw || []);
+
+  const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const businesses = shuffled.slice(start, start + PAGE_SIZE);
 
   return (
     <div>
@@ -79,6 +93,30 @@ export default async function BusinessesPage() {
                 </Link>
               ))}
             </div>
+
+            {totalPages > 1 && (
+              <div className="mt-14 flex items-center justify-center gap-3">
+                {currentPage > 1 && (
+                  <Link
+                    href={`/businesses?page=${currentPage - 1}`}
+                    className="border border-line px-5 py-2.5 text-sm text-ink hover:border-ink transition-colors"
+                  >
+                    ← Previous
+                  </Link>
+                )}
+                <span className="text-sm text-muted px-2">
+                  Page {currentPage} of {totalPages}
+                </span>
+                {currentPage < totalPages && (
+                  <Link
+                    href={`/businesses?page=${currentPage + 1}`}
+                    className="border border-line px-5 py-2.5 text-sm text-ink hover:border-ink transition-colors"
+                  >
+                    Next →
+                  </Link>
+                )}
+              </div>
+            )}
           </>
         )}
       </section>

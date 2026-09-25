@@ -26,10 +26,13 @@ export async function generateMetadata({
 
 export default async function CategoryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ category: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { category } = await params;
+  const { page: pageParam } = await searchParams;
   const cat = unslugify(category);
 
   if (!cat) {
@@ -43,12 +46,20 @@ export default async function CategoryPage({
     );
   }
 
+  const PAGE_SIZE = 12;
+  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+
   const { data: freelancersRaw, error } = await supabase
     .from("freelancers")
     .select("*")
     .eq("category", cat)
     .eq("status", "approved");
-  const freelancers = freelancersRaw ? shuffle(freelancersRaw) : freelancersRaw;
+  const shuffled = freelancersRaw ? shuffle(freelancersRaw) : [];
+
+  const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const freelancers = shuffled.slice(start, start + PAGE_SIZE);
 
   return (
     <div>
@@ -111,6 +122,30 @@ export default async function CategoryPage({
                 </span>
               </Link>
             ))}
+          </div>
+        )}
+
+        {freelancers && freelancers.length > 0 && totalPages > 1 && (
+          <div className="mt-14 flex items-center justify-center gap-3">
+            {currentPage > 1 && (
+              <Link
+                href={`/hire-freelancers/${category}?page=${currentPage - 1}`}
+                className="border border-line px-5 py-2.5 text-sm text-ink hover:border-ink transition-colors"
+              >
+                ← Previous
+              </Link>
+            )}
+            <span className="text-sm text-muted px-2">
+              Page {currentPage} of {totalPages}
+            </span>
+            {currentPage < totalPages && (
+              <Link
+                href={`/hire-freelancers/${category}?page=${currentPage + 1}`}
+                className="border border-line px-5 py-2.5 text-sm text-ink hover:border-ink transition-colors"
+              >
+                Next →
+              </Link>
+            )}
           </div>
         )}
       </section>
