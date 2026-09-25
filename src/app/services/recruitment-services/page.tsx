@@ -79,6 +79,10 @@ export default async function RecruitmentServices() {
       intro="End-to-end hiring support — from sourcing to shortlisting — so you fill roles with people who genuinely fit your team and your goals."
       content={customContent || DEFAULT_CONTENT}
       faqs={FAQS}
+      image={{
+        src: "/images/global-talent-network.jpg",
+        alt: "Recruiter selecting the right candidate from a global professional network",
+      }}
     />
   );
 }

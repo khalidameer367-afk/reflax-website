@@ -78,6 +78,10 @@ export default async function BusinessGrowthConsultancy() {
       intro="Practical guidance on branding, marketing, and operations to help your business grow with intent — not guesswork."
       content={customContent || DEFAULT_CONTENT}
       faqs={FAQS}
+      image={{
+        src: "/images/business-growth-review.jpg",
+        alt: "Business advisors reviewing growth and performance analytics together",
+      }}
     />
   );
 }

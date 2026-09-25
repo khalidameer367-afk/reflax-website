@@ -78,6 +78,10 @@ export default async function TalentAcquisition() {
       intro="Long-term hiring strategy for building teams that scale with your business — not just filling a seat for the short term."
       content={customContent || DEFAULT_CONTENT}
       faqs={FAQS}
+      image={{
+        src: "/images/team-collaboration.jpg",
+        alt: "Team collaborating together, representing long-term talent and workforce planning",
+      }}
     />
   );
 }

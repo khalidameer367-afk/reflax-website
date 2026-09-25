@@ -8,12 +8,14 @@ export default function ServicePage({
   intro,
   content,
   faqs,
+  image,
 }: {
   eyebrow: string;
   title: string;
   intro: string;
   content: string;
   faqs: { question: string; answer: string }[];
+  image?: { src: string; alt: string };
 }) {
   return (
     <div>
@@ -26,8 +28,15 @@ export default function ServicePage({
             </h1>
             <p className="mt-6 text-[15px] leading-relaxed text-muted max-w-xl">{intro}</p>
           </div>
-          <div className="tilt-3d border border-line aspect-square hidden md:flex items-center justify-center p-6">
-            <AbstractPanel className="w-full h-auto" />
+          <div className="tilt-3d border border-line aspect-square hidden md:flex items-center justify-center overflow-hidden">
+            {image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={image.src} alt={image.alt} className="w-full h-full object-cover" />
+            ) : (
+              <div className="p-6 w-full h-full flex items-center justify-center">
+                <AbstractPanel className="w-full h-auto" />
+              </div>
+            )}
           </div>
         </div>
       </section>

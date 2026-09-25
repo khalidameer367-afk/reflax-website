@@ -1,7 +1,6 @@
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import HeroGraphic from "@/components/HeroGraphic";
-import NetworkGraphic from "@/components/NetworkGraphic";
 import Reveal from "@/components/Reveal";
 import { CATEGORIES } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
@@ -127,8 +126,13 @@ export default async function Home() {
       <Reveal className="block">
         <section className="py-20 md:py-24 border-b border-line bg-ink/[0.015] overflow-hidden">
           <div className="container-x grid md:grid-cols-[1fr_1.05fr] gap-14 items-center">
-            <div className="tilt-3d border border-line p-8 flex items-center justify-center aspect-square order-2 md:order-1">
-              <NetworkGraphic className="w-full h-full" />
+            <div className="tilt-3d border border-line overflow-hidden flex items-center justify-center aspect-square order-2 md:order-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/network-professionals.jpg"
+                alt="A professional connecting with a network of businesses and verified experts on Reflax"
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <div className="order-1 md:order-2">
