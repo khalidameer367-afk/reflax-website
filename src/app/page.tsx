@@ -94,7 +94,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="tilt-3d border border-line p-8 hidden md:flex items-center justify-center aspect-square">
+          <div className="tilt-3d border border-line bg-ink/[0.03] p-8 min-h-[320px] md:min-h-[420px] flex items-center justify-center">
             <HeroGraphic className="w-full h-full spin-slow" />
           </div>
         </div>
@@ -125,12 +125,15 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="tilt-3d border border-line overflow-hidden flex items-center justify-center aspect-square">
+            <div className="tilt-3d relative border border-line bg-ink/[0.03] min-h-[320px] md:min-h-[420px] flex items-center justify-center overflow-hidden">
+              <div className="absolute inset-0 p-8 flex items-center justify-center">
+                <HeroGraphic className="w-full h-full opacity-70" />
+              </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/network-professionals.jpg"
                 alt="A professional connecting with a network of businesses and verified experts on Reflax"
-                className="w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
           </div>

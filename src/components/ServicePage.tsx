@@ -30,14 +30,18 @@ export default function ServicePage({
             </h1>
             <p className="mt-6 text-[15px] leading-relaxed text-muted max-w-xl">{intro}</p>
           </div>
-          <div className="tilt-3d border border-line aspect-square hidden md:flex items-center justify-center overflow-hidden">
-            {image ? (
+          <div className="tilt-3d relative border border-line bg-ink/[0.03] min-h-[280px] md:min-h-[420px] flex items-center justify-center overflow-hidden">
+            {/* Always-visible fallback graphic, so this box is never empty even if a photo fails to load */}
+            <div className="absolute inset-0 p-6 flex items-center justify-center">
+              <AbstractPanel className="w-full h-auto opacity-70" />
+            </div>
+            {image && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={image.src} alt={image.alt} className="w-full h-full object-cover" />
-            ) : (
-              <div className="p-6 w-full h-full flex items-center justify-center">
-                <AbstractPanel className="w-full h-auto" />
-              </div>
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
             )}
           </div>
         </div>

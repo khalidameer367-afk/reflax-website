@@ -69,7 +69,7 @@ export default async function ServicesPage() {
               consultancy.
             </p>
           </div>
-          <div className="tilt-3d border border-line aspect-square hidden md:flex items-center justify-center p-6">
+          <div className="tilt-3d border border-line bg-ink/[0.03] min-h-[280px] md:min-h-[420px] flex items-center justify-center p-6">
             <HeroGraphic className="w-full h-full" />
           </div>
         </div>
