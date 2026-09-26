@@ -10,6 +10,8 @@ export default function ServicePage({
   faqs,
   image,
   highlights,
+  ctaHeading,
+  ctaBody,
 }: {
   eyebrow: string;
   title: string;
@@ -18,6 +20,8 @@ export default function ServicePage({
   faqs: { question: string; answer: string }[];
   image?: { src: string; alt: string };
   highlights?: string[];
+  ctaHeading?: string;
+  ctaBody?: string;
 }) {
   return (
     <div>
@@ -63,10 +67,30 @@ export default function ServicePage({
       )}
 
       <section className="container-x py-16 md:py-20 border-b border-line">
-        <div
-          className="blog-content max-w-3xl text-[16px] leading-relaxed text-ink"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+        <div className="grid md:grid-cols-[1fr_300px] gap-12 items-start">
+          <div
+            className="blog-content max-w-3xl text-[16px] leading-relaxed text-ink"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+
+          <aside className="md:sticky md:top-24">
+            <div className="tilt-3d border border-line bg-ink/[0.03] p-8">
+              <div className="text-xs font-medium text-muted mb-3">Get started</div>
+              <h3 className="display text-xl font-semibold text-ink mb-3 leading-snug">
+                {ctaHeading ?? `Want our ${title}?`}
+              </h3>
+              <p className="text-[14px] leading-relaxed text-muted mb-6">
+                {ctaBody ?? "Reach out and we'll walk you through how it works for your business."}
+              </p>
+              <Link
+                href="/contact"
+                className="btn-pop inline-flex items-center justify-center w-full bg-ink px-6 py-3 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+              >
+                Get in touch
+              </Link>
+            </div>
+          </aside>
+        </div>
       </section>
 
       <section className="container-x py-16 md:py-20 border-b border-line">

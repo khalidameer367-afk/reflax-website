@@ -87,6 +87,8 @@ export default async function BusinessGrowthConsultancy() {
         "Recommendations grounded in what's actually happening in your business today.",
         "A clear focus on what to prioritize next, instead of trying to fix everything at once.",
       ]}
+      ctaHeading="Want our Business Growth Consultancy?"
+      ctaBody="Get in touch and let's figure out what's actually worth prioritizing next."
     />
   );
 }

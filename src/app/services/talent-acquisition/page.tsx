@@ -87,6 +87,8 @@ export default async function TalentAcquisition() {
         "A steady pipeline of pre-qualified people, so you're never starting from zero.",
         "Employer branding support that helps the right candidates find you first.",
       ]}
+      ctaHeading="Want our Talent Acquisition?"
+      ctaBody="Let's map out where your team is headed and build a pipeline for it, before you need it."
     />
   );
 }
