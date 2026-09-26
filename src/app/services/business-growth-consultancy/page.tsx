@@ -92,6 +92,14 @@ export default async function BusinessGrowthConsultancy() {
       ctaQuestion="Feel like growth has plateaued, or don't know what's actually working?"
       ctaBody="Get an honest, clear-eyed look at your brand, marketing, and operations — and a focused plan for what to prioritize next."
       ctaTags={["Free initial consultation", "No generic playbooks", "Strategy plus execution support"]}
+      finalCtaEyebrow="Ready to grow with intent?"
+      finalCtaHeading="Let's find your next move"
+      finalCtaBody="Tell us where your business stands today and we'll help you figure out what's actually worth prioritizing next — and what to leave alone."
+      finalCtaTags={[
+        "No commitment required to start the conversation",
+        "Engagements scoped to a single problem or a full strategy",
+        "Recommendations grounded in your real numbers",
+      ]}
     />
   );
 }

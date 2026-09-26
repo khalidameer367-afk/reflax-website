@@ -15,6 +15,10 @@ export default function ServicePage({
   ctaQuestion,
   ctaBody,
   ctaTags,
+  finalCtaEyebrow,
+  finalCtaHeading,
+  finalCtaBody,
+  finalCtaTags,
 }: {
   eyebrow: string;
   title: string;
@@ -28,6 +32,10 @@ export default function ServicePage({
   ctaQuestion?: string;
   ctaBody?: string;
   ctaTags?: string[];
+  finalCtaEyebrow?: string;
+  finalCtaHeading?: string;
+  finalCtaBody?: string;
+  finalCtaTags?: string[];
 }) {
   return (
     <div>
@@ -116,23 +124,52 @@ export default function ServicePage({
       </section>
 
       <section className="container-x py-16 md:py-20 border-b border-line">
-        <div className="tilt-3d border border-line p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <h2 className="display text-2xl font-semibold text-ink max-w-md">
-            Ready to get started?
-          </h2>
-          <div className="flex flex-wrap gap-4 shrink-0">
-            <Link
-              href="/hire-freelancers"
-              className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
-            >
-              Hire a freelancer
-            </Link>
-            <Link
-              href="/register"
-              className="btn-pop inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
-            >
-              Join as a freelancer
-            </Link>
+        <div className="tilt-3d border border-line bg-ink p-10 md:p-16 text-paper">
+          <div className="grid md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.14em] text-paper/60 mb-4">
+                {finalCtaEyebrow ?? "Ready to get started?"}
+              </div>
+              <h2 className="display text-3xl md:text-4xl font-semibold leading-tight mb-5 max-w-lg">
+                {finalCtaHeading ?? `Let's talk about your ${title}`}
+              </h2>
+              <p className="text-[15px] leading-relaxed text-paper/70 max-w-md mb-9">
+                {finalCtaBody ?? intro}
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/contact"
+                  className="btn-pop inline-flex items-center bg-paper px-7 py-3.5 text-sm font-medium text-ink hover:bg-paper/85 transition-colors"
+                >
+                  Get in touch
+                </Link>
+                <Link
+                  href="/hire-freelancers"
+                  className="btn-pop inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink transition-colors"
+                >
+                  Hire a freelancer
+                </Link>
+                <Link
+                  href="/register"
+                  className="btn-pop inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink transition-colors"
+                >
+                  Join as a freelancer
+                </Link>
+              </div>
+            </div>
+
+            <div className="border-t md:border-t-0 md:border-l border-paper/15 pt-8 md:pt-1 md:pl-12 flex flex-col gap-6">
+              {(finalCtaTags ?? [
+                "No commitment required to start the conversation",
+                "We reply within one business day",
+                "Speak directly with our team, not a bot",
+              ]).map((tag) => (
+                <div key={tag} className="flex items-start gap-3">
+                  <span className="h-1.5 w-1.5 rounded-full bg-paper/50 mt-2 shrink-0" />
+                  <p className="text-[14px] leading-relaxed text-paper/75">{tag}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

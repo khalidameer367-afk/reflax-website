@@ -92,10 +92,47 @@ export default async function ServicesPage() {
       </section>
 
       <section className="container-x py-16 md:py-20">
-        <div
-          className="blog-content max-w-3xl text-[16px] leading-relaxed text-ink"
-          dangerouslySetInnerHTML={{ __html: customContent || DEFAULT_CONTENT }}
-        />
+        <div className="grid md:grid-cols-[1fr_340px] gap-12 items-start">
+          <div
+            className="blog-content max-w-3xl text-[16px] leading-relaxed text-ink"
+            dangerouslySetInnerHTML={{ __html: customContent || DEFAULT_CONTENT }}
+          />
+
+          <aside className="md:sticky md:top-24">
+            <div className="tilt-3d border border-line bg-ink p-8 md:p-9 text-paper">
+              <div className="text-[11px] uppercase tracking-[0.14em] text-paper/60 mb-4">
+                Connect with us
+              </div>
+              <h3 className="display text-2xl font-semibold leading-tight mb-5">
+                Speak with a Reflax Advisor
+              </h3>
+              <p className="text-[15px] leading-relaxed text-paper/90 font-medium mb-3">
+                Not sure which service fits your business?
+              </p>
+              <p className="text-[14px] leading-relaxed text-paper/65 mb-7">
+                Tell us where your business is today and where you want it to go — we'll point you to the right service, or a mix of them.
+              </p>
+              <Link
+                href="/contact"
+                className="btn-pop inline-flex items-center justify-center w-full bg-paper px-6 py-3.5 text-sm font-medium text-ink hover:bg-paper/85 transition-colors mb-7"
+              >
+                Get in touch
+              </Link>
+              <div className="pt-6 border-t border-paper/15 flex flex-col gap-2.5">
+                {[
+                  "Free initial consultation",
+                  "No obligation to commit",
+                  "Guidance across all three services",
+                ].map((tag) => (
+                  <div key={tag} className="flex items-center gap-2.5 text-[13px] text-paper/75">
+                    <span className="h-1 w-1 rounded-full bg-paper/50 shrink-0" />
+                    {tag}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </div>
       </section>
     </div>
   );

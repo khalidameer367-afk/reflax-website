@@ -92,6 +92,14 @@ export default async function TalentAcquisition() {
       ctaQuestion="Thinking about how your team should grow over the next year?"
       ctaBody="Get workforce planning, pipeline building, and employer branding support built around where your business is actually headed."
       ctaTags={["Free initial consultation", "Ongoing strategy reviews", "Pre-vetted talent pipeline"]}
+      finalCtaEyebrow="Ready to plan ahead?"
+      finalCtaHeading="Let's build your talent pipeline"
+      finalCtaBody="Tell us where your business is headed and we'll help you plan the roles you'll need, before you need them urgently."
+      finalCtaTags={[
+        "No commitment required to start the conversation",
+        "Engagements scoped to your hiring volume",
+        "Works alongside your existing team",
+      ]}
     />
   );
 }

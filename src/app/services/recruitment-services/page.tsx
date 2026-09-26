@@ -93,6 +93,14 @@ export default async function RecruitmentServices() {
       ctaQuestion="Have an open role you need to fill properly?"
       ctaBody="Tell us about the role and we'll take sourcing, screening, and shortlisting off your plate — so you only meet candidates worth your time."
       ctaTags={["Free initial consultation", "No percentage-of-salary fees", "Verified professional network"]}
+      finalCtaEyebrow="Ready to hire?"
+      finalCtaHeading="Let's fill that role properly"
+      finalCtaBody="Tell us who you're looking for and we'll start sourcing from our verified network right away — no long onboarding, no wasted weeks."
+      finalCtaTags={[
+        "No commitment required to start the conversation",
+        "Shortlist typically ready within one to two weeks",
+        "No percentage-of-salary agency fees",
+      ]}
     />
   );
 }
