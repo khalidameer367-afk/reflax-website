@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { stripHtml } from "@/lib/stripHtml";
-import { shuffle } from "@/lib/shuffle";
+import { shuffleWithFeatured } from "@/lib/shuffle";
 import { getPageMetadata } from "@/lib/pageSeo";
+import VerifiedBadge from "@/components/VerifiedBadge";
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -26,7 +27,7 @@ export default async function ProfilesPage({
   const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
 
   const { data: allProfiles } = await supabase.from("profiles").select("*");
-  const shuffled = shuffle(allProfiles || []);
+  const shuffled = shuffleWithFeatured(allProfiles || []);
 
   const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -68,7 +69,10 @@ export default async function ProfilesPage({
                   p.full_name.charAt(0)
                 )}
               </div>
-              <h3 className="display mt-5 text-lg font-semibold text-ink">{p.full_name}</h3>
+              <h3 className="display mt-5 text-lg font-semibold text-ink flex items-center gap-2 flex-wrap">
+                {p.full_name}
+                {p.verified && <VerifiedBadge />}
+              </h3>
               <p className="mt-1 text-sm text-muted">{p.title}</p>
               {p.company_name && (
                 <p className="mt-1 text-sm text-muted">{p.company_name}</p>

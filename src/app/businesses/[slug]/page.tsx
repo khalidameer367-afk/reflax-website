@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { isUuid } from "@/lib/isUuid";
 import { buildMetadata } from "@/lib/seoMeta";
 import { stripHtml } from "@/lib/stripHtml";
+import VerifiedBadge from "@/components/VerifiedBadge";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -77,7 +78,7 @@ export default async function BusinessProfile({
             />
           )}
 
-          <div className="flex items-center gap-4 mb-2">
+          <div className="flex items-center gap-4 mb-2 flex-wrap">
             {b.logo_url && (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={b.logo_url} alt="" className="h-10 w-auto max-w-[120px] object-contain" />
@@ -85,6 +86,7 @@ export default async function BusinessProfile({
             <h1 className="display text-3xl md:text-[2.6rem] font-semibold leading-[1.1] tracking-tight text-ink">
               {b.company_name}
             </h1>
+            {b.verified && <VerifiedBadge />}
           </div>
           <p className="text-sm text-muted mb-8">{b.industry}{b.location ? ` · ${b.location}` : ""}</p>
 

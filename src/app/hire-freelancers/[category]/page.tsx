@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { CATEGORIES, CATEGORY_DESCRIPTIONS } from "@/lib/types";
-import { shuffle } from "@/lib/shuffle";
+import { shuffleWithFeatured } from "@/lib/shuffle";
+import VerifiedBadge from "@/components/VerifiedBadge";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -54,7 +55,7 @@ export default async function CategoryPage({
     .select("*")
     .eq("category", cat)
     .eq("status", "approved");
-  const shuffled = freelancersRaw ? shuffle(freelancersRaw) : [];
+  const shuffled = freelancersRaw ? shuffleWithFeatured(freelancersRaw) : [];
 
   const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -114,7 +115,10 @@ export default async function CategoryPage({
                     f.full_name.charAt(0)
                   )}
                 </div>
-                <h3 className="display mt-5 text-lg font-semibold text-ink">{f.full_name}</h3>
+                <div className="mt-5 flex items-center gap-2 flex-wrap">
+                  <h3 className="display text-lg font-semibold text-ink">{f.full_name}</h3>
+                  {f.verified && <VerifiedBadge />}
+                </div>
                 <p className="mt-1 text-sm text-muted">{f.title}</p>
                 {f.location && <p className="mt-3 text-xs text-muted">{f.location}</p>}
                 <span className="mt-5 inline-block text-sm font-medium text-ink underline underline-offset-4">

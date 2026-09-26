@@ -2,8 +2,9 @@ import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import { supabase } from "@/lib/supabase";
 import { stripHtml } from "@/lib/stripHtml";
-import { shuffle } from "@/lib/shuffle";
+import { shuffleWithFeatured } from "@/lib/shuffle";
 import { getPageMetadata } from "@/lib/pageSeo";
+import VerifiedBadge from "@/components/VerifiedBadge";
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -30,7 +31,7 @@ export default async function BusinessesPage({
     .from("businesses")
     .select("*")
     .eq("status", "approved");
-  const shuffled = shuffle(businessesRaw || []);
+  const shuffled = shuffleWithFeatured(businessesRaw || []);
 
   const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -77,12 +78,13 @@ export default async function BusinessesPage({
                     </div>
                   )}
                   <div className="p-6">
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
                       {b.logo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={b.logo_url} alt="" className="h-6 w-auto max-w-[80px] object-contain" />
                       )}
                       <h3 className="display text-lg font-semibold text-ink">{b.company_name}</h3>
+                      {b.verified && <VerifiedBadge />}
                     </div>
                     <p className="text-sm text-muted">{b.industry}</p>
                     <p className="mt-3 text-sm leading-relaxed text-muted line-clamp-2">{stripHtml(b.description)}</p>

@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { isUuid } from "@/lib/isUuid";
 import { buildMetadata } from "@/lib/seoMeta";
 import { stripHtml } from "@/lib/stripHtml";
+import VerifiedBadge from "@/components/VerifiedBadge";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -83,8 +84,9 @@ export default async function EntrepreneurProfilePage({
               {p.category && (
                 <div className="text-sm text-paper/50 mb-2 uppercase tracking-wide">{p.category}</div>
               )}
-              <h1 className="display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight text-paper">
+              <h1 className="display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight text-paper flex items-center gap-3 flex-wrap">
                 {p.full_name}
+                {p.verified && <VerifiedBadge dark />}
               </h1>
               <p className="mt-3 text-lg text-paper/70">
                 {p.title}{p.company_name ? ` · ${p.company_name}` : ""}

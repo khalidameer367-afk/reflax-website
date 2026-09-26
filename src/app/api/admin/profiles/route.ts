@@ -13,11 +13,15 @@ const allowedFields = [
   "website",
   "linkedin_url",
   "avatar_url",
+  "verified",
+  "featured",
   "meta_title",
   "meta_description",
   "canonical_url",
   "focus_keyword",
 ];
+
+const BOOLEAN_FIELDS = new Set(["verified", "featured"]);
 
 export async function GET(req: NextRequest) {
   if (!isAdminAuthed(req)) {
@@ -52,7 +56,9 @@ export async function POST(req: NextRequest) {
   }
   const insertData: Record<string, unknown> = { slug };
   for (const key of allowedFields) {
-    if (key in body) insertData[key] = body[key] || null;
+    if (key in body) {
+      insertData[key] = BOOLEAN_FIELDS.has(key) ? Boolean(body[key]) : body[key] || null;
+    }
   }
 
   const { data, error } = await db.from("profiles").insert(insertData).select().single();
@@ -70,7 +76,9 @@ export async function PUT(req: NextRequest) {
 
   const update: Record<string, unknown> = {};
   for (const key of allowedFields) {
-    if (key in fields) update[key] = fields[key] || null;
+    if (key in fields) {
+      update[key] = BOOLEAN_FIELDS.has(key) ? Boolean(fields[key]) : fields[key] || null;
+    }
   }
 
   const db = supabaseAdmin();

@@ -39,15 +39,20 @@ export async function PUT(req: NextRequest) {
     "portfolio_url",
     "linkedin_url",
     "avatar_url",
+    "verified",
+    "featured",
     "meta_title",
     "meta_description",
     "canonical_url",
     "focus_keyword",
   ];
+  const BOOLEAN_FIELDS = new Set(["verified", "featured"]);
   const update: Record<string, unknown> = {};
   for (const key of allowed) {
     if (key in fields) {
-      if (key === "skills" && typeof fields[key] === "string") {
+      if (BOOLEAN_FIELDS.has(key)) {
+        update[key] = Boolean(fields[key]);
+      } else if (key === "skills" && typeof fields[key] === "string") {
         update[key] = fields[key]
           .split(",")
           .map((s: string) => s.trim())

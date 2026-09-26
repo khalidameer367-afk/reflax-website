@@ -26,6 +26,8 @@ export interface Freelancer extends SeoFields {
   linkedin_url: string | null;
   avatar_url: string | null;
   status: FreelancerStatus;
+  verified: boolean;
+  featured: boolean;
 }
 
 export interface Business extends SeoFields {
@@ -44,6 +46,8 @@ export interface Business extends SeoFields {
   logo_url: string | null;
   featured_image_url: string | null;
   status: FreelancerStatus;
+  verified: boolean;
+  featured: boolean;
 }
 
 export interface EntrepreneurProfile extends SeoFields {
@@ -60,6 +64,7 @@ export interface EntrepreneurProfile extends SeoFields {
   linkedin_url: string | null;
   avatar_url: string | null;
   featured: boolean;
+  verified: boolean;
 }
 
 export interface BlogPost extends SeoFields {

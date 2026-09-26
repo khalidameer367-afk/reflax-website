@@ -236,6 +236,12 @@ function FreelancersTab({
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-ink">{f.full_name}</span>
                   <span className={`text-xs font-medium uppercase ${statusColor[f.status]}`}>{f.status}</span>
+                  {f.verified && (
+                    <span className="text-[11px] font-medium text-ink bg-ink/[0.06] border border-ink/15 px-2 py-[2px]">✓ Verified</span>
+                  )}
+                  {f.featured && (
+                    <span className="text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-[2px]">★ Featured</span>
+                  )}
                 </div>
                 <p className="text-sm text-muted mt-0.5">{f.title} · {f.category}</p>
                 <p className="text-sm text-muted mt-0.5">{f.email}</p>
@@ -293,6 +299,8 @@ function EditFreelancerForm({
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     data.id = freelancer.id;
     if (avatarPreview) data.avatar_url = avatarPreview;
+    (data as unknown as Record<string, boolean>).verified = (e.currentTarget.elements.namedItem("verified") as HTMLInputElement)?.checked ?? false;
+    (data as unknown as Record<string, boolean>).featured = (e.currentTarget.elements.namedItem("featured") as HTMLInputElement)?.checked ?? false;
     const res = await fetch("/api/admin/freelancers", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -345,6 +353,16 @@ function EditFreelancerForm({
       <div className="grid sm:grid-cols-2 gap-4">
         <input name="portfolio_url" defaultValue={freelancer.portfolio_url || ""} placeholder="Portfolio URL" className={inputCls} />
         <input name="linkedin_url" defaultValue={freelancer.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
+      </div>
+      <div className="flex flex-wrap gap-6 border border-line p-4">
+        <label className="flex items-center gap-2 text-sm text-ink cursor-pointer">
+          <input type="checkbox" name="verified" defaultChecked={freelancer.verified} className="h-4 w-4 accent-ink" />
+          Verified <span className="text-muted">— shows a verified badge on the public profile</span>
+        </label>
+        <label className="flex items-center gap-2 text-sm text-ink cursor-pointer">
+          <input type="checkbox" name="featured" defaultChecked={freelancer.featured} className="h-4 w-4 accent-ink" />
+          Featured <span className="text-muted">— pins this profile to the top of listings</span>
+        </label>
       </div>
       <SeoFieldsSection defaults={freelancer} />
       {error && <p className="text-sm text-red-600">{error}</p>}
@@ -414,6 +432,12 @@ function BusinessesTab({
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-ink">{b.company_name}</span>
                     <span className={`text-xs font-medium uppercase ${statusColor[b.status]}`}>{b.status}</span>
+                    {b.verified && (
+                      <span className="text-[11px] font-medium text-ink bg-ink/[0.06] border border-ink/15 px-2 py-[2px]">✓ Verified</span>
+                    )}
+                    {b.featured && (
+                      <span className="text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-[2px]">★ Featured</span>
+                    )}
                   </div>
                   <p className="text-sm text-muted mt-0.5">{b.industry} · {b.contact_person}</p>
                   <p className="text-sm text-muted mt-0.5">{b.email}</p>
@@ -479,6 +503,8 @@ function BusinessForm({
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     if (logoPreview) data.logo_url = logoPreview;
     if (featuredPreview) data.featured_image_url = featuredPreview;
+    (data as unknown as Record<string, boolean>).verified = (e.currentTarget.elements.namedItem("verified") as HTMLInputElement)?.checked ?? false;
+    (data as unknown as Record<string, boolean>).featured = (e.currentTarget.elements.namedItem("featured") as HTMLInputElement)?.checked ?? false;
 
     let res: Response;
     if (business) {
@@ -566,6 +592,17 @@ function BusinessForm({
         <RichTextEditor name="description" defaultValue={business?.description} />
       </div>
 
+      <div className="flex flex-wrap gap-6 border border-line p-4">
+        <label className="flex items-center gap-2 text-sm text-ink cursor-pointer">
+          <input type="checkbox" name="verified" defaultChecked={business?.verified} className="h-4 w-4 accent-ink" />
+          Verified <span className="text-muted">— shows a verified badge on the public profile</span>
+        </label>
+        <label className="flex items-center gap-2 text-sm text-ink cursor-pointer">
+          <input type="checkbox" name="featured" defaultChecked={business?.featured} className="h-4 w-4 accent-ink" />
+          Featured <span className="text-muted">— pins this business to the top of listings</span>
+        </label>
+      </div>
+
       <SeoFieldsSection defaults={business} />
       {error && <p className="text-sm text-red-600">{error}</p>}
 
@@ -632,6 +669,14 @@ function ProfilesTab({
                 <div>
                   <span className="font-medium text-ink">{p.full_name}</span>
                   <span className="text-sm text-muted ml-2">{p.title}{p.category ? ` · ${p.category}` : ""}</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    {p.verified && (
+                      <span className="text-[11px] font-medium text-ink bg-ink/[0.06] border border-ink/15 px-2 py-[2px]">✓ Verified</span>
+                    )}
+                    {p.featured && (
+                      <span className="text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-[2px]">★ Featured</span>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex gap-3 shrink-0">
@@ -676,6 +721,8 @@ function ProfileForm({
     setError("");
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
     if (avatarPreview) data.avatar_url = avatarPreview;
+    (data as unknown as Record<string, boolean>).verified = (e.currentTarget.elements.namedItem("verified") as HTMLInputElement)?.checked ?? false;
+    (data as unknown as Record<string, boolean>).featured = (e.currentTarget.elements.namedItem("featured") as HTMLInputElement)?.checked ?? false;
 
     let res: Response;
     if (profile) {
@@ -735,6 +782,17 @@ function ProfileForm({
       <input name="location" defaultValue={profile?.location || ""} placeholder="Location" className={inputCls} />
       <input name="website" defaultValue={profile?.website || ""} placeholder="Website URL" className={inputCls} />
       <input name="linkedin_url" defaultValue={profile?.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
+
+      <div className="flex flex-wrap gap-6 border border-line p-4">
+        <label className="flex items-center gap-2 text-sm text-ink cursor-pointer">
+          <input type="checkbox" name="verified" defaultChecked={profile?.verified} className="h-4 w-4 accent-ink" />
+          Verified <span className="text-muted">— shows a verified badge on the public profile</span>
+        </label>
+        <label className="flex items-center gap-2 text-sm text-ink cursor-pointer">
+          <input type="checkbox" name="featured" defaultChecked={profile?.featured} className="h-4 w-4 accent-ink" />
+          Featured <span className="text-muted">— pins this profile to the top of listings</span>
+        </label>
+      </div>
 
       <SeoFieldsSection defaults={profile} />
       {error && <p className="text-sm text-red-600">{error}</p>}

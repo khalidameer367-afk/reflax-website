@@ -2,6 +2,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { isUuid } from "@/lib/isUuid";
 import { buildMetadata } from "@/lib/seoMeta";
+import VerifiedBadge from "@/components/VerifiedBadge";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -78,8 +79,9 @@ export default async function FreelancerProfile({
               )}
             </div>
             <div>
-              <h1 className="display text-3xl md:text-4xl font-semibold tracking-tight text-ink">
+              <h1 className="display text-3xl md:text-4xl font-semibold tracking-tight text-ink flex items-center gap-3 flex-wrap">
                 {f.full_name}
+                {f.verified && <VerifiedBadge />}
               </h1>
               <p className="mt-2 text-muted">{f.title}</p>
             </div>

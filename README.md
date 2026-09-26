@@ -20,10 +20,11 @@ Neeche step-by-step sab kuch likha hai — koi bhi step skip na karain.
    set karain (ye database password hai, isay yaad rakhen), region
    `Singapore` ya jo aapke qareeb ho select kar lain.
 3. Project ban jane ke baad, left sidebar mein **SQL Editor** py jayen.
-4. Is project ke andar `supabase-schema.sql` file hai — us ki poori content
-   copy karain aur SQL Editor mein paste kar ke **Run** dabayen. Isse teeno
-   tables (`freelancers`, `businesses`, `profiles`) aur unki security
-   policies ban jayen gi.
+4. Is project ke andar `supabase-all-migrations.sql` file hai — us ki poori
+   content copy karain aur SQL Editor mein paste kar ke **Run** dabayen.
+   Isse teeno tables (`freelancers`, `businesses`, `profiles`), unki
+   security policies, aur baad ke saare updates (SEO fields, verified/
+   featured flags, wagera) ek sath ban jayen gi.
 5. Ab left sidebar mein **Project Settings → API** py jayen. Wahan se 3
    cheezein copy kar lain:
    - **Project URL** → yeh `NEXT_PUBLIC_SUPABASE_URL` hai
@@ -121,20 +122,14 @@ git push -u origin main
 
 ---
 
-## Zaroori: Naye SQL Migrations Chalayen (order mein)
+## Zaroori: SQL Migrations Chalayen
 
-Jitni baar naya feature add hua hai, ek chota SQL file bhi banaya gaya hai.
-Supabase SQL Editor mein in sab ko **isi order mein**, ek ek karke, copy-paste
-kar ke Run karain (agar pehle se kar chuke hain to skip kar dain):
-
-1. `supabase-schema.sql` — mool tables (sirf naye/fresh setup ke liye)
-2. `supabase-migration-instant-live.sql`
-3. `supabase-migration-freelancer-accounts.sql` — freelancer login system
-4. `supabase-migration-freelancer-pending.sql` — freelancer wapis admin-approval flow
-5. `supabase-migration-slugs-and-blog.sql` — naam-wali URLs + blog table
-6. `supabase-migration-backfill-slugs.sql`
-7. `supabase-migration-fix-policies.sql`
-8. `supabase-migration-seo-fields.sql` — **naya**, SEO fields + business featured image + page_seo table
+Ab sab schema + migrations ek hi file `supabase-all-migrations.sql` mein
+combine kar diye gaye hain (pehle alag-alag chhoti files thi, ab GitHub
+upload ke 100-file limit se bachne ke liye ek file mein hain). Bas is
+file ki poori content copy karke Supabase SQL Editor mein paste kar ke
+**Run** dabayen — `if not exists` checks ki wajah se dobara run karna
+bhi safe hai.
 
 ## Naya Kya Hai (is update mein)
 
@@ -238,6 +233,6 @@ src/
     supabase.ts                  → Database connection
     mailer.ts                    → Gmail email sending
     types.ts                     → Shared types + categories list
-supabase-schema.sql              → Run this once in Supabase SQL Editor
+supabase-all-migrations.sql      → Run this once in Supabase SQL Editor
 .env.local.example               → Copy to .env.local and fill in
 ```
