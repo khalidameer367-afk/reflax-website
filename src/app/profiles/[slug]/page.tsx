@@ -103,7 +103,7 @@ export default async function EntrepreneurProfilePage({
           />
         </div>
 
-        <aside className="border border-line p-7 h-fit">
+        <aside className="md:sticky md:top-28 h-fit border border-line p-7">
           <dl className="space-y-5 text-sm">
             {p.category && (
               <div>

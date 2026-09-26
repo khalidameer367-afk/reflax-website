@@ -90,6 +90,61 @@ export default function HireFreelancers() {
           ))}
         </div>
       </section>
+
+      {/* How it works */}
+      <section className="container-x py-16 md:py-20 border-t border-line bg-ink/[0.015]">
+        <SectionHeading eyebrow="How it works" title="From browsing to hiring, in three simple steps." />
+        <div className="mt-10 grid md:grid-cols-3 gap-10">
+          <div>
+            <div className="text-xs font-medium text-muted mb-3">01</div>
+            <h3 className="display text-lg font-semibold text-ink">Pick a category</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Browse freelancers by specialty — from design and development
+              to marketing, writing, and beyond.
+            </p>
+          </div>
+          <div>
+            <div className="text-xs font-medium text-muted mb-3">02</div>
+            <h3 className="display text-lg font-semibold text-ink">Review real profiles</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Every freelancer is personally reviewed by our team before
+              they&apos;re listed, so you can see their work and contact
+              details with confidence.
+            </p>
+          </div>
+          <div>
+            <div className="text-xs font-medium text-muted mb-3">03</div>
+            <h3 className="display text-lg font-semibold text-ink">Reach out directly</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Contact them by email or phone — no bidding wars, no platform
+              fees, and no middleman slowing things down.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Closing CTA */}
+      <section className="container-x py-16 md:py-20 border-t border-line">
+        <div className="tilt-3d border border-line p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <h2 className="display text-2xl font-semibold text-ink max-w-md">
+            Looking for freelance work yourself?
+          </h2>
+          <div className="flex flex-wrap gap-4 shrink-0">
+            <Link
+              href="/register"
+              className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+            >
+              Join as a freelancer
+            </Link>
+            <Link
+              href="/services"
+              className="btn-pop inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+            >
+              Explore our services
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

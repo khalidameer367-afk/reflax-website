@@ -28,6 +28,7 @@ export default function Footer() {
               <li><Link href="/profiles" className="hover:text-paper transition-colors">Profiles</Link></li>
               <li><Link href="/blog" className="hover:text-paper transition-colors">Blog</Link></li>
               <li><Link href="/contact" className="hover:text-paper transition-colors">Contact Us</Link></li>
+              <li><Link href="/write-for-us" className="hover:text-paper transition-colors">Write for Us</Link></li>
               <li><Link href="/register" className="hover:text-paper transition-colors">Register</Link></li>
             </ul>
           </div>
@@ -50,9 +51,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-paper/10 flex flex-col md:flex-row gap-4 justify-between text-xs text-paper/40">
+        <div className="mt-16 pt-8 border-t border-paper/10 flex flex-col md:flex-row gap-4 md:items-center justify-between text-xs text-paper/40">
           <span>© {new Date().getFullYear()} Reflax. All rights reserved.</span>
-          <span>Built for businesses, freelancers &amp; growth.</span>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <Link href="/privacy-policy" className="hover:text-paper transition-colors">Privacy Policy</Link>
+            <Link href="/terms-and-conditions" className="hover:text-paper transition-colors">Terms &amp; Conditions</Link>
+          </div>
         </div>
       </div>
     </footer>
