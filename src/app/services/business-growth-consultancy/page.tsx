@@ -87,8 +87,11 @@ export default async function BusinessGrowthConsultancy() {
         "Recommendations grounded in what's actually happening in your business today.",
         "A clear focus on what to prioritize next, instead of trying to fix everything at once.",
       ]}
-      ctaHeading="Want our Business Growth Consultancy?"
-      ctaBody="Get in touch and let's figure out what's actually worth prioritizing next."
+      ctaEyebrow="Connect with us"
+      ctaHeading="Speak with a Reflax Growth Advisor"
+      ctaQuestion="Feel like growth has plateaued, or don't know what's actually working?"
+      ctaBody="Get an honest, clear-eyed look at your brand, marketing, and operations — and a focused plan for what to prioritize next."
+      ctaTags={["Free initial consultation", "No generic playbooks", "Strategy plus execution support"]}
     />
   );
 }

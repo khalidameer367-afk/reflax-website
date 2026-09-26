@@ -88,8 +88,11 @@ export default async function RecruitmentServices() {
         "You only meet shortlisted candidates who actually match the role and your team.",
         "Clear, ongoing communication — no black box, no radio silence between updates.",
       ]}
-      ctaHeading="Want our Recruitment Services?"
-      ctaBody="Tell us about the role and we'll take sourcing, screening, and shortlisting off your plate."
+      ctaEyebrow="Connect with us"
+      ctaHeading="Speak with a Reflax Recruiter"
+      ctaQuestion="Have an open role you need to fill properly?"
+      ctaBody="Tell us about the role and we'll take sourcing, screening, and shortlisting off your plate — so you only meet candidates worth your time."
+      ctaTags={["Free initial consultation", "No percentage-of-salary fees", "Verified professional network"]}
     />
   );
 }

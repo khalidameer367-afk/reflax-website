@@ -87,8 +87,11 @@ export default async function TalentAcquisition() {
         "A steady pipeline of pre-qualified people, so you're never starting from zero.",
         "Employer branding support that helps the right candidates find you first.",
       ]}
-      ctaHeading="Want our Talent Acquisition?"
-      ctaBody="Let's map out where your team is headed and build a pipeline for it, before you need it."
+      ctaEyebrow="Connect with us"
+      ctaHeading="Speak with a Reflax Advisor"
+      ctaQuestion="Thinking about how your team should grow over the next year?"
+      ctaBody="Get workforce planning, pipeline building, and employer branding support built around where your business is actually headed."
+      ctaTags={["Free initial consultation", "Ongoing strategy reviews", "Pre-vetted talent pipeline"]}
     />
   );
 }
