@@ -18,6 +18,42 @@ export default function Footer() {
               Connecting businesses with verified experts and freelancers —
               and helping professionals find real opportunities.
             </p>
+
+            <a
+              href="mailto:Contact@reflax.org"
+              className="mt-5 inline-flex items-center gap-2.5 text-sm text-paper/70 hover:text-paper transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
+              </svg>
+              Contact@reflax.org
+            </a>
+
+            <div className="mt-5 flex items-center gap-3">
+              <a
+                href="https://www.facebook.com/share/1CwQuyJQ36/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Reflax on Facebook"
+                className="flex h-9 w-9 items-center justify-center border border-paper/20 text-paper/70 hover:bg-paper hover:text-ink transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21h3z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/reflaxlimited/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Reflax on LinkedIn"
+                className="flex h-9 w-9 items-center justify-center border border-paper/20 text-paper/70 hover:bg-paper hover:text-ink transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M4.98 3.5a2.5 2.5 0 11-.01 5 2.5 2.5 0 01.01-5zM3 9.75h4V21H3V9.75zm6.5 0h3.8v1.6h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-4.9c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.59V21h-4V9.75z" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div>
