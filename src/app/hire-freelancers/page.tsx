@@ -3,8 +3,7 @@ import { CATEGORIES } from "@/lib/types";
 import SectionHeading from "@/components/SectionHeading";
 import { getPageMetadata } from "@/lib/pageSeo";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata() {
   return getPageMetadata(

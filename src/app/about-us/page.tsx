@@ -1,8 +1,8 @@
+import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
 import { getPageMetadata } from "@/lib/pageSeo";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -52,11 +52,13 @@ export default function AboutUs() {
             </p>
           </div>
           <div className="relative border border-line aspect-square hidden md:block overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/images/about-hero-team.jpg"
               alt="Three colleagues working together on laptops in a modern office"
-              className="absolute inset-0 w-full h-full object-cover object-[center_60%]"
+              fill
+              priority
+              sizes="(min-width: 768px) 45vw, 0px"
+              className="object-cover object-[center_60%]"
             />
           </div>
         </div>
@@ -76,10 +78,12 @@ export default function AboutUs() {
       <section className="container-x py-20 md:py-24 border-b border-line">
         <div className="grid md:grid-cols-2 gap-14 items-center">
           <div className="order-2 md:order-1 border border-line overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/images/about-beyond-hiring.jpg"
               alt="A diverse team reviewing hiring and growth plans together on a laptop"
+              width={1024}
+              height={684}
+              sizes="(min-width: 768px) 45vw, 100vw"
               className="w-full h-auto block"
             />
           </div>

@@ -5,8 +5,12 @@ import { buildMetadata } from "@/lib/seoMeta";
 import { stripHtml } from "@/lib/stripHtml";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
+
+// Render each detail page on first visit, then serve it from cache.
+export async function generateStaticParams() {
+  return [];
+}
 
 async function getProfile(slug: string) {
   const { data } = await supabase
@@ -75,7 +79,7 @@ export default async function EntrepreneurProfilePage({
             <div className="h-28 w-28 md:h-36 md:w-36 rounded-full border-4 border-paper/10 bg-paper/5 flex items-center justify-center text-4xl font-semibold text-paper shrink-0 overflow-hidden">
               {p.avatar_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.avatar_url} alt={p.full_name} className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={p.avatar_url} alt={p.full_name} className="h-full w-full object-cover" />
               ) : (
                 p.full_name.charAt(0)
               )}

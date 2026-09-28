@@ -4,8 +4,12 @@ import { isUuid } from "@/lib/isUuid";
 import { buildMetadata } from "@/lib/seoMeta";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
+
+// Render each detail page on first visit, then serve it from cache.
+export async function generateStaticParams() {
+  return [];
+}
 
 async function getFreelancer(slug: string) {
   const { data } = await supabase
@@ -73,7 +77,7 @@ export default async function FreelancerProfile({
             <div className="h-20 w-20 rounded-full bg-ink/5 border border-line flex items-center justify-center text-2xl font-semibold text-ink shrink-0 overflow-hidden">
               {f.avatar_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={f.avatar_url} alt={f.full_name} className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={f.avatar_url} alt={f.full_name} className="h-full w-full object-cover" />
               ) : (
                 f.full_name.charAt(0)
               )}

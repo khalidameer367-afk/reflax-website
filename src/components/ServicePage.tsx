@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import FaqSection from "@/components/FaqSection";
 import AbstractPanel from "@/components/AbstractPanel";
@@ -54,11 +55,12 @@ export default function ServicePage({
               <AbstractPanel className="w-full h-auto opacity-70" />
             </div>
             {image && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={image.src}
                 alt={image.alt}
-                className="absolute inset-0 w-full h-full object-cover"
+                fill
+                sizes="(min-width: 768px) 45vw, 100vw"
+                className="object-cover"
               />
             )}
           </div>

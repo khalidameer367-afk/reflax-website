@@ -5,8 +5,12 @@ import { buildMetadata } from "@/lib/seoMeta";
 import { stripHtml } from "@/lib/stripHtml";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
+
+// Render each detail page on first visit, then serve it from cache.
+export async function generateStaticParams() {
+  return [];
+}
 
 async function getBusiness(slug: string) {
   const { data } = await supabase
@@ -81,7 +85,7 @@ export default async function BusinessProfile({
           <div className="flex items-center gap-4 mb-2 flex-wrap">
             {b.logo_url && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={b.logo_url} alt="" className="h-10 w-auto max-w-[120px] object-contain" />
+              <img loading="lazy" decoding="async" src={b.logo_url} alt="" className="h-10 w-auto max-w-[120px] object-contain" />
             )}
             <h1 className="display text-3xl md:text-[2.6rem] font-semibold leading-[1.1] tracking-tight text-ink">
               {b.company_name}

@@ -1,9 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import { getPageMetadata, getPageContent } from "@/lib/pageSeo";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -69,11 +69,13 @@ export default async function ServicesPage() {
             </p>
           </div>
           <div className="relative border border-line min-h-[280px] md:min-h-[420px] overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/images/services-hero.jpg"
               alt="A smiling professional working on a laptop, ready to support your hiring and growth"
-              className="absolute inset-0 w-full h-full object-cover object-[center_30%]"
+              fill
+              priority
+              sizes="(min-width: 768px) 45vw, 100vw"
+              className="object-cover object-[center_30%]"
             />
           </div>
         </div>

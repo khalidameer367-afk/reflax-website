@@ -13,8 +13,7 @@ export async function generateMetadata() {
   );
 }
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 const PAGE_SIZE = 12;
 
@@ -64,7 +63,7 @@ export default async function ProfilesPage({
               <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">
                 {p.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.avatar_url} alt={p.full_name} className="h-full w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={p.avatar_url} alt={p.full_name} className="h-full w-full object-cover" />
                 ) : (
                   p.full_name.charAt(0)
                 )}

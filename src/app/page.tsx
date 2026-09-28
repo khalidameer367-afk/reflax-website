@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import HeroGraphic from "@/components/HeroGraphic";
@@ -5,8 +6,7 @@ import Reveal from "@/components/Reveal";
 import { CATEGORIES } from "@/lib/types";
 import { getPageMetadata } from "@/lib/pageSeo";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -95,12 +95,13 @@ export default async function Home() {
           </div>
 
           <div className="relative border border-line bg-ink/[0.03] min-h-[320px] md:min-h-[420px] overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/images/hero-team-meeting.jpg"
               alt="A team of professionals in a business meeting discussing a hiring decision"
-              className="absolute inset-0 w-full h-full object-cover"
-              fetchPriority="high"
+              fill
+              priority
+              sizes="(min-width: 768px) 45vw, 100vw"
+              className="object-cover"
             />
           </div>
         </div>
@@ -135,11 +136,12 @@ export default async function Home() {
               <div className="absolute inset-0 p-8 flex items-center justify-center">
                 <HeroGraphic className="w-full h-full opacity-70" />
               </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="/images/network-professionals.jpg"
                 alt="A professional connecting with a network of businesses and verified experts on Reflax"
-                className="absolute inset-0 w-full h-full object-cover"
+                fill
+                sizes="(min-width: 768px) 45vw, 100vw"
+                className="object-cover"
               />
             </div>
           </div>

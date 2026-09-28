@@ -5,8 +5,7 @@ import { getPageMetadata } from "@/lib/pageSeo";
 export async function generateMetadata() {
   return getPageMetadata("blog", "Blog — Reflax", "Insights on hiring, growth, and building teams.");
 }
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function BlogPage() {
   const { data: posts } = await supabase
@@ -35,7 +34,7 @@ export default async function BlogPage() {
             <Link key={post.id} href={`/blog/${post.slug}`} className="tilt-3d group block border border-line hover:border-ink transition-colors">
               {post.featured_image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={post.featured_image_url} alt={post.title} className="w-full h-44 object-cover" />
+                <img loading="lazy" decoding="async" src={post.featured_image_url} alt={post.title} className="w-full h-44 object-cover" />
               ) : (
                 <div className="w-full h-44 bg-ink/5 flex items-center justify-center text-muted text-sm">
                   Reflax

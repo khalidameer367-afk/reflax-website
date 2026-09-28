@@ -3,8 +3,12 @@ import { supabase } from "@/lib/supabase";
 import { buildMetadata } from "@/lib/seoMeta";
 import { stripHtml } from "@/lib/stripHtml";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
+
+// Render each detail page on first visit, then serve it from cache.
+export async function generateStaticParams() {
+  return [];
+}
 
 async function getPost(slug: string) {
   const { data } = await supabase.from("blog_posts").select("*").eq("slug", slug).single();
@@ -106,7 +110,7 @@ export default async function BlogPostPage({
               <Link key={r.id} href={`/blog/${r.slug}`} className="flex gap-4 group">
                 {r.featured_image_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={r.featured_image_url} alt={r.title} className="h-16 w-16 object-cover shrink-0" />
+                  <img loading="lazy" decoding="async" src={r.featured_image_url} alt={r.title} className="h-16 w-16 object-cover shrink-0" />
                 ) : (
                   <div className="h-16 w-16 bg-ink/5 shrink-0" />
                 )}

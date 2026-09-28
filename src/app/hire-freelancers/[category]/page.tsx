@@ -4,8 +4,7 @@ import { CATEGORIES, CATEGORY_DESCRIPTIONS } from "@/lib/types";
 import { shuffleWithFeatured } from "@/lib/shuffle";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 function slugify(cat: string) {
   return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -110,7 +109,7 @@ export default async function CategoryPage({
                 <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">
                   {f.avatar_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={f.avatar_url} alt={f.full_name} className="h-full w-full object-cover" />
+                    <img loading="lazy" decoding="async" src={f.avatar_url} alt={f.full_name} className="h-full w-full object-cover" />
                   ) : (
                     f.full_name.charAt(0)
                   )}

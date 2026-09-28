@@ -20,7 +20,7 @@ export default function Marquee({
             <div className="h-10 w-10 rounded-full bg-ink/5 border border-line flex items-center justify-center text-sm font-semibold text-ink overflow-hidden shrink-0">
               {item.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={item.image} alt={item.name} className="h-full w-full object-cover" />
               ) : (
                 item.name.charAt(0)
               )}

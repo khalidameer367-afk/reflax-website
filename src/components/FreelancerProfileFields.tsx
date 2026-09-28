@@ -44,7 +44,7 @@ export default function FreelancerProfileFields({
           >
             {avatarPreview ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={avatarPreview} alt="Preview" className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={avatarPreview} alt="Preview" className="h-full w-full object-cover" />
             ) : (
               <span className="text-xs text-muted text-center px-2">Add photo</span>
             )}

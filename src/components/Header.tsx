@@ -25,7 +25,7 @@ export default function Header() {
   const pathname = usePathname();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user));
+    supabase.auth.getSession().then(({ data }) => setLoggedIn(!!data.session?.user));
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       setLoggedIn(!!session?.user);
     });

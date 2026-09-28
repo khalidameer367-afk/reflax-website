@@ -135,7 +135,6 @@ h1, h2, h3, h4, .display {
 .tilt-3d {
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, border-color 0.3s ease;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 .tilt-3d:hover {
   transform: perspective(1000px) rotateX(3deg) rotateY(-4deg) translateY(-6px) scale(1.015);
