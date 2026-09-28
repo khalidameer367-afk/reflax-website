@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Script from "next/script";
 import "./globals.css";
+
+// Tidio public key (safe to expose). Can be overridden via NEXT_PUBLIC_TIDIO_KEY.
+const TIDIO_KEY =
+  process.env.NEXT_PUBLIC_TIDIO_KEY ?? "mikvrgrparuxcqesjy6iopsucwkcerox";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -31,6 +36,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <Script
+          src={`https://code.tidio.co/${TIDIO_KEY}.js`}
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
