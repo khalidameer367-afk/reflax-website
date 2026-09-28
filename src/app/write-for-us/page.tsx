@@ -42,7 +42,7 @@ export default function WriteForUs() {
           <div>
             <div className="text-sm text-muted mb-5">Contribute</div>
             <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink">
-              Write for Reflax.
+              Write for Us.
             </h1>
             <p className="mt-6 text-[15px] leading-relaxed text-muted max-w-xl">
               At Reflax, we welcome passionate writers, industry experts, and
@@ -113,7 +113,7 @@ export default function WriteForUs() {
       <section className="container-x py-16 md:py-20">
         <div className="tilt-3d border border-line p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div className="max-w-md">
-            <h2 className="display text-2xl font-semibold text-ink">Join us</h2>
+            <h2 className="display text-2xl font-semibold text-ink">Contact us</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
               Become a part of Reflax and contribute to a platform that
               connects talent, branding, and business growth experts
