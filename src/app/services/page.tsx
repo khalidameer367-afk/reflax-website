@@ -1,6 +1,5 @@
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
-import HeroGraphic from "@/components/HeroGraphic";
 import { getPageMetadata, getPageContent } from "@/lib/pageSeo";
 
 export const dynamic = "force-dynamic";
@@ -69,8 +68,13 @@ export default async function ServicesPage() {
               consultancy.
             </p>
           </div>
-          <div className="tilt-3d border border-line bg-ink/[0.03] min-h-[280px] md:min-h-[420px] flex items-center justify-center p-6">
-            <HeroGraphic className="w-full h-full" />
+          <div className="relative border border-line min-h-[280px] md:min-h-[420px] overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/services-hero.jpg"
+              alt="A smiling professional working on a laptop, ready to support your hiring and growth"
+              className="absolute inset-0 w-full h-full object-cover object-[center_30%]"
+            />
           </div>
         </div>
       </section>

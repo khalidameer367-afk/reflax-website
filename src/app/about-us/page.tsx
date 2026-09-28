@@ -55,8 +55,8 @@ export default function AboutUs() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/about-hero-team.jpg"
-              alt="Team members collaborating on laptops around a table with project plans"
-              className="absolute inset-0 w-full h-full object-cover"
+              alt="Three colleagues working together on laptops in a modern office"
+              className="absolute inset-0 w-full h-full object-cover object-[center_60%]"
             />
           </div>
         </div>
