@@ -72,13 +72,13 @@ export default async function Home() {
             <div className="mt-9 flex flex-wrap gap-4">
               <Link
                 href="/hire-freelancers"
-                className="btn-pop inline-flex items-center border border-ink bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors"
+                className="btn-pop inline-flex items-center border border-ink bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper transition-colors hover:border-accent"
               >
                 Hire a freelancer
               </Link>
               <Link
                 href="/register"
-                className="btn-pop inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="btn-pop inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors hover:border-ink"
               >
                 Join as a professional
               </Link>
@@ -207,10 +207,10 @@ export default async function Home() {
                 )}`}
                 className="tilt-3d group bg-paper p-7 flex items-center justify-between hover:bg-accent transition-colors relative z-0 hover:z-10"
               >
-                <span className="text-[15px] font-medium text-ink transition-colors">
+                <span className="text-[15px] font-medium text-ink group-hover:text-paper transition-colors">
                   {cat}
                 </span>
-                <span className="text-muted group-hover:text-ink transition-colors">→</span>
+                <span className="text-muted group-hover:text-paper transition-colors">→</span>
               </Link>
             ))}
           </div>
@@ -252,7 +252,7 @@ export default async function Home() {
               />
               <Link
                 href="/businesses"
-                className="btn-pop mt-8 inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="btn-pop mt-8 inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors hover:border-ink"
               >
                 Browse businesses
               </Link>
@@ -282,7 +282,7 @@ export default async function Home() {
             </div>
             <Link
               href="/profiles"
-              className="btn-pop shrink-0 inline-flex items-center border border-ink bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors"
+              className="btn-pop shrink-0 inline-flex items-center border border-ink bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper transition-colors hover:border-accent"
             >
               View profiles
             </Link>

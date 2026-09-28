@@ -107,7 +107,7 @@ export default async function BusinessProfile({
             {b.email && (
               <a
                 href={`mailto:${b.email}`}
-                className="flex items-center justify-center gap-2 bg-ink text-paper px-5 py-3 text-sm font-medium hover:bg-accent hover:text-ink transition-colors"
+                className="flex items-center justify-center gap-2 bg-ink text-paper px-5 py-3 text-sm font-medium hover:bg-accent hover:text-paper transition-colors"
               >
                 Email {b.company_name}
               </a>
@@ -115,7 +115,7 @@ export default async function BusinessProfile({
             {b.phone && (
               <a
                 href={`tel:${b.phone}`}
-                className="flex items-center justify-center gap-2 border border-ink bg-accent px-5 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="flex items-center justify-center gap-2 border border-accent bg-accent px-5 py-3 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors hover:border-ink"
               >
                 Call {b.phone}
               </a>

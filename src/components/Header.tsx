@@ -84,7 +84,7 @@ export default function Header() {
                   <Link
                     key={s.href}
                     href={s.href}
-                    className="block px-5 py-3 text-sm text-ink hover:bg-accent transition-colors"
+                    className="block px-5 py-3 text-sm text-ink hover:bg-accent transition-colors hover:text-paper"
                   >
                     {s.label}
                   </Link>
@@ -114,7 +114,7 @@ export default function Header() {
         <div className="hidden lg:block">
           <Link
             href={loggedIn ? "/dashboard" : "/register"}
-            className="inline-flex items-center border border-ink bg-accent px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-ink hover:text-paper"
+            className="inline-flex items-center border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-ink hover:text-paper hover:border-ink"
           >
             {loggedIn ? "My Dashboard" : "Register"}
           </Link>
@@ -165,7 +165,7 @@ export default function Header() {
             <Link
               href={loggedIn ? "/dashboard" : "/register"}
               onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center justify-center border border-ink bg-accent px-5 py-3 text-sm font-medium text-ink"
+              className="mt-4 inline-flex items-center justify-center border border-accent bg-accent px-5 py-3 text-sm font-medium text-paper"
             >
               {loggedIn ? "My Dashboard" : "Register"}
             </Link>

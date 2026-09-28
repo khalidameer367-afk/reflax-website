@@ -104,7 +104,7 @@ export default function ServicePage({
               </p>
               <Link
                 href="/contact"
-                className="btn-pop inline-flex items-center justify-center w-full bg-accent px-6 py-3.5 text-sm font-medium text-ink hover:bg-paper transition-colors mb-7"
+                className="btn-pop inline-flex items-center justify-center w-full bg-accent px-6 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink transition-colors mb-7"
               >
                 Get in touch
               </Link>
@@ -139,19 +139,19 @@ export default function ServicePage({
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contact"
-                  className="btn-pop inline-flex items-center bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-paper transition-colors"
+                  className="btn-pop inline-flex items-center bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink transition-colors"
                 >
                   Get in touch
                 </Link>
                 <Link
                   href="/hire-freelancers"
-                  className="btn-pop inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink hover:border-accent transition-colors"
+                  className="btn-pop inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper hover:border-accent transition-colors"
                 >
                   Hire a freelancer
                 </Link>
                 <Link
                   href="/register"
-                  className="btn-pop inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink hover:border-accent transition-colors"
+                  className="btn-pop inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper hover:border-accent transition-colors"
                 >
                   Join as a freelancer
                 </Link>

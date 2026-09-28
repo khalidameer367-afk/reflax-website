@@ -132,7 +132,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors disabled:opacity-50"
+            className="inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors disabled:opacity-50 hover:border-ink"
           >
             {status === "submitting" ? "Creating..." : "Create account & submit for review"}
           </button>

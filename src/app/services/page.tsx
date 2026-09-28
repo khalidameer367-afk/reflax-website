@@ -118,7 +118,7 @@ export default async function ServicesPage() {
               </p>
               <Link
                 href="/contact"
-                className="btn-pop inline-flex items-center justify-center w-full bg-accent px-6 py-3.5 text-sm font-medium text-ink hover:bg-paper transition-colors mb-7"
+                className="btn-pop inline-flex items-center justify-center w-full bg-accent px-6 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink transition-colors mb-7"
               >
                 Get in touch
               </Link>

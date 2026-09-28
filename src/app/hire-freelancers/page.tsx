@@ -44,13 +44,13 @@ export default function HireFreelancers() {
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
               href="#categories"
-              className="inline-flex items-center bg-accent text-ink px-7 py-3.5 text-sm font-medium hover:bg-paper transition-colors"
+              className="inline-flex items-center bg-accent text-paper px-7 py-3.5 text-sm font-medium hover:bg-paper hover:text-ink transition-colors"
             >
               Browse categories
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink hover:border-accent transition-colors"
+              className="inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper hover:border-accent transition-colors"
             >
               Join as a freelancer
             </Link>
@@ -80,10 +80,10 @@ export default function HireFreelancers() {
               href={`/hire-freelancers/${slugify(cat)}`}
               className="tilt-3d group bg-paper p-8 flex flex-col justify-between min-h-[140px] hover:bg-accent transition-colors relative z-0 hover:z-10"
             >
-              <span className="text-lg font-medium text-ink transition-colors">
+              <span className="text-lg font-medium text-ink group-hover:text-paper transition-colors">
                 {cat}
               </span>
-              <span className="text-sm text-muted group-hover:text-ink transition-colors">
+              <span className="text-sm text-muted group-hover:text-paper/80 transition-colors">
                 View freelancers →
               </span>
             </Link>
@@ -132,13 +132,13 @@ export default function HireFreelancers() {
           <div className="flex flex-wrap gap-4 shrink-0">
             <Link
               href="/register"
-              className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors"
+              className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper transition-colors"
             >
               Join as a freelancer
             </Link>
             <Link
               href="/services"
-              className="btn-pop inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+              className="btn-pop inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors hover:border-ink"
             >
               Explore our services
             </Link>
