@@ -72,13 +72,13 @@ export default async function Home() {
             <div className="mt-9 flex flex-wrap gap-4">
               <Link
                 href="/hire-freelancers"
-                className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+                className="btn-pop inline-flex items-center border border-ink bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors"
               >
                 Hire a freelancer
               </Link>
               <Link
                 href="/register"
-                className="btn-pop inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="btn-pop inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
               >
                 Join as a professional
               </Link>
@@ -94,8 +94,14 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="tilt-3d border border-line bg-ink/[0.03] p-8 min-h-[320px] md:min-h-[420px] flex items-center justify-center">
-            <HeroGraphic className="w-full h-full spin-slow" />
+          <div className="relative border border-line bg-ink/[0.03] min-h-[320px] md:min-h-[420px] overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/hero-team-meeting.jpg"
+              alt="A team of professionals in a business meeting discussing a hiring decision"
+              className="absolute inset-0 w-full h-full object-cover"
+              fetchPriority="high"
+            />
           </div>
         </div>
       </section>
@@ -199,12 +205,12 @@ export default async function Home() {
                 href={`/hire-freelancers/${encodeURIComponent(
                   cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")
                 )}`}
-                className="tilt-3d group bg-paper p-7 flex items-center justify-between hover:bg-ink transition-colors relative z-0 hover:z-10"
+                className="tilt-3d group bg-paper p-7 flex items-center justify-between hover:bg-accent transition-colors relative z-0 hover:z-10"
               >
-                <span className="text-[15px] font-medium text-ink group-hover:text-paper transition-colors">
+                <span className="text-[15px] font-medium text-ink transition-colors">
                   {cat}
                 </span>
-                <span className="text-muted group-hover:text-paper transition-colors">→</span>
+                <span className="text-muted group-hover:text-ink transition-colors">→</span>
               </Link>
             ))}
           </div>
@@ -246,7 +252,7 @@ export default async function Home() {
               />
               <Link
                 href="/businesses"
-                className="btn-pop mt-8 inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+                className="btn-pop mt-8 inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
               >
                 Browse businesses
               </Link>
@@ -276,7 +282,7 @@ export default async function Home() {
             </div>
             <Link
               href="/profiles"
-              className="btn-pop shrink-0 inline-flex items-center border border-ink px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+              className="btn-pop shrink-0 inline-flex items-center border border-ink bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors"
             >
               View profiles
             </Link>
