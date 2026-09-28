@@ -14,10 +14,10 @@ export default function NotFound() {
         these instead:
       </p>
       <div className="mt-8 flex flex-wrap gap-4 justify-center">
-        <Link href="/" className="inline-flex items-center bg-ink px-6 py-3 text-sm font-medium text-paper hover:bg-ink/85 transition-colors">
+        <Link href="/" className="inline-flex items-center bg-ink px-6 py-3 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors">
           Go to homepage
         </Link>
-        <Link href="/hire-freelancers" className="inline-flex items-center border border-ink px-6 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors">
+        <Link href="/hire-freelancers" className="inline-flex items-center border border-ink bg-accent px-6 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors">
           Browse freelancers
         </Link>
         <Link href="/contact" className="inline-flex items-center border border-line px-6 py-3 text-sm font-medium text-muted hover:text-ink hover:border-ink transition-colors">

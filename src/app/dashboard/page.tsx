@@ -143,7 +143,7 @@ export default function DashboardPage() {
           <button
             type="submit"
             disabled={saving}
-            className="inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors disabled:opacity-50"
+            className="inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors disabled:opacity-50"
           >
             {saving ? "Saving..." : profile ? "Save changes" : "Publish profile"}
           </button>

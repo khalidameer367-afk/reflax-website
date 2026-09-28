@@ -133,7 +133,7 @@ export default async function EntrepreneurProfilePage({
                 href={p.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-ink px-5 py-3 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+                className="inline-flex items-center justify-center bg-ink px-5 py-3 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors"
               >
                 Visit website
               </a>
@@ -143,7 +143,7 @@ export default async function EntrepreneurProfilePage({
                 href={p.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center border border-ink px-5 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="inline-flex items-center justify-center border border-ink bg-accent px-5 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
               >
                 LinkedIn profile
               </a>

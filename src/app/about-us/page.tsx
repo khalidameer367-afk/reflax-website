@@ -1,6 +1,4 @@
 import SectionHeading from "@/components/SectionHeading";
-import HeroGraphic from "@/components/HeroGraphic";
-import AbstractPanel from "@/components/AbstractPanel";
 import { getPageMetadata } from "@/lib/pageSeo";
 
 export const dynamic = "force-dynamic";
@@ -53,8 +51,13 @@ export default function AboutUs() {
               agencies. So we built one place that does both — properly.
             </p>
           </div>
-          <div className="border border-line aspect-square hidden md:flex items-center justify-center p-6">
-            <HeroGraphic className="w-full h-full" />
+          <div className="relative border border-line aspect-square hidden md:block overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/about-hero-team.jpg"
+              alt="Team members collaborating on laptops around a table with project plans"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </div>
         </div>
       </section>
@@ -72,8 +75,13 @@ export default function AboutUs() {
 
       <section className="container-x py-20 md:py-24 border-b border-line">
         <div className="grid md:grid-cols-2 gap-14 items-center">
-          <div className="order-2 md:order-1 border border-line p-6">
-            <AbstractPanel className="w-full h-auto" />
+          <div className="order-2 md:order-1 border border-line overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/about-beyond-hiring.jpg"
+              alt="A diverse team reviewing hiring and growth plans together on a laptop"
+              className="w-full h-auto block"
+            />
           </div>
           <div className="order-1 md:order-2">
             <SectionHeading

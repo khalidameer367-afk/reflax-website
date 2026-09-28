@@ -145,14 +145,14 @@ export default async function FreelancerProfile({
           <div className="mt-7 pt-7 border-t border-line flex flex-col gap-3">
             <a
               href={`mailto:${f.email}`}
-              className="inline-flex items-center justify-center bg-ink px-5 py-3 text-sm font-medium text-paper hover:bg-ink/85 transition-colors"
+              className="inline-flex items-center justify-center bg-ink px-5 py-3 text-sm font-medium text-paper hover:bg-accent hover:text-ink transition-colors"
             >
               Contact via email
             </a>
             {f.phone && (
               <a
                 href={`tel:${f.phone}`}
-                className="inline-flex items-center justify-center border border-ink px-5 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
+                className="inline-flex items-center justify-center border border-ink bg-accent px-5 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
               >
                 Call {f.phone}
               </a>

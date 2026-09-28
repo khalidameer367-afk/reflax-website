@@ -123,7 +123,7 @@ export default function WriteForUs() {
           </div>
           <Link
             href="/contact"
-            className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink/85 transition-colors shrink-0"
+            className="btn-pop inline-flex items-center border border-ink bg-accent px-7 py-3.5 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors shrink-0"
           >
             Pitch your article
           </Link>

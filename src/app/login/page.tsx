@@ -54,7 +54,7 @@ export default function LoginPage() {
         {status === "error" && <p className="text-sm text-red-600">{errorMsg}</p>}
         <button
           disabled={status === "submitting"}
-          className="w-full bg-ink text-paper py-3.5 text-sm font-medium hover:bg-ink/85 transition-colors disabled:opacity-50"
+          className="w-full border border-ink bg-accent text-ink py-3.5 text-sm font-medium hover:bg-ink hover:text-paper transition-colors disabled:opacity-50"
         >
           {status === "submitting" ? "Logging in..." : "Log in"}
         </button>
