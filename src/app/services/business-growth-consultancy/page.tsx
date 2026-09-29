@@ -1,5 +1,6 @@
 import ServicePage from "@/components/ServicePage";
 import { getPageMetadata, getPageContent } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -71,6 +72,8 @@ const FAQS = [
 export default async function BusinessGrowthConsultancy() {
   const customContent = await getPageContent("business-growth-consultancy");
   return (
+    <>
+      <PageSchema pageKey="business-growth-consultancy" />
     <ServicePage
       eyebrow="Services"
       title="Business Growth Consultancy"
@@ -100,5 +103,6 @@ export default async function BusinessGrowthConsultancy() {
         "Recommendations grounded in your real numbers",
       ]}
     />
+    </>
   );
 }

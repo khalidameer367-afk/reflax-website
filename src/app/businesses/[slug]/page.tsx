@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { isUuid } from "@/lib/isUuid";
-import { buildMetadata } from "@/lib/seoMeta";
+import { isUuid } from "@/lib/slug";
+import { buildMetadata } from "@/lib/pageSeo";
+import { JsonLd } from "@/components/PageSchema";
+import { businessSchema, businessPath } from "@/lib/schema";
 import { stripHtml } from "@/lib/stripHtml";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
@@ -25,8 +27,11 @@ async function getBusiness(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const b = await getBusiness(slug);
-  if (!b) return { title: "Business — Reflax" };
-  return buildMetadata(b, `${b.company_name} — Reflax`, stripHtml(b.description, 160));
+  if (!b) return { title: "Business — Reflax", robots: { index: false, follow: false } };
+  return buildMetadata(b, `${b.company_name} — Reflax`, stripHtml(b.description, 160), {
+    path: businessPath(b),
+    image: b.featured_image_url || b.logo_url,
+  });
 }
 
 export default async function BusinessProfile({
@@ -50,22 +55,7 @@ export default async function BusinessProfile({
 
   return (
     <div className="container-x py-12 md:py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: b.company_name,
-            description: stripHtml(b.description, 300),
-            image: b.logo_url || b.featured_image_url || undefined,
-            email: b.email || undefined,
-            telephone: b.phone || undefined,
-            url: b.website || undefined,
-            address: b.location ? { "@type": "PostalAddress", addressLocality: b.location } : undefined,
-          }),
-        }}
-      />
+      <JsonLd data={businessSchema(b)} />
       <Link href="/businesses" className="text-sm text-muted hover:text-ink transition-colors">
         ← All businesses
       </Link>

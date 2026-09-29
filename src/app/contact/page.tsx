@@ -1,5 +1,6 @@
 import ContactForm from "@/components/ContactForm";
 import { getPageMetadata } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -12,6 +13,7 @@ export async function generateMetadata() {
 export default function ContactPage() {
   return (
     <div>
+      <PageSchema pageKey="contact" />
       <section className="border-b border-line">
         <div className="container-x py-20 md:py-28">
           <div className="text-sm text-muted mb-5">Contact us</div>

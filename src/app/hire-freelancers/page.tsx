@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CATEGORIES } from "@/lib/types";
 import SectionHeading from "@/components/SectionHeading";
 import { getPageMetadata } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -26,6 +27,7 @@ const REASONS = [
 export default function HireFreelancers() {
   return (
     <div>
+      <PageSchema pageKey="hire-freelancers" items={CATEGORIES.map((c) => ({ name: `${c} Freelancers`, path: `/hire-freelancers/${slugify(c)}` }))} />
       {/* Prominent hero with dot-grid background */}
       <section className="relative border-b border-line overflow-hidden bg-ink text-paper">
         <div className="absolute inset-0 dot-grid-bg opacity-[0.08]" style={{ filter: "invert(1)" }} />

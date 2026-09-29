@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/adminAuth";
-import { resolveSlug } from "@/lib/slug";
+import { resolveSlug, recordPathChange } from "@/lib/slug";
 import { notifyBusinessApproved } from "@/lib/mailer";
 
 const allowedFields = [
@@ -75,6 +75,8 @@ export async function PUT(req: NextRequest) {
 
   const db = supabaseAdmin();
 
+  const { data: prev } = await db.from("businesses").select("slug").eq("id", id).single();
+
   if ("slug" in fields) {
     try {
       update.slug = await resolveSlug(db, "businesses", fields.company_name || "business", fields.slug, id);
@@ -85,6 +87,15 @@ export async function PUT(req: NextRequest) {
 
   const { error } = await db.from("businesses").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  // Keep the old URL working if the slug (or category) changed.
+  if (prev) {
+    try {
+      await recordPathChange(db, `/businesses/${prev.slug || id}`, `/businesses/${(update.slug as string) ?? prev.slug ?? id}`);
+    } catch (e) {
+      console.error("Could not record redirect:", e);
+    }
+  }
   return NextResponse.json({ success: true });
 }
 

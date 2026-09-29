@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isAdminAuthed } from "@/lib/adminAuth";
-import { resolveSlug } from "@/lib/slug";
+import { resolveSlug, recordPathChange } from "@/lib/slug";
+import { categorySlug } from "@/lib/site";
 
 export async function GET(req: NextRequest) {
   if (!isAdminAuthed(req)) {
@@ -67,6 +68,8 @@ export async function PUT(req: NextRequest) {
 
   const db = supabaseAdmin();
 
+  const { data: prev } = await db.from("freelancers").select("category, slug").eq("id", id).single();
+
   if ("slug" in fields) {
     try {
       const nameForFallback = fields.full_name || "profile";
@@ -78,6 +81,15 @@ export async function PUT(req: NextRequest) {
 
   const { error } = await db.from("freelancers").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  // Keep the old URL working if the slug (or category) changed.
+  if (prev) {
+    try {
+      await recordPathChange(db, `/hire-freelancers/${categorySlug(String(prev.category))}/${prev.slug || id}`, `/hire-freelancers/${categorySlug(String((update.category as string) ?? prev.category))}/${(update.slug as string) ?? prev.slug ?? id}`);
+    } catch (e) {
+      console.error("Could not record redirect:", e);
+    }
+  }
   return NextResponse.json({ success: true });
 }
 

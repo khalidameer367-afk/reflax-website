@@ -7,7 +7,7 @@ import { resizeImageToDataUrl } from "@/lib/image";
 import RichTextEditor from "@/components/RichTextEditor";
 import SeoFieldsSection from "@/components/SeoFieldsSection";
 import SlugField from "@/components/SlugField";
-import { PAGE_KEYS } from "@/lib/pageSeo";
+import { PAGE_KEYS } from "@/lib/pageRegistry";
 
 const statusColor: Record<string, string> = {
   pending: "text-amber-600",
@@ -364,7 +364,7 @@ function EditFreelancerForm({
           Featured <span className="text-muted">— pins this profile to the top of listings</span>
         </label>
       </div>
-      <SeoFieldsSection defaults={freelancer} />
+      <SeoFieldsSection defaults={freelancer} pagePath={`/hire-freelancers/${(freelancer.category || "").toLowerCase().replace(/[^a-z0-9]+/g, "-")}/${freelancer.slug || freelancer.id}`} />
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
@@ -603,7 +603,7 @@ function BusinessForm({
         </label>
       </div>
 
-      <SeoFieldsSection defaults={business} />
+      <SeoFieldsSection defaults={business} pagePath={business ? `/businesses/${business.slug || business.id}` : undefined} />
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-3">
@@ -794,7 +794,7 @@ function ProfileForm({
         </label>
       </div>
 
-      <SeoFieldsSection defaults={profile} />
+      <SeoFieldsSection defaults={profile} pagePath={profile ? `/profiles/${profile.slug || profile.id}` : undefined} />
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-3">
@@ -966,7 +966,7 @@ function BlogPostForm({
           linking, e.g. /hire-freelancers/seo).
         </p>
       </div>
-      <SeoFieldsSection defaults={post} />
+      <SeoFieldsSection defaults={post} pagePath={post ? `/blog/${post.slug}` : undefined} />
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-3">
         <button disabled={saving} className="bg-ink text-paper px-5 py-2.5 text-sm hover:bg-ink/85 transition-colors disabled:opacity-50">
@@ -1024,28 +1024,35 @@ function PagesTab() {
     <div className="space-y-6">
       <p className="text-sm text-muted max-w-xl">
         Set the meta title, description, canonical URL and focus keyword
-        for each page — used by search engines. For Services pages, you
+        for each page — used by search engines. Schema markup is
+        generated automatically for every page. For Services pages, you
         can also edit the actual page content below (the page layout
         stays the same, only this text changes).
       </p>
       {loading && <p className="text-sm text-muted">Loading...</p>}
-      {PAGE_KEYS.map(({ key, label }) => {
-        const existingSeo = pages.find((p) => p.page_key === key);
-        const existingContent = contents.find((c) => c.page_key === key);
-        const hasContentEditor = key.includes("services") || key === "recruitment-services" || key === "talent-acquisition" || key === "business-growth-consultancy";
-        return (
-          <PageSeoForm
-            key={key}
-            pageKey={key}
-            label={label}
-            existingSeo={existingSeo}
-            existingContent={existingContent?.content}
-            showContentEditor={hasContentEditor}
-            onSaveSeo={saveSeo}
-            onSaveContent={saveContent}
-          />
-        );
-      })}
+      {Array.from(new Set(PAGE_KEYS.map((p) => p.group))).map((group) => (
+        <div key={group} className="space-y-3">
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-muted pt-2">{group}</h2>
+          {PAGE_KEYS.filter((p) => p.group === group).map(({ key, label, path }) => {
+            const existingSeo = pages.find((p) => p.page_key === key);
+            const existingContent = contents.find((c) => c.page_key === key);
+            const hasContentEditor = key.includes("services") || key === "recruitment-services" || key === "talent-acquisition" || key === "business-growth-consultancy";
+            return (
+              <PageSeoForm
+                key={key}
+                pageKey={key}
+                label={label}
+                path={path}
+                existingSeo={existingSeo}
+                existingContent={existingContent?.content}
+                showContentEditor={hasContentEditor}
+                onSaveSeo={saveSeo}
+                onSaveContent={saveContent}
+              />
+            );
+          })}
+        </div>
+      ))}
     </div>
   );
 }
@@ -1053,6 +1060,7 @@ function PagesTab() {
 function PageSeoForm({
   pageKey,
   label,
+  path,
   existingSeo,
   existingContent,
   showContentEditor,
@@ -1061,6 +1069,7 @@ function PageSeoForm({
 }: {
   pageKey: string;
   label: string;
+  path?: string;
   existingSeo?: PageSeo;
   existingContent?: string | null;
   showContentEditor?: boolean;
@@ -1094,7 +1103,7 @@ function PageSeoForm({
         <form onSubmit={handleSubmit} className="p-5 pt-0 space-y-3 border-t border-line">
           <input name="meta_title" defaultValue={existingSeo?.meta_title || ""} placeholder="Meta title" className={inputCls} />
           <textarea name="meta_description" defaultValue={existingSeo?.meta_description || ""} rows={2} placeholder="Meta description" className={inputCls} />
-          <input name="canonical_url" defaultValue={existingSeo?.canonical_url || ""} placeholder="Canonical URL (optional)" className={inputCls} />
+          <input name="canonical_url" defaultValue={existingSeo?.canonical_url || ""} placeholder={`Canonical URL (empty = ${path || "this page"})`} className={inputCls} />
           <input name="focus_keyword" defaultValue={existingSeo?.focus_keyword || ""} placeholder="Focus keyword" className={inputCls} />
           {showContentEditor && (
             <div>

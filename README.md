@@ -236,3 +236,24 @@ src/
 supabase-all-migrations.sql      → Run this once in Supabase SQL Editor
 .env.local.example               → Copy to .env.local and fill in
 ```
+
+---
+
+## SEO, canonical & automatic schema (JSON-LD)
+
+**Admin → Pages tab** now lists *every* static page, grouped: Main pages, Services,
+Legal & Contribute (Write for Us, Privacy Policy, Terms & Conditions) and all
+Freelancer category pages. Each has meta title, meta description, canonical, focus keyword.
+To add a new static page: add one entry in `src/lib/pageRegistry.ts`, use
+`getPageMetadata(key, …)` in `generateMetadata` and put `<PageSchema pageKey="key" />` in the page.
+
+**Freelancers / Businesses / Profiles / Blog:** Admin → Edit → URL slug + SEO block
+(meta title, description, canonical). If canonical is empty, the page's own URL is used.
+Changing a slug (or a freelancer's category) automatically creates a redirect from the old URL.
+
+**Schema is never typed by hand.** `src/lib/schema.ts` builds it from the live database
+record on every render, so anything you add or edit is covered immediately:
+Organization + WebSite (whole site), WebPage/AboutPage/ContactPage/CollectionPage + BreadcrumbList
+(static & listing pages), ProfilePage + Person (freelancers, profiles), WebPage + Organization
+(businesses), BlogPosting (posts), Service (service pages), ItemList (listings).
+Set `NEXT_PUBLIC_SITE_URL` in your environment. Test with Google's Rich Results Test.

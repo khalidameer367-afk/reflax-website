@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { getPageMetadata } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export async function generateMetadata() {
   return getPageMetadata("blog", "Blog — Reflax", "Insights on hiring, growth, and building teams.");
@@ -15,6 +16,7 @@ export default async function BlogPage() {
 
   return (
     <div>
+      <PageSchema pageKey="blog" items={(posts || []).map((p) => ({ name: p.title, path: `/blog/${p.slug}` }))} />
       <section className="border-b border-line">
         <div className="container-x py-20 md:py-28">
           <div className="text-sm text-muted mb-5">Blog</div>

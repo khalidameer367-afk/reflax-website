@@ -3,6 +3,9 @@ import { Space_Grotesk, Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
+import { JsonLd } from "@/components/PageSchema";
+import { graph, organizationNode, websiteNode } from "@/lib/schema";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 import "./globals.css";
 
 // Tidio public key (safe to expose). Can be overridden via NEXT_PUBLIC_TIDIO_KEY.
@@ -21,6 +24,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   title: "Reflax — Hiring Platform for Experts & Freelancers",
   description:
     "Reflax connects businesses with verified, skilled freelancers and experts across every industry — and helps professionals find real opportunities.",
@@ -33,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
+        <JsonLd data={graph(organizationNode(), websiteNode())} />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

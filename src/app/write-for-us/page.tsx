@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HeroGraphic from "@/components/HeroGraphic";
 import { getPageMetadata } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -37,6 +38,7 @@ const WHY = [
 export default function WriteForUs() {
   return (
     <div>
+      <PageSchema pageKey="write-for-us" />
       <section className="border-b border-line">
         <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>

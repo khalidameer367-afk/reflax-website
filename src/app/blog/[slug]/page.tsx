@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { buildMetadata } from "@/lib/seoMeta";
+import { buildMetadata } from "@/lib/pageSeo";
+import { JsonLd } from "@/components/PageSchema";
+import { blogPostSchema, blogPath } from "@/lib/schema";
 import { stripHtml } from "@/lib/stripHtml";
 
 export const revalidate = 60;
@@ -18,8 +20,12 @@ async function getPost(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) return { title: "Post — Reflax" };
-  return buildMetadata(post, `${post.title} — Reflax Blog`, post.excerpt || stripHtml(post.content, 160));
+  if (!post) return { title: "Post — Reflax", robots: { index: false, follow: false } };
+  return buildMetadata(post, `${post.title} — Reflax Blog`, post.excerpt || stripHtml(post.content, 160), {
+    path: blogPath(post),
+    image: post.featured_image_url,
+    type: "article",
+  });
 }
 
 export default async function BlogPostPage({
@@ -57,20 +63,7 @@ export default async function BlogPostPage({
 
   return (
     <div className="container-x py-12 md:py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: post.title,
-            description: post.excerpt || stripHtml(post.content, 160),
-            image: post.featured_image_url || undefined,
-            datePublished: post.created_at,
-            author: post.author ? { "@type": "Person", name: post.author } : undefined,
-          }),
-        }}
-      />
+      <JsonLd data={blogPostSchema(post)} />
       <Link href="/blog" className="text-sm text-muted hover:text-ink transition-colors">
         ← All posts
       </Link>

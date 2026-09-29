@@ -3,6 +3,10 @@ import { supabase } from "@/lib/supabase";
 import { CATEGORIES, CATEGORY_DESCRIPTIONS } from "@/lib/types";
 import { shuffleWithFeatured } from "@/lib/shuffle";
 import VerifiedBadge from "@/components/VerifiedBadge";
+import PageSchema from "@/components/PageSchema";
+import { getPageMetadata } from "@/lib/pageSeo";
+import { categoryPageKey, categoryDefaults } from "@/lib/pageRegistry";
+import { freelancerPath } from "@/lib/schema";
 
 export const revalidate = 60;
 
@@ -21,7 +25,9 @@ export async function generateMetadata({
 }) {
   const { category } = await params;
   const cat = unslugify(category);
-  return { title: cat ? `${cat} Freelancers — Reflax` : "Freelancers — Reflax" };
+  if (!cat) return { title: "Freelancers — Reflax", robots: { index: false, follow: false } };
+  const d = categoryDefaults(cat);
+  return getPageMetadata(categoryPageKey(category), d.title, d.description);
 }
 
 export default async function CategoryPage({
@@ -63,6 +69,10 @@ export default async function CategoryPage({
 
   return (
     <div>
+      <PageSchema
+        pageKey={categoryPageKey(category)}
+        items={(freelancers || []).map((f) => ({ name: f.full_name, path: freelancerPath(f) }))}
+      />
       <section className="border-b border-line">
         <div className="container-x py-16 md:py-20">
           <Link href="/hire-freelancers" className="text-sm text-muted hover:text-ink transition-colors">

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { isUuid } from "@/lib/isUuid";
-import { buildMetadata } from "@/lib/seoMeta";
+import { isUuid } from "@/lib/slug";
+import { buildMetadata } from "@/lib/pageSeo";
+import { JsonLd } from "@/components/PageSchema";
+import { profileSchema, profilePath } from "@/lib/schema";
 import { stripHtml } from "@/lib/stripHtml";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
@@ -24,8 +26,12 @@ async function getProfile(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const p = await getProfile(slug);
-  if (!p) return { title: "Profile — Reflax" };
-  return buildMetadata(p, `${p.full_name} — ${p.title} — Reflax`, stripHtml(p.bio, 160));
+  if (!p) return { title: "Profile — Reflax", robots: { index: false, follow: false } };
+  return buildMetadata(p, `${p.full_name} — ${p.title} — Reflax`, stripHtml(p.bio, 160), {
+    path: profilePath(p),
+    image: p.avatar_url,
+    type: "profile",
+  });
 }
 
 export default async function EntrepreneurProfilePage({
@@ -49,23 +55,7 @@ export default async function EntrepreneurProfilePage({
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: p.full_name,
-            jobTitle: p.title,
-            worksFor: p.company_name ? { "@type": "Organization", name: p.company_name } : undefined,
-            description: stripHtml(p.bio, 300),
-            image: p.avatar_url || undefined,
-            url: p.website || undefined,
-            address: p.location ? { "@type": "PostalAddress", addressLocality: p.location } : undefined,
-            sameAs: p.linkedin_url ? [p.linkedin_url] : undefined,
-          }),
-        }}
-      />
+      <JsonLd data={profileSchema(p)} />
       {/* Premium hero */}
       <section className="relative border-b border-line overflow-hidden bg-ink text-paper">
         <div className="absolute -left-16 -top-16 h-72 w-72 rounded-full bg-paper/[0.04] blur-3xl" />

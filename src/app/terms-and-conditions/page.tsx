@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getPageMetadata } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -14,6 +15,7 @@ export async function generateMetadata() {
 export default function TermsAndConditions() {
   return (
     <div>
+      <PageSchema pageKey="terms-and-conditions" />
       <section className="border-b border-line">
         <div className="container-x py-20 md:py-24">
           <div className="text-sm text-muted mb-5">Legal</div>

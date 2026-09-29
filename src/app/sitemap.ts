@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
 import { CATEGORIES } from "@/lib/types";
+import { SITE_URL } from "@/lib/site";
 
-const SITE_URL = "https://reflax.org";
 
 function slugify(cat: string) {
   return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -29,6 +29,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/blog`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/contact`, changeFrequency: "yearly", priority: 0.4 },
     { url: `${SITE_URL}/register`, changeFrequency: "yearly", priority: 0.5 },
+  { url: `${SITE_URL}/write-for-us`, changeFrequency: "yearly", priority: 0.4 },
+  { url: `${SITE_URL}/privacy-policy`, changeFrequency: "yearly", priority: 0.2 },
+  { url: `${SITE_URL}/terms-and-conditions`, changeFrequency: "yearly", priority: 0.2 },
   ];
 
   const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((c) => ({

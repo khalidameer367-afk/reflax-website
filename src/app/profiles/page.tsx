@@ -4,6 +4,7 @@ import { stripHtml } from "@/lib/stripHtml";
 import { shuffleWithFeatured } from "@/lib/shuffle";
 import { getPageMetadata } from "@/lib/pageSeo";
 import VerifiedBadge from "@/components/VerifiedBadge";
+import PageSchema from "@/components/PageSchema";
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -35,6 +36,7 @@ export default async function ProfilesPage({
 
   return (
     <div>
+      <PageSchema pageKey="profiles" items={pageItems.map((p) => ({ name: p.full_name, path: `/profiles/${p.slug || p.id}` }))} />
       <section className="border-b border-line">
         <div className="container-x py-20 md:py-28">
           <div className="text-sm text-muted mb-5">Profiles</div>

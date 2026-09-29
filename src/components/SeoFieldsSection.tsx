@@ -5,8 +5,17 @@ import type { SeoFields } from "@/lib/types";
 
 const inputCls = "w-full border border-line px-4 py-2.5 text-sm focus:outline-none focus:border-ink";
 
-export default function SeoFieldsSection({ defaults }: { defaults?: Partial<SeoFields> }) {
-  const [open, setOpen] = useState(false);
+export default function SeoFieldsSection({
+  defaults,
+  defaultOpen = true,
+  pagePath,
+}: {
+  defaults?: Partial<SeoFields>;
+  defaultOpen?: boolean;
+  /** The page's own path — shown as the canonical that is used when the field is left empty. */
+  pagePath?: string;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
     <div className="border border-line">
@@ -15,7 +24,7 @@ export default function SeoFieldsSection({ defaults }: { defaults?: Partial<SeoF
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-ink"
       >
-        SEO settings (meta title, description, slug, canonical, focus keyword)
+        SEO settings (meta title, description, canonical, focus keyword)
         <span className="text-muted">{open ? "−" : "+"}</span>
       </button>
       {open && (
@@ -30,12 +39,16 @@ export default function SeoFieldsSection({ defaults }: { defaults?: Partial<SeoF
           </div>
           <div>
             <label className="block text-xs text-muted mb-1">Canonical URL</label>
-            <input name="canonical_url" defaultValue={defaults?.canonical_url || ""} className={inputCls} placeholder="Leave empty unless this content duplicates another URL" />
+            <input name="canonical_url" defaultValue={defaults?.canonical_url || ""} className={inputCls} placeholder={pagePath ? `Empty = this page itself (${pagePath})` : "Leave empty unless this content duplicates another URL"} />
+            <p className="mt-1 text-xs text-muted">Leave empty for a self-referencing canonical (recommended). Full URL or path like /blog/my-post.</p>
           </div>
           <div>
             <label className="block text-xs text-muted mb-1">Focus keyword</label>
             <input name="focus_keyword" defaultValue={defaults?.focus_keyword || ""} className={inputCls} placeholder="Main keyword this page should rank for" />
           </div>
+          <p className="text-xs text-muted border-t border-line pt-3">
+            Schema markup (JSON-LD) is generated automatically from this record — nothing to fill in.
+          </p>
         </div>
       )}
     </div>

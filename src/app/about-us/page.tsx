@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
 import { getPageMetadata } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -37,6 +38,7 @@ const VALUES = [
 export default function AboutUs() {
   return (
     <div>
+      <PageSchema pageKey="about-us" />
       <section className="border-b border-line">
         <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>

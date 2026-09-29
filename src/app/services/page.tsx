@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import { getPageMetadata, getPageContent } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -54,6 +55,7 @@ export default async function ServicesPage() {
 
   return (
     <div>
+      <PageSchema pageKey="services" />
       <section className="border-b border-line">
         <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>

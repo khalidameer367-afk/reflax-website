@@ -5,6 +5,7 @@ import HeroGraphic from "@/components/HeroGraphic";
 import Reveal from "@/components/Reveal";
 import { CATEGORIES } from "@/lib/types";
 import { getPageMetadata } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -50,6 +51,7 @@ const HOW_IT_WORKS = [
 export default async function Home() {
   return (
     <div>
+      <PageSchema pageKey="home" />
       {/* Hero */}
       <section className="relative border-b border-line overflow-hidden">
         <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-ink/[0.04] blur-3xl float-blob" />

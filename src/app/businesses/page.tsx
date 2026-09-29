@@ -5,6 +5,7 @@ import { stripHtml } from "@/lib/stripHtml";
 import { shuffleWithFeatured } from "@/lib/shuffle";
 import { getPageMetadata } from "@/lib/pageSeo";
 import VerifiedBadge from "@/components/VerifiedBadge";
+import PageSchema from "@/components/PageSchema";
 
 export async function generateMetadata() {
   return getPageMetadata(
@@ -39,6 +40,7 @@ export default async function BusinessesPage({
 
   return (
     <div>
+      <PageSchema pageKey="businesses" items={businesses.map((b) => ({ name: b.company_name, path: `/businesses/${b.slug || b.id}` }))} />
       <section className="border-b border-line relative overflow-hidden">
         <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-ink/[0.03] blur-2xl" />
         <div className="container-x py-20 md:py-28 relative">

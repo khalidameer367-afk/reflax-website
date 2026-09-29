@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { isUuid } from "@/lib/isUuid";
-import { buildMetadata } from "@/lib/seoMeta";
+import { isUuid } from "@/lib/slug";
+import { buildMetadata } from "@/lib/pageSeo";
+import { JsonLd } from "@/components/PageSchema";
+import { freelancerSchema, freelancerPath } from "@/lib/schema";
+import { stripHtml } from "@/lib/stripHtml";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
 export const revalidate = 60;
@@ -24,8 +27,12 @@ async function getFreelancer(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { slug } = await params;
   const f = await getFreelancer(slug);
-  if (!f) return { title: "Freelancer — Reflax" };
-  return buildMetadata(f, `${f.full_name} — ${f.title} — Reflax`, f.bio?.slice(0, 160));
+  if (!f) return { title: "Freelancer — Reflax", robots: { index: false, follow: false } };
+  return buildMetadata(f, `${f.full_name} — ${f.title} — Reflax`, stripHtml(f.bio || "", 160), {
+    path: freelancerPath(f),
+    image: f.avatar_url,
+    type: "profile",
+  });
 }
 
 export default async function FreelancerProfile({
@@ -49,24 +56,7 @@ export default async function FreelancerProfile({
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: f.full_name,
-            jobTitle: f.title,
-            description: f.bio?.slice(0, 300),
-            image: f.avatar_url || undefined,
-            email: f.email || undefined,
-            telephone: f.phone || undefined,
-            url: f.portfolio_url || undefined,
-            address: f.location ? { "@type": "PostalAddress", addressLocality: f.location } : undefined,
-            knowsAbout: f.skills?.length > 0 ? f.skills : undefined,
-          }),
-        }}
-      />
+      <JsonLd data={freelancerSchema(f)} />
       <section className="border-b border-line">
         <div className="container-x py-16 md:py-20">
           <Link href={`/hire-freelancers/${category}`} className="text-sm text-muted hover:text-ink transition-colors">

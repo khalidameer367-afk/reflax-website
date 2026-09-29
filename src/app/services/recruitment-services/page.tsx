@@ -1,5 +1,6 @@
 import ServicePage from "@/components/ServicePage";
 import { getPageMetadata, getPageContent } from "@/lib/pageSeo";
+import PageSchema from "@/components/PageSchema";
 
 export const revalidate = 60;
 
@@ -72,6 +73,8 @@ const FAQS = [
 export default async function RecruitmentServices() {
   const customContent = await getPageContent("recruitment-services");
   return (
+    <>
+      <PageSchema pageKey="recruitment-services" />
     <ServicePage
       eyebrow="Services"
       title="Recruitment Services"
@@ -101,5 +104,6 @@ export default async function RecruitmentServices() {
         "No percentage-of-salary agency fees",
       ]}
     />
+    </>
   );
 }
