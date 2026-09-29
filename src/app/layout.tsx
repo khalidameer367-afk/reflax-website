@@ -25,6 +25,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Google Search Console ownership verification (renders <meta name="google-site-verification">).
+  verification: { google: "0qt-fMsGL6jXQuDHO7fBxN89QlZPiHAjA7w8C-tjNoE" },
   applicationName: SITE_NAME,
   title: "Reflax — Hiring Platform for Experts & Freelancers",
   description:
