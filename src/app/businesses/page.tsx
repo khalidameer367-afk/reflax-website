@@ -72,7 +72,7 @@ export default async function BusinessesPage({
                 >
                   {b.featured_image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img loading="lazy" decoding="async" src={b.featured_image_url} alt={b.company_name} className="w-full h-40 object-cover" />
+                    <img loading="lazy" decoding="async" src={b.featured_image_url} alt={b.company_name} className="w-full aspect-[2/1] object-contain bg-ink/[0.03]" />
                   ) : (
                     <div className="w-full h-40 bg-ink/[0.03] flex items-center justify-center">
                       <span className="text-3xl font-semibold text-ink/20">{b.company_name.charAt(0)}</span>

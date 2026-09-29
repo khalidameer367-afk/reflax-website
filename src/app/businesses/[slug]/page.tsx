@@ -68,7 +68,7 @@ export default async function BusinessProfile({
             <img
               src={b.featured_image_url}
               alt={b.company_name}
-              className="w-full h-64 md:h-96 object-cover mb-8"
+              className="w-full h-auto max-h-[560px] object-contain object-left mb-8"
             />
           )}
 
