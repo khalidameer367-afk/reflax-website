@@ -41,7 +41,7 @@ export default function ServicePage({
   return (
     <div>
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
+        <div className="container-x py-14 md:py-20 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>
             <div className="text-sm text-muted mb-5">{eyebrow}</div>
             <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink">
@@ -69,7 +69,7 @@ export default function ServicePage({
 
       {highlights && highlights.length > 0 && (
         <section className="border-b border-line bg-ink/[0.015]">
-          <div className="container-x py-14 md:py-16 grid sm:grid-cols-3 gap-6">
+          <div className="container-x py-10 md:py-12 grid sm:grid-cols-3 gap-6">
             {highlights.map((h, i) => (
               <div key={h} className="tilt-3d border border-line bg-paper p-6">
                 <div className="text-xs font-medium text-muted mb-3">
@@ -82,7 +82,7 @@ export default function ServicePage({
         </section>
       )}
 
-      <section className="container-x py-16 md:py-20 border-b border-line">
+      <section className="container-x py-10 md:py-12 border-b border-line">
         <div className="grid md:grid-cols-[1fr_340px] gap-12 items-start">
           <div
             className="blog-content max-w-3xl text-[16px] leading-relaxed text-ink"
@@ -125,8 +125,8 @@ export default function ServicePage({
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 border-b border-line">
-        <div className="tilt-3d border border-line bg-ink p-10 md:p-16 text-paper">
+      <section className="container-x py-10 md:py-12 border-b border-line">
+        <div className="border border-line bg-ink p-10 md:p-16 text-paper">
           <div className="grid md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16">
             <div>
               <div className="text-[11px] uppercase tracking-[0.14em] text-paper/60 mb-4">

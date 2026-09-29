@@ -18,7 +18,7 @@ export default async function BlogPage() {
     <div>
       <PageSchema pageKey="blog" items={(posts || []).map((p) => ({ name: p.title, path: `/blog/${p.slug}` }))} />
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28">
+        <div className="container-x py-14 md:py-20">
           <div className="text-sm text-muted mb-5">Blog</div>
           <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-2xl">
             Insights on hiring, growth, and building teams.
@@ -26,7 +26,7 @@ export default async function BlogPage() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20">
+      <section className="container-x py-10 md:py-12">
         {(!posts || posts.length === 0) && (
           <p className="text-muted">No posts yet — check back soon.</p>
         )}

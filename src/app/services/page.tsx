@@ -57,7 +57,7 @@ export default async function ServicesPage() {
     <div>
       <PageSchema pageKey="services" />
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
+        <div className="container-x py-14 md:py-20 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>
             <div className="text-sm text-muted mb-5">Services</div>
             <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink">
@@ -83,7 +83,7 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 border-b border-line bg-ink/[0.015]">
+      <section className="container-x py-10 md:py-12 border-b border-line bg-ink/[0.015]">
         <SectionHeading eyebrow="What we offer" title="Three ways we help businesses grow." />
         <div className="mt-12 grid md:grid-cols-3 gap-8">
           {SERVICES.map((s, i) => (
@@ -99,7 +99,7 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20">
+      <section className="container-x py-10 md:py-12">
         <div className="grid md:grid-cols-[1fr_340px] gap-12 items-start">
           <div
             className="blog-content max-w-3xl text-[16px] leading-relaxed text-ink"

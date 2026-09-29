@@ -43,7 +43,7 @@ export default async function BusinessesPage({
       <PageSchema pageKey="businesses" items={businesses.map((b) => ({ name: b.company_name, path: `/businesses/${b.slug || b.id}` }))} />
       <section className="border-b border-line relative overflow-hidden">
         <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-ink/[0.03] blur-2xl" />
-        <div className="container-x py-20 md:py-28 relative">
+        <div className="container-x py-14 md:py-20 relative">
           <div className="text-sm text-muted mb-5">Businesses</div>
           <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-2xl">
             A directory of businesses building with Reflax.
@@ -56,7 +56,7 @@ export default async function BusinessesPage({
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20">
+      <section className="container-x py-10 md:py-12">
         {(!businesses || businesses.length === 0) && (
           <p className="text-muted">No businesses listed yet — check back soon.</p>
         )}

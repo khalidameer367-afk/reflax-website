@@ -40,7 +40,7 @@ export default function WriteForUs() {
     <div>
       <PageSchema pageKey="write-for-us" />
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
+        <div className="container-x py-14 md:py-20 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>
             <div className="text-sm text-muted mb-5">Contribute</div>
             <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink">
@@ -61,7 +61,7 @@ export default function WriteForUs() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 border-b border-line">
+      <section className="container-x py-10 md:py-12 border-b border-line">
         <div className="grid md:grid-cols-2 gap-14 max-w-4xl">
           <div>
             <h2 className="display text-xl font-semibold text-ink">Who can contribute?</h2>
@@ -95,7 +95,7 @@ export default function WriteForUs() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 border-b border-line bg-ink/[0.015]">
+      <section className="container-x py-10 md:py-12 border-b border-line bg-ink/[0.015]">
         <h2 className="display text-xl font-semibold text-ink">Why write for Reflax?</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted max-w-xl">
           Publishing with us helps you:
@@ -112,7 +112,7 @@ export default function WriteForUs() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20">
+      <section className="container-x py-10 md:py-12">
         <div className="tilt-3d border border-line p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div className="max-w-md">
             <h2 className="display text-2xl font-semibold text-ink">Contact us</h2>

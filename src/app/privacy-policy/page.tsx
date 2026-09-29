@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
     <div>
       <PageSchema pageKey="privacy-policy" />
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-24">
+        <div className="container-x py-12 md:py-14">
           <div className="text-sm text-muted mb-5">Legal</div>
           <h1 className="display text-[2.2rem] md:text-4xl font-semibold leading-[1.1] tracking-tight text-ink">
             Privacy Policy
@@ -26,7 +26,7 @@ export default function PrivacyPolicy() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20">
+      <section className="container-x py-10 md:py-12">
         <div className="max-w-3xl space-y-10 text-[15px] leading-relaxed text-ink">
           <p className="text-muted">
             This Privacy Policy explains how Reflax (&quot;we&quot;,

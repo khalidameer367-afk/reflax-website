@@ -56,7 +56,7 @@ export default async function Home() {
       <section className="relative border-b border-line overflow-hidden">
         <div className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-ink/[0.04] blur-3xl float-blob" />
         <div className="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-ink/[0.03] blur-3xl float-blob-slow" />
-        <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.15fr_1fr] gap-12 items-center relative">
+        <div className="container-x py-14 md:py-20 grid md:grid-cols-[1.15fr_1fr] gap-12 items-center relative">
           <div>
             <div className="text-sm text-muted mb-5">
               A hiring platform for experts &amp; freelancers
@@ -86,7 +86,7 @@ export default async function Home() {
               </Link>
             </div>
 
-            <div className="mt-12 grid grid-cols-4 gap-6 max-w-md">
+            <div className="mt-8 grid grid-cols-4 gap-6 max-w-md">
               {STATS.map((s) => (
                 <div key={s.label}>
                   <div className="display text-xl md:text-2xl font-semibold text-ink">{s.value}</div>
@@ -111,7 +111,7 @@ export default async function Home() {
 
       {/* Businesses & Profiles — network showcase */}
       <Reveal className="block">
-        <section className="py-20 md:py-24 border-b border-line bg-ink/[0.015] overflow-hidden">
+        <section className="py-12 md:py-14 border-b border-line bg-ink/[0.015] overflow-hidden">
           <div className="container-x grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
             <div>
               <div className="text-sm text-muted mb-5">On Reflax</div>
@@ -152,7 +152,7 @@ export default async function Home() {
 
       {/* Mission */}
       <Reveal className="block">
-        <section className="container-x py-20 md:py-24 border-b border-line">
+        <section className="container-x py-12 md:py-14 border-b border-line">
           <div className="grid md:grid-cols-2 gap-14 items-start">
             <SectionHeading
               eyebrow="Why Reflax"
@@ -180,9 +180,9 @@ export default async function Home() {
 
       {/* How it works */}
       <Reveal className="block">
-        <section className="container-x py-20 md:py-24 border-b border-line">
+        <section className="container-x py-12 md:py-14 border-b border-line">
           <SectionHeading eyebrow="How it works" title="Simple, transparent, and fast." />
-          <div className="mt-12 grid md:grid-cols-3 gap-10">
+          <div className="mt-8 grid md:grid-cols-3 gap-10">
             {HOW_IT_WORKS.map((s, i) => (
               <Reveal key={s.step} delay={i * 120}>
                 <div className="display text-4xl font-semibold text-ink/15 mb-3">{s.step}</div>
@@ -196,13 +196,13 @@ export default async function Home() {
 
       {/* Categories */}
       <Reveal className="block">
-        <section className="container-x py-20 md:py-24 border-b border-line">
+        <section className="container-x py-12 md:py-14 border-b border-line">
           <SectionHeading
             eyebrow="Browse talent"
             title="Freelancers across every category you need."
             description="From SEO and web development to marketing and design — explore verified professionals by specialty."
           />
-          <div className="mt-12 grid sm:grid-cols-2 md:grid-cols-3 gap-px bg-line border border-line">
+          <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-3 gap-px bg-line border border-line">
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat}
@@ -228,9 +228,9 @@ export default async function Home() {
 
       {/* Services */}
       <Reveal className="block">
-        <section className="container-x py-20 md:py-24 border-b border-line">
+        <section className="container-x py-12 md:py-14 border-b border-line">
           <SectionHeading eyebrow="What we offer" title="Services built for growing businesses." />
-          <div className="mt-12 grid md:grid-cols-3 gap-8">
+          <div className="mt-8 grid md:grid-cols-3 gap-8">
             {SERVICES.map((s) => (
               <Link key={s.href} href={s.href} className="tilt-3d group block border border-line p-8 hover:border-ink transition-all duration-300">
                 <h3 className="display text-xl font-semibold text-ink">{s.title}</h3>
@@ -246,7 +246,7 @@ export default async function Home() {
 
       {/* Businesses CTA */}
       <Reveal className="block">
-        <section className="container-x py-20 md:py-24 border-b border-line">
+        <section className="container-x py-12 md:py-14 border-b border-line">
           <div className="grid md:grid-cols-2 gap-14 items-center">
             <div>
               <SectionHeading
@@ -273,8 +273,8 @@ export default async function Home() {
 
       {/* Profiles CTA */}
       <Reveal className="block">
-        <section className="container-x py-20 md:py-24">
-          <div className="tilt-3d border border-line p-10 md:p-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        <section className="container-x py-12 md:py-14">
+          <div className="border border-line p-10 md:p-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
               <h2 className="display text-2xl md:text-3xl font-semibold text-ink max-w-md">
                 Explore entrepreneur profiles across every category.

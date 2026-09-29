@@ -103,7 +103,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container-x py-16 md:py-20 max-w-2xl">
+    <div className="container-x py-10 md:py-12 max-w-2xl">
       <div className="flex items-center justify-between mb-2">
         <h1 className="display text-3xl font-semibold text-ink">Your dashboard</h1>
         <button onClick={handleLogout} className="text-sm text-muted hover:text-ink underline underline-offset-4">

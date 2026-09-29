@@ -34,7 +34,7 @@ export default function ContactForm() {
   }
 
   return (
-    <section className="container-x py-16 md:py-20 max-w-xl">
+    <section className="container-x py-10 md:py-12 max-w-xl">
       {status === "success" ? (
         <div className="border border-line p-10 text-center">
           <h3 className="display text-2xl font-semibold text-ink">Message sent</h3>

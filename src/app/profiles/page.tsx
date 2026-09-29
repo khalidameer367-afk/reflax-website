@@ -38,7 +38,7 @@ export default async function ProfilesPage({
     <div>
       <PageSchema pageKey="profiles" items={pageItems.map((p) => ({ name: p.full_name, path: `/profiles/${p.slug || p.id}` }))} />
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28">
+        <div className="container-x py-14 md:py-20">
           <div className="text-sm text-muted mb-5">Profiles</div>
           <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-2xl">
             Entrepreneurs and business leaders on Reflax.
@@ -50,7 +50,7 @@ export default async function ProfilesPage({
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20">
+      <section className="container-x py-10 md:py-12">
         {pageItems.length === 0 && (
           <p className="text-muted">No profiles have been added yet.</p>
         )}

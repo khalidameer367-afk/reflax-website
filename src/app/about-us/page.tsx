@@ -40,7 +40,7 @@ export default function AboutUs() {
     <div>
       <PageSchema pageKey="about-us" />
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
+        <div className="container-x py-14 md:py-20 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>
             <div className="text-sm text-muted mb-5">About us</div>
             <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink">
@@ -66,7 +66,7 @@ export default function AboutUs() {
         </div>
       </section>
 
-      <section className="container-x py-20 md:py-24 border-b border-line">
+      <section className="container-x py-12 md:py-14 border-b border-line">
         <div className="grid md:grid-cols-3 gap-10">
           {PILLARS.map((p) => (
             <div key={p.title}>
@@ -77,7 +77,7 @@ export default function AboutUs() {
         </div>
       </section>
 
-      <section className="container-x py-20 md:py-24 border-b border-line">
+      <section className="container-x py-12 md:py-14 border-b border-line">
         <div className="grid md:grid-cols-2 gap-14 items-center">
           <div className="order-2 md:order-1 border border-line overflow-hidden">
             <Image
@@ -105,7 +105,7 @@ export default function AboutUs() {
         </div>
       </section>
 
-      <section className="container-x py-20 md:py-24">
+      <section className="container-x py-12 md:py-14">
         <SectionHeading eyebrow="What we stand for" title="The principles behind Reflax." />
         <div className="mt-12 grid sm:grid-cols-2 gap-px bg-line border border-line">
           {VALUES.map((v) => (

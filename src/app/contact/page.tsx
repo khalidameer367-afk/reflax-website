@@ -15,7 +15,7 @@ export default function ContactPage() {
     <div>
       <PageSchema pageKey="contact" />
       <section className="border-b border-line">
-        <div className="container-x py-20 md:py-28">
+        <div className="container-x py-14 md:py-20">
           <div className="text-sm text-muted mb-5">Contact us</div>
           <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-xl">
             Let&apos;s talk.

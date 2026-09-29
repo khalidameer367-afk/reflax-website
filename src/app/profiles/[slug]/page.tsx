@@ -60,7 +60,7 @@ export default async function EntrepreneurProfilePage({
       <section className="relative border-b border-line overflow-hidden bg-ink text-paper">
         <div className="absolute -left-16 -top-16 h-72 w-72 rounded-full bg-paper/[0.04] blur-3xl" />
         <div className="absolute -right-16 -bottom-16 h-80 w-80 rounded-full bg-paper/[0.04] blur-3xl" />
-        <div className="container-x py-20 md:py-28 relative">
+        <div className="container-x py-14 md:py-20 relative">
           <Link href="/profiles" className="text-sm text-paper/50 hover:text-paper transition-colors">
             ← All profiles
           </Link>
@@ -90,7 +90,7 @@ export default async function EntrepreneurProfilePage({
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 grid md:grid-cols-[1fr_320px] gap-14">
+      <section className="container-x py-10 md:py-12 grid md:grid-cols-[1fr_320px] gap-14">
         <div>
           <h2 className="display text-lg font-semibold text-ink">About</h2>
           <div

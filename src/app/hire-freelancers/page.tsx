@@ -32,7 +32,7 @@ export default function HireFreelancers() {
       <section className="relative border-b border-line overflow-hidden bg-ink text-paper">
         <div className="absolute inset-0 dot-grid-bg opacity-[0.08]" style={{ filter: "invert(1)" }} />
         <div className="absolute -right-20 -top-20 h-96 w-96 rounded-full bg-paper/[0.05] blur-3xl" />
-        <div className="container-x py-24 md:py-32 relative">
+        <div className="container-x py-16 md:py-24 relative">
           <div className="text-sm text-paper/50 mb-5 uppercase tracking-wide">Hire freelancers</div>
           <h1 className="display text-[2.6rem] md:text-6xl font-semibold leading-[1.05] tracking-tight text-paper max-w-3xl">
             Browse verified freelancers, ready to work.
@@ -45,13 +45,13 @@ export default function HireFreelancers() {
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
               href="#categories"
-              className="inline-flex items-center bg-accent text-paper px-7 py-3.5 text-sm font-medium hover:bg-paper hover:text-ink transition-colors"
+              className="inline-flex items-center border border-accent bg-accent text-paper px-7 py-3.5 text-sm font-medium hover:bg-paper hover:text-ink hover:border-paper transition-colors duration-200"
             >
               Browse categories
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center border border-paper/40 px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper hover:border-accent transition-colors"
+              className="inline-flex items-center border border-paper/60 px-7 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink hover:border-paper transition-colors duration-200"
             >
               Join as a freelancer
             </Link>
@@ -60,7 +60,7 @@ export default function HireFreelancers() {
       </section>
 
       {/* Why hire through Reflax */}
-      <section className="container-x py-16 md:py-20 border-b border-line">
+      <section className="container-x py-10 md:py-12 border-b border-line">
         <div className="grid md:grid-cols-3 gap-10">
           {REASONS.map((r) => (
             <div key={r.title}>
@@ -72,7 +72,7 @@ export default function HireFreelancers() {
       </section>
 
       {/* Categories */}
-      <section id="categories" className="container-x py-16 md:py-20 scroll-mt-24">
+      <section id="categories" className="container-x py-10 md:py-12 scroll-mt-24">
         <SectionHeading eyebrow="Categories" title="Find talent by specialty." />
         <div className="mt-10 grid sm:grid-cols-2 md:grid-cols-3 gap-px bg-line border border-line">
           {CATEGORIES.map((cat) => (
@@ -93,7 +93,7 @@ export default function HireFreelancers() {
       </section>
 
       {/* How it works */}
-      <section className="container-x py-16 md:py-20 border-t border-line bg-ink/[0.015]">
+      <section className="container-x py-10 md:py-12 border-t border-line bg-ink/[0.015]">
         <SectionHeading eyebrow="How it works" title="From browsing to hiring, in three simple steps." />
         <div className="mt-10 grid md:grid-cols-3 gap-10">
           <div>
@@ -125,21 +125,21 @@ export default function HireFreelancers() {
       </section>
 
       {/* Closing CTA */}
-      <section className="container-x py-16 md:py-20 border-t border-line">
-        <div className="tilt-3d border border-line p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <section className="container-x py-10 md:py-12 border-t border-line">
+        <div className="border border-line p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <h2 className="display text-2xl font-semibold text-ink max-w-md">
             Looking for freelance work yourself?
           </h2>
           <div className="flex flex-wrap gap-4 shrink-0">
             <Link
               href="/register"
-              className="btn-pop inline-flex items-center bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-accent hover:text-paper transition-colors"
+              className="inline-flex items-center border border-ink bg-ink px-7 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink transition-colors duration-200"
             >
               Join as a freelancer
             </Link>
             <Link
               href="/services"
-              className="btn-pop inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors hover:border-ink"
+              className="inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-accent transition-colors duration-200"
             >
               Explore our services
             </Link>

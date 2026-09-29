@@ -74,7 +74,7 @@ export default async function CategoryPage({
         items={(freelancers || []).map((f) => ({ name: f.full_name, path: freelancerPath(f) }))}
       />
       <section className="border-b border-line">
-        <div className="container-x py-16 md:py-20">
+        <div className="container-x py-10 md:py-12">
           <Link href="/hire-freelancers" className="text-sm text-muted hover:text-ink transition-colors">
             ← All categories
           </Link>
@@ -89,7 +89,7 @@ export default async function CategoryPage({
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20">
+      <section className="container-x py-10 md:py-12">
         {error && (
           <p className="text-sm text-muted">
             Couldn&apos;t load freelancers right now. Please check back shortly.

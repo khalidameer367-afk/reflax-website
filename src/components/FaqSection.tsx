@@ -7,7 +7,7 @@ export default function FaqSection({
   const columns = [faqs.slice(0, half), faqs.slice(half)];
 
   return (
-    <section className="container-x py-16 md:py-20 border-t border-line">
+    <section className="container-x py-10 md:py-12 border-t border-line">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

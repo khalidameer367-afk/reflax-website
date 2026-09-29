@@ -58,7 +58,7 @@ export default async function FreelancerProfile({
     <div>
       <JsonLd data={freelancerSchema(f)} />
       <section className="border-b border-line">
-        <div className="container-x py-16 md:py-20">
+        <div className="container-x py-10 md:py-12">
           <Link href={`/hire-freelancers/${category}`} className="text-sm text-muted hover:text-ink transition-colors">
             ← {f.category}
           </Link>
@@ -83,7 +83,7 @@ export default async function FreelancerProfile({
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 grid md:grid-cols-[1fr_320px] gap-14">
+      <section className="container-x py-10 md:py-12 grid md:grid-cols-[1fr_320px] gap-14">
         <div>
           <h2 className="display text-lg font-semibold text-ink">About</h2>
           <p className="mt-4 text-[15px] leading-relaxed text-muted whitespace-pre-line">

@@ -93,7 +93,7 @@ export default function RegisterPage() {
   return (
     <div>
       <section className="border-b border-line">
-        <div className="container-x py-16 md:py-20">
+        <div className="container-x py-10 md:py-12">
           <div className="text-sm text-muted mb-5">Join Reflax</div>
           <h1 className="display text-[2.2rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-xl">
             Create your account &amp; profile.
@@ -112,7 +112,7 @@ export default function RegisterPage() {
         </div>
       </section>
 
-      <section className="container-x py-16 md:py-20 max-w-2xl">
+      <section className="container-x py-10 md:py-12 max-w-2xl">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid sm:grid-cols-2 gap-6">
             <div>

@@ -29,7 +29,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="container-x py-20 md:py-28 max-w-md mx-auto">
+    <div className="container-x py-14 md:py-20 max-w-md mx-auto">
       <h1 className="display text-3xl font-semibold text-ink mb-2">Log in</h1>
       <p className="text-muted mb-8 text-sm">
         Access your dashboard to edit or remove your freelancer profile.
