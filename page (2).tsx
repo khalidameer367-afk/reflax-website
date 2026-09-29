@@ -1,0 +1,128 @@
+import Link from "next/link";
+import SectionHeading from "@/components/SectionHeading";
+import { supabase } from "@/lib/supabase";
+import { stripHtml } from "@/lib/stripHtml";
+import { shuffleWithFeatured } from "@/lib/shuffle";
+import { getPageMetadata } from "@/lib/pageSeo";
+import VerifiedBadge from "@/components/VerifiedBadge";
+import PageSchema from "@/components/PageSchema";
+
+export async function generateMetadata() {
+  return getPageMetadata(
+    "businesses",
+    "Businesses — Reflax",
+    "A directory of businesses building with Reflax."
+  );
+}
+
+export const revalidate = 60;
+
+const PAGE_SIZE = 12;
+
+export default async function BusinessesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+
+  const { data: businessesRaw } = await supabase
+    .from("businesses")
+    .select("*")
+    .eq("status", "approved");
+  const shuffled = shuffleWithFeatured(businessesRaw || []);
+
+  const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const businesses = shuffled.slice(start, start + PAGE_SIZE);
+
+  return (
+    <div>
+      <PageSchema pageKey="businesses" items={businesses.map((b) => ({ name: b.company_name, path: `/businesses/${b.slug || b.id}` }))} />
+      <section className="border-b border-line relative overflow-hidden">
+        <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-ink/[0.03] blur-2xl" />
+        <div className="container-x py-14 md:py-20 relative">
+          <div className="text-sm text-muted mb-5">Businesses</div>
+          <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-2xl">
+            A directory of businesses building with Reflax.
+          </h1>
+          <p className="mt-5 text-[15px] leading-relaxed text-muted max-w-xl">
+            Verified companies across every industry — reviewed and listed
+            by our team, so freelancers and partners can find and trust
+            them at a glance.
+          </p>
+        </div>
+      </section>
+
+      <section className="container-x py-10 md:py-12">
+        {(!businesses || businesses.length === 0) && (
+          <p className="text-muted">No businesses listed yet — check back soon.</p>
+        )}
+        {businesses && businesses.length > 0 && (
+          <>
+            <SectionHeading eyebrow="Directory" title="Registered businesses" />
+            <div className="mt-10 grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {businesses.map((b) => (
+                <Link
+                  key={b.id}
+                  href={`/businesses/${b.slug || b.id}`}
+                  className="tilt-3d group border border-line block hover:border-ink transition-all duration-300"
+                >
+                  {b.featured_image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img loading="lazy" decoding="async" src={b.featured_image_url} alt={b.company_name} className="w-full h-40 object-cover" />
+                  ) : (
+                    <div className="w-full h-40 bg-ink/[0.03] flex items-center justify-center">
+                      <span className="text-3xl font-semibold text-ink/20">{b.company_name.charAt(0)}</span>
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      {b.logo_url && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img loading="lazy" decoding="async" src={b.logo_url} alt="" className="h-6 w-auto max-w-[80px] object-contain" />
+                      )}
+                      <h3 className="display text-lg font-semibold text-ink">{b.company_name}</h3>
+                      {b.verified && <VerifiedBadge />}
+                    </div>
+                    <p className="text-sm text-muted">{b.industry}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted line-clamp-2">{stripHtml(b.description)}</p>
+                    <span className="mt-4 inline-block text-sm font-medium underline underline-offset-4 group-hover:text-ink">
+                      View profile
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-14 flex items-center justify-center gap-3">
+                {currentPage > 1 && (
+                  <Link
+                    href={`/businesses?page=${currentPage - 1}`}
+                    className="border border-line px-5 py-2.5 text-sm text-ink hover:border-ink transition-colors"
+                  >
+                    ← Previous
+                  </Link>
+                )}
+                <span className="text-sm text-muted px-2">
+                  Page {currentPage} of {totalPages}
+                </span>
+                {currentPage < totalPages && (
+                  <Link
+                    href={`/businesses?page=${currentPage + 1}`}
+                    className="border border-line px-5 py-2.5 text-sm text-ink hover:border-ink transition-colors"
+                  >
+                    Next →
+                  </Link>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </section>
+    </div>
+  );
+}
