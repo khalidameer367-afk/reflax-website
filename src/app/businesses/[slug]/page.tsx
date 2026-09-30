@@ -119,7 +119,7 @@ export default async function BusinessProfile({
                 href={b.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 border border-indigo-600 bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-800 hover:border-indigo-800 transition-colors"
+                className="flex items-center justify-center gap-2 border border-[#7C3AED] bg-[#7C3AED] px-5 py-3 text-sm font-medium text-white hover:bg-[#6D28D9] hover:border-[#6D28D9] transition-colors"
               >
                 Visit website
               </a>
