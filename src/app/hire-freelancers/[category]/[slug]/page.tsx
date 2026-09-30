@@ -104,7 +104,7 @@ export default async function FreelancerProfile({
           )}
         </div>
 
-        <aside className="border border-line p-7 h-fit">
+        <aside className="md:sticky md:top-28 h-fit border border-line p-7">
           <dl className="space-y-5 text-sm">
             {f.experience_years !== null && (
               <div>
@@ -156,7 +156,7 @@ export default async function FreelancerProfile({
                 href={f.portfolio_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center border border-line px-5 py-3 text-sm font-medium text-muted hover:text-ink hover:border-ink transition-colors"
+                className="inline-flex items-center justify-center border border-[#7C3AED] bg-[#7C3AED] px-5 py-3 text-sm font-medium text-white hover:bg-[#6D28D9] hover:border-[#6D28D9] transition-colors"
               >
                 View portfolio
               </a>
@@ -166,7 +166,7 @@ export default async function FreelancerProfile({
                 href={f.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center border border-line px-5 py-3 text-sm font-medium text-muted hover:text-ink hover:border-ink transition-colors"
+                className="inline-flex items-center justify-center border border-[#0A66C2] bg-[#0A66C2] px-5 py-3 text-sm font-medium text-white hover:bg-[#004182] hover:border-[#004182] transition-colors"
               >
                 LinkedIn profile
               </a>
