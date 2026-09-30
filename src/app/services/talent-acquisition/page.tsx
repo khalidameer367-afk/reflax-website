@@ -81,8 +81,8 @@ export default async function TalentAcquisition() {
       content={customContent || DEFAULT_CONTENT}
       faqs={FAQS}
       image={{
-        src: "/images/team-collaboration.jpg",
-        alt: "Team collaborating together, representing long-term talent and workforce planning",
+        src: "/images/talent-acquisition-hero.jpg",
+        alt: "Professional holding a global network of verified talent profiles, representing talent acquisition",
       }}
       highlights={[
         "Workforce planning built around where your business is headed, not just today's opening.",

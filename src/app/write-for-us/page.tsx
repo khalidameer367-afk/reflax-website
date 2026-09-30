@@ -1,5 +1,5 @@
 import Link from "next/link";
-import HeroGraphic from "@/components/HeroGraphic";
+import Image from "next/image";
 import { getPageMetadata } from "@/lib/pageSeo";
 import PageSchema from "@/components/PageSchema";
 
@@ -55,8 +55,15 @@ export default function WriteForUs() {
               insightful content.
             </p>
           </div>
-          <div className="tilt-3d border border-line bg-ink/[0.03] min-h-[280px] md:min-h-[420px] flex items-center justify-center p-6">
-            <HeroGraphic className="w-full h-full" />
+          <div className="tilt-3d relative border border-line min-h-[280px] md:min-h-[420px] overflow-hidden">
+            <Image
+              src="/images/write-for-us-hero.jpg"
+              alt="Writer taking notes in a notebook at a desk with a laptop, representing contributing articles to Reflax"
+              fill
+              priority
+              sizes="(min-width: 768px) 45vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </section>
