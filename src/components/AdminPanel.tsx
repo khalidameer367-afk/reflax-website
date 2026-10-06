@@ -5,7 +5,6 @@ import { CATEGORIES } from "@/lib/types";
 import type { Freelancer, Business, EntrepreneurProfile, BlogPost, PageSeo, PageContentRow, Redirect } from "@/lib/types";
 import { resizeImageToDataUrl } from "@/lib/image";
 import RichTextEditor from "@/components/RichTextEditor";
-import { bioToHtml } from "@/lib/bioHtml";
 import SeoFieldsSection from "@/components/SeoFieldsSection";
 import SlugField from "@/components/SlugField";
 import { PAGE_KEYS } from "@/lib/pageRegistry";
@@ -345,8 +344,9 @@ function EditFreelancerForm({
       </div>
       <input required name="title" defaultValue={freelancer.title} placeholder="Title" className={inputCls} />
       <div>
-        <label className="block text-sm font-medium text-ink mb-2">About / Bio</label>
-        <RichTextEditor name="bio" defaultValue={bioToHtml(freelancer.bio)} />
+        <label className="block text-sm font-medium text-ink mb-2">Bio / About</label>
+        <RichTextEditor name="bio" defaultValue={freelancer.bio} />
+        <p className="mt-2 text-xs text-muted">Use H2/H3 for headings, B for bold, Link for internal linking, and Image to add pictures.</p>
       </div>
       <input name="skills" defaultValue={freelancer.skills?.join(", ")} placeholder="Skills (comma separated)" className={inputCls} />
       <div className="grid sm:grid-cols-3 gap-4">
