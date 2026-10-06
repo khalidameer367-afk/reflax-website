@@ -5,6 +5,7 @@ export const SITE_LOGO = `${SITE_URL}/images/global-talent-network.jpg`;
 export const SITE_EMAIL = "Contact@reflax.org";
 export const SITE_SAME_AS = [
   "https://www.linkedin.com/company/reflaxlimited/",
+  "https://www.youtube.com/@Reflaxorg",
   "https://www.facebook.com/share/1CwQuyJQ36/?mibextid=wwXIfr",
 ];
 
