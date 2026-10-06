@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
@@ -12,15 +12,20 @@ import "./globals.css";
 const TIDIO_KEY =
   process.env.NEXT_PUBLIC_TIDIO_KEY ?? "mikvrgrparuxcqesjy6iopsucwkcerox";
 
-const spaceGrotesk = Space_Grotesk({
+// Fonts are self-hosted (no build-time download from Google Fonts),
+// so the Vercel build can never fail because of a font fetch.
+const spaceGrotesk = localFont({
+  src: "./fonts/SpaceGrotesk-Variable.woff2",
   variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: "300 700",
+  display: "swap",
 });
 
-const inter = Inter({
+const inter = localFont({
+  src: "./fonts/Inter-Variable.woff2",
   variable: "--font-inter",
-  subsets: ["latin"],
+  weight: "100 900",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -33,7 +38,11 @@ export const metadata: Metadata = {
     "Reflax connects businesses with verified, skilled freelancers and experts across every industry — and helps professionals find real opportunities.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
