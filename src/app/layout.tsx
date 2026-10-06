@@ -38,8 +38,7 @@ export const metadata: Metadata = {
     "Reflax connects businesses with verified, skilled freelancers and experts across every industry — and helps professionals find real opportunities.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
-  return (
+   export default function RootLayout({ children }: { children: React.ReactNode }) {  return (
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
