@@ -65,17 +65,15 @@ export async function sendMail(to: string, subject: string, html: string) {
   });
 }
 
-const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
 export async function notifyContactForm(name: string, email: string, subject: string, message: string) {
   const adminEmail = adminAddress();
   if (!adminEmail) return;
   await sendMail(
     adminEmail,
     `Contact form: ${subject || "New message"}`,
-    `<p><strong>From:</strong> ${esc(name)} (${esc(email)})</p>
+    `<p><strong>From:</strong> ${name} (${email})</p>
      <p><strong>Message:</strong></p>
-     <p>${esc(message).replace(/\n/g, "<br/>")}</p>`
+     <p>${message.replace(/\n/g, "<br/>")}</p>`
   );
 }
 

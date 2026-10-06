@@ -6,7 +6,6 @@ export const SITE_EMAIL = "Contact@reflax.org";
 export const SITE_SAME_AS = [
   "https://www.linkedin.com/company/reflaxlimited/",
   "https://www.facebook.com/share/1CwQuyJQ36/?mibextid=wwXIfr",
-  "https://www.youtube.com/@Reflaxorg",
 ];
 
 /** "Social Media Marketing" -> "social-media-marketing" (same rule the category URLs use). */

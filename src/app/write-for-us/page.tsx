@@ -1,129 +1,61 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { getPageMetadata } from "@/lib/pageSeo";
 import PageSchema from "@/components/PageSchema";
-import WriteForUsForm from "@/components/WriteForUsForm";
 
 export const revalidate = 60;
 
 export async function generateMetadata() {
   return getPageMetadata(
     "write-for-us",
-    "Write for Us | Become a Contributor — Reflax",
-    "Write for Reflax: guest post guidelines and topics we cover — Technology, Education, Business, AI and Digital Marketing."
+    "Write for Reflax — Contribute Content",
+    "Contribute articles to Reflax and reach a growing, business-focused audience."
   );
 }
 
-const REQUIREMENTS = [
-  "A minimum of a LinkedIn profile or website where we can verify your expertise.",
-  "Willingness to share the guest post on your own channels, such as your LinkedIn or website.",
-  "Relevant experience or qualifications in the topic you want to write about.",
+const WHO = [
+  "Business growth & startups",
+  "Talent acquisition & hiring",
+  "Branding & digital marketing",
+  "Freelancing & career development",
+  "Automation & productivity",
 ];
 
-const BASICS = [
-  "Is relevant, well-researched and 100% original and unpublished. We do not republish content from other websites.",
-  "Only includes claims that are backed by credible research or real examples. Avoid citing our competitors.",
-  "Is practical and actionable, with clear tips, steps and takeaways readers can use right away.",
-  "Includes examples, and images or screenshots that add value. Avoid stock photos that don't help explain the topic.",
-  "Includes subheadings, bullet points and short paragraphs that make the article easy to scan.",
-  "We reserve the right to republish content on LinkedIn or any other channel.",
+const EXPECT = [
+  "Original and plagiarism-free",
+  "Clear, practical, and reader-focused",
+  "Helpful for businesses or professionals",
+  "Well-structured and easy to understand",
 ];
 
-const TOPICS = [
-  {
-    name: "Technology",
-    text: "AI tools, gadgets, software reviews and tech trends that help people and teams work smarter.",
-  },
-  {
-    name: "Education",
-    text: "Learning tips, online courses and teaching strategies for students, teachers and self-learners.",
-  },
-  {
-    name: "Business",
-    text: "Entrepreneurship, marketing and productivity — practical guidance for founders and growing teams.",
-  },
-  {
-    name: "AI",
-    text: "AI applications, tool reviews and industry trends, from everyday use cases to emerging technology.",
-  },
-  {
-    name: "Digital Marketing",
-    text: "SEO, GEO, Google Ads, SMO and SMM — strategies and case studies that drive measurable growth.",
-  },
+const WHY = [
+  "Reach a professional business audience",
+  "Build your personal or brand authority",
+  "Get credited for your work",
+  "Share expertise in your niche",
 ];
-
-const BENEFITS = [
-  "Exposure to a professional, business-focused audience that reads Reflax every month.",
-  "A high-authority, do-follow backlink to your website or profile from a growing, relevant platform.",
-  "Association with a trusted brand that connects businesses with verified experts and freelancers worldwide.",
-  "Networking and future opportunities. Getting published with us builds credibility and can open doors to collaborations.",
-];
-
-function Row({
-  id,
-  title,
-  children,
-}: {
-  id?: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="border-b border-line scroll-mt-24">
-      <div className="container-x py-10 md:py-12 grid md:grid-cols-[240px_1fr] gap-4 md:gap-14">
-        <h2 className="display text-xl font-semibold text-ink md:sticky md:top-28 h-fit">
-          {title}
-        </h2>
-        <div className="max-w-3xl">{children}</div>
-      </div>
-    </section>
-  );
-}
-
-function Bullets({ items }: { items: string[] }) {
-  return (
-    <ul className="space-y-3">
-      {items.map((item) => (
-        <li key={item} className="flex items-start gap-3 text-[15px] leading-relaxed text-ink">
-          <span className="mt-2.5 h-1.5 w-1.5 rounded-full bg-ink shrink-0" />
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 export default function WriteForUs() {
   return (
     <div>
       <PageSchema pageKey="write-for-us" />
-
       <section className="border-b border-line">
         <div className="container-x py-14 md:py-20 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
           <div>
+            <div className="text-sm text-muted mb-5">Contribute</div>
             <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink">
-              Write for Us | Become a Contributor
+              Write for Us.
             </h1>
             <p className="mt-6 text-[15px] leading-relaxed text-muted max-w-xl">
-              We also welcome contributions from established professionals from
-              various fields. If you&apos;re a professional who uses Reflax in
-              some capacity, you&apos;re welcome to send in your contribution.
-              Not Reflax users are also welcome to contribute as long as they
-              fit the requirements.
+              At Reflax, we welcome passionate writers, industry experts, and
+              creators who want to share valuable insights with a growing
+              business-focused audience. By contributing to our platform, you
+              can demonstrate your expertise, build authority for your brand,
+              and reach a broader audience that values relevant and
+              insightful content.
             </p>
-            <p className="mt-4 text-[15px] leading-relaxed text-muted max-w-xl">
-              This doesn&apos;t mean you have to be famous. But you should be
-              able to show that you&apos;re an expert in your field and have
-              credentials to prove it.
-            </p>
-            <Link
-              href="#pitch-form"
-              className="btn-pop mt-8 inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:border-ink transition-colors"
-            >
-              Pitch your article
-            </Link>
           </div>
-          <div className="tilt-3d relative border border-line min-h-[260px] md:min-h-[380px] overflow-hidden">
+          <div className="tilt-3d relative border border-line min-h-[280px] md:min-h-[420px] overflow-hidden">
             <Image
               src="/images/write-for-us-hero.jpg"
               alt="Writer taking notes in a notebook at a desk with a laptop, representing contributing articles to Reflax"
@@ -136,55 +68,75 @@ export default function WriteForUs() {
         </div>
       </section>
 
-      <Row title="Requirements">
-        <p className="text-[15px] leading-relaxed text-muted mb-5">
-          At a minimum you should have:
-        </p>
-        <Bullets items={REQUIREMENTS} />
-      </Row>
+      <section className="container-x py-10 md:py-12 border-b border-line">
+        <div className="grid md:grid-cols-2 gap-14 max-w-4xl">
+          <div>
+            <h2 className="display text-xl font-semibold text-ink">Who can contribute?</h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              We accept contributions from professionals in:
+            </p>
+            <ul className="mt-5 space-y-3">
+              {WHO.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-[15px] text-ink">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-ink shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      <Row title="The Basics">
-        <p className="text-[15px] leading-relaxed text-muted mb-5">
-          Your article should be:
-        </p>
-        <Bullets items={BASICS} />
-      </Row>
+          <div>
+            <h2 className="display text-xl font-semibold text-ink">What we expect</h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              All submissions should be:
+            </p>
+            <ul className="mt-5 space-y-3">
+              {EXPECT.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-[15px] text-ink">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-ink shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
-      <Row title="Topics We Cover">
-        <p className="text-[15px] leading-relaxed text-muted mb-6">
-          Most of our audience consists of individuals and teams, from different
-          organizations and departments, who are looking for tips, best
-          practices and guides on how to work and collaborate better. Pick the
-          topic closest to your expertise:
+      <section className="container-x py-10 md:py-12 border-b border-line bg-ink/[0.015]">
+        <h2 className="display text-xl font-semibold text-ink">Why write for Reflax?</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted max-w-xl">
+          Publishing with us helps you:
         </p>
-        <ul className="border-t border-line">
-          {TOPICS.map((t) => (
-            <li key={t.name} className="border-b border-line py-5 grid sm:grid-cols-[210px_1fr] gap-1 sm:gap-8">
-              <span className="text-[15px] font-semibold text-ink">
-                Write for Us {t.name}
-              </span>
-              <span className="text-[15px] leading-relaxed text-muted">{t.text}</span>
-            </li>
+        <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {WHY.map((item, i) => (
+            <div key={item} className="tilt-3d border border-line bg-paper p-6">
+              <div className="text-xs font-medium text-muted mb-3">
+                {String(i + 1).padStart(2, "0")}
+              </div>
+              <p className="text-[15px] leading-relaxed text-ink">{item}</p>
+            </div>
           ))}
-        </ul>
-      </Row>
+        </div>
+      </section>
 
-      <Row title="The Benefits">
-        <Bullets items={BENEFITS} />
-        <p className="mt-6 text-[15px] leading-relaxed text-muted">
-          Due to the high volume of guest post requests we receive, submissions
-          are managed by editorial review. If your content aligns with
-          Reflax&apos;s requirements and is relevant to our audience, we will
-          reach out to you.
-        </p>
-      </Row>
-
-      <Row id="pitch-form" title="Submit your pitch">
-        <p className="text-[15px] leading-relaxed text-muted mb-8">
-          Fill the form below and get things started.
-        </p>
-        <WriteForUsForm />
-      </Row>
+      <section className="container-x py-10 md:py-12">
+        <div className="tilt-3d border border-line p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div className="max-w-md">
+            <h2 className="display text-2xl font-semibold text-ink">Contact us</h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              Become a part of Reflax and contribute to a platform that
+              connects talent, branding, and business growth experts
+              worldwide.
+            </p>
+          </div>
+          <Link
+            href="/contact"
+            className="btn-pop inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors shrink-0 hover:border-ink"
+          >
+            Pitch your article
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
