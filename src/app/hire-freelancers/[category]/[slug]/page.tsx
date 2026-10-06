@@ -5,6 +5,7 @@ import { buildMetadata } from "@/lib/pageSeo";
 import { JsonLd } from "@/components/PageSchema";
 import { freelancerSchema, freelancerPath } from "@/lib/schema";
 import { stripHtml } from "@/lib/stripHtml";
+import { bioToHtml } from "@/lib/bioHtml";
 import VerifiedBadge from "@/components/VerifiedBadge";
 
 export const revalidate = 60;
@@ -86,9 +87,10 @@ export default async function FreelancerProfile({
       <section className="container-x py-10 md:py-12 grid md:grid-cols-[1fr_320px] gap-14">
         <div>
           <h2 className="display text-lg font-semibold text-ink">About</h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted whitespace-pre-line">
-            {f.bio}
-          </p>
+          <div
+            className="mt-4 blog-content text-[16px] leading-relaxed text-ink"
+            dangerouslySetInnerHTML={{ __html: bioToHtml(f.bio) }}
+          />
 
           {f.skills?.length > 0 && (
             <div className="mt-10">

@@ -343,7 +343,10 @@ function EditFreelancerForm({
         </select>
       </div>
       <input required name="title" defaultValue={freelancer.title} placeholder="Title" className={inputCls} />
-      <textarea required name="bio" defaultValue={freelancer.bio} rows={4} placeholder="Bio" className={inputCls} />
+      <div>
+        <label className="block text-sm font-medium text-ink mb-2">Bio (use H2 / H3 for headings, B for bold, Link for internal links)</label>
+        <RichTextEditor name="bio" defaultValue={freelancer.bio} />
+      </div>
       <input name="skills" defaultValue={freelancer.skills?.join(", ")} placeholder="Skills (comma separated)" className={inputCls} />
       <div className="grid sm:grid-cols-3 gap-4">
         <input type="number" name="experience_years" defaultValue={freelancer.experience_years ?? ""} placeholder="Years of experience" className={inputCls} />
