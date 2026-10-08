@@ -9,12 +9,16 @@ function slugify(cat: string) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [{ data: freelancers }, { data: businesses }, { data: profiles }, { data: posts }] = await Promise.all([
+  const [{ data: freelancers }, { data: businesses }, { data: profilesRaw }, { data: posts }, { data: contribPosts }] = await Promise.all([
     supabase.from("freelancers").select("slug, id, category, created_at").eq("status", "approved"),
     supabase.from("businesses").select("slug, id, created_at").eq("status", "approved"),
-    supabase.from("profiles").select("slug, id, created_at"),
+    supabase.from("profiles").select("*"),
     supabase.from("blog_posts").select("slug, created_at"),
+    supabase.from("contributor_posts").select("slug, created_at"),
   ]);
+
+  // Only approved profiles (rows from before the approval feature have no status).
+  const profiles = (profilesRaw || []).filter((p) => !p.status || p.status === "approved");
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, changeFrequency: "weekly", priority: 1 },
@@ -27,6 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/businesses`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE_URL}/profiles`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/blog`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE_URL}/contributor`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/contact`, changeFrequency: "yearly", priority: 0.4 },
     { url: `${SITE_URL}/register`, changeFrequency: "yearly", priority: 0.5 },
   { url: `${SITE_URL}/write-for-us`, changeFrequency: "yearly", priority: 0.4 },
@@ -68,5 +73,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...categoryPages, ...freelancerPages, ...businessPages, ...profilePages, ...blogPages];
+  const contributorPages: MetadataRoute.Sitemap = (contribPosts || []).map((post) => ({
+    url: `${SITE_URL}/contributor/${post.slug}`,
+    lastModified: post.created_at,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...categoryPages, ...freelancerPages, ...businessPages, ...profilePages, ...blogPages, ...contributorPages];
 }

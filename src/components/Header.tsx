@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import JoinModal from "@/components/JoinModal";
 
 const SERVICES = [
   { label: "Recruitment Services", href: "/services/recruitment-services" },
@@ -22,6 +23,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [joinOpen, setJoinOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur">
       <div className="container-x flex h-20 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -112,12 +115,22 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <Link
-            href={loggedIn ? "/dashboard" : "/register"}
-            className="inline-flex items-center border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-ink hover:text-paper hover:border-ink"
-          >
-            {loggedIn ? "My Dashboard" : "Register"}
-          </Link>
+          {loggedIn ? (
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-ink hover:text-paper hover:border-ink"
+            >
+              My Dashboard
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setJoinOpen(true)}
+              className="inline-flex items-center border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-ink hover:text-paper hover:border-ink"
+            >
+              Join Us
+            </button>
+          )}
         </div>
 
         <button
@@ -162,16 +175,28 @@ export default function Header() {
             <Link href="/profiles" onClick={() => setOpen(false)} className="py-3 border-b border-line/70 text-ink">
               Profiles
             </Link>
-            <Link
-              href={loggedIn ? "/dashboard" : "/register"}
-              onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center justify-center border border-accent bg-accent px-5 py-3 text-sm font-medium text-paper"
-            >
-              {loggedIn ? "My Dashboard" : "Register"}
-            </Link>
+            {loggedIn ? (
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="mt-4 inline-flex items-center justify-center border border-accent bg-accent px-5 py-3 text-sm font-medium text-paper"
+              >
+                My Dashboard
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => { setOpen(false); setJoinOpen(true); }}
+                className="mt-4 inline-flex items-center justify-center border border-accent bg-accent px-5 py-3 text-sm font-medium text-paper"
+              >
+                Join Us
+              </button>
+            )}
           </div>
         </div>
       )}
     </header>
+    <JoinModal open={joinOpen} onClose={() => setJoinOpen(false)} />
+    </>
   );
 }

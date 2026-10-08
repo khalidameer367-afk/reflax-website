@@ -5,7 +5,7 @@
 import { SITE_URL, SITE_NAME, SITE_LOGO, SITE_EMAIL, SITE_SAME_AS, absoluteUrl, categorySlug } from "@/lib/site";
 import { stripHtml } from "@/lib/stripHtml";
 import type { PageDef } from "@/lib/pageRegistry";
-import type { BlogPost, Business, EntrepreneurProfile, Freelancer, SeoFields } from "@/lib/types";
+import type { BlogPost, ContributorPost, Business, EntrepreneurProfile, Freelancer, SeoFields } from "@/lib/types";
 
 type Node = Record<string, unknown>;
 
@@ -317,6 +317,45 @@ export function blogPostSchema(post: BlogPost) {
   const articleId = `${url}#article`;
   const plain = stripHtml(post.content || "");
   const crumbs: Crumb[] = [HOME, { name: "Blog", path: "/blog" }, { name: post.title, path }];
+
+  return graph(
+    webPageNode({
+      url,
+      type: "WebPage",
+      name: post.meta_title || post.title,
+      description: post.meta_description || post.excerpt || text(post.content, 160),
+      image: post.featured_image_url,
+      datePublished: post.created_at,
+      breadcrumbs: crumbs,
+      mainEntityId: articleId,
+    }),
+    breadcrumbNode(url, crumbs),
+    {
+      "@type": "BlogPosting",
+      "@id": articleId,
+      mainEntityOfPage: { "@id": `${url}#webpage` },
+      headline: (post.meta_title || post.title).slice(0, 110),
+      description: post.meta_description || post.excerpt || text(post.content, 160),
+      image: img(post.featured_image_url),
+      datePublished: post.created_at,
+      dateModified: post.created_at,
+      author: post.author ? { "@type": "Person", name: post.author } : { "@id": ORG_ID },
+      publisher: { "@id": ORG_ID },
+      keywords: post.focus_keyword,
+      wordCount: plain ? plain.split(/\s+/).length : undefined,
+      inLanguage: "en",
+    }
+  );
+}
+
+export const contributorPath = (post: Pick<ContributorPost, "slug">) => `/contributor/${post.slug}`;
+
+export function contributorPostSchema(post: ContributorPost) {
+  const path = contributorPath(post);
+  const url = pageUrl(path, post);
+  const articleId = `${url}#article`;
+  const plain = stripHtml(post.content || "");
+  const crumbs: Crumb[] = [HOME, { name: "Contributors", path: "/contributor" }, { name: post.title, path }];
 
   return graph(
     webPageNode({

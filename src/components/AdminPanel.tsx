@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/types";
-import type { Freelancer, Business, EntrepreneurProfile, BlogPost, PageSeo, PageContentRow, Redirect } from "@/lib/types";
+import type { Freelancer, Business, EntrepreneurProfile, BlogPost, ContributorPost, PageSeo, PageContentRow, Redirect } from "@/lib/types";
 import { resizeImageToDataUrl } from "@/lib/image";
 import RichTextEditor from "@/components/RichTextEditor";
 import SeoFieldsSection from "@/components/SeoFieldsSection";
 import SlugField from "@/components/SlugField";
+import ContributorTab from "@/components/ContributorAdmin";
 import { PAGE_KEYS } from "@/lib/pageRegistry";
 
 const statusColor: Record<string, string> = {
@@ -21,12 +22,13 @@ export default function AdminPanel() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [tab, setTab] = useState<"freelancers" | "businesses" | "profiles" | "blog" | "pages" | "settings">("freelancers");
+  const [tab, setTab] = useState<"freelancers" | "businesses" | "profiles" | "blog" | "contributors" | "pages" | "settings">("freelancers");
 
   const [freelancers, setFreelancers] = useState<Freelancer[]>([]);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [profiles, setProfiles] = useState<EntrepreneurProfile[]>([]);
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [contribPosts, setContribPosts] = useState<ContributorPost[]>([]);
   const [loading, setLoading] = useState(false);
 
   async function login(e: React.FormEvent) {
@@ -58,9 +60,14 @@ export default function AdminPanel() {
     if (res.ok) setPosts((await res.json()).posts);
   }
 
+  async function loadContributors() {
+    const res = await fetch("/api/admin/contributor");
+    if (res.ok) setContribPosts((await res.json()).posts);
+  }
+
   async function loadAll() {
     setLoading(true);
-    await Promise.all([loadFreelancers(), loadBusinesses(), loadProfiles(), loadPosts()]);
+    await Promise.all([loadFreelancers(), loadBusinesses(), loadProfiles(), loadPosts(), loadContributors()]);
     setLoading(false);
   }
 
@@ -111,6 +118,23 @@ export default function AdminPanel() {
     });
     loadProfiles();
   }
+  async function reviewProfile(id: string, action: "approved" | "rejected") {
+    await fetch("/api/admin/review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "profile", id, action }),
+    });
+    loadProfiles();
+  }
+  async function deleteContributorPost(id: string) {
+    if (!confirm("Delete this contributor post?")) return;
+    await fetch("/api/admin/contributor", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    loadContributors();
+  }
   async function deletePost(id: string) {
     if (!confirm("Delete this post?")) return;
     await fetch("/api/admin/blog", {
@@ -147,7 +171,7 @@ export default function AdminPanel() {
       <h1 className="display text-3xl font-semibold text-ink mb-8">Admin panel</h1>
 
       <div className="flex gap-6 border-b border-line mb-10 text-sm overflow-x-auto">
-        {(["freelancers", "businesses", "profiles", "blog", "pages", "settings"] as const).map((t) => (
+        {(["freelancers", "businesses", "profiles", "blog", "contributors", "pages", "settings"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -181,11 +205,15 @@ export default function AdminPanel() {
       )}
 
       {tab === "profiles" && (
-        <ProfilesTab profiles={profiles} onChanged={loadProfiles} onDelete={deleteProfile} />
+        <ProfilesTab profiles={profiles} onChanged={loadProfiles} onDelete={deleteProfile} onReview={reviewProfile} />
       )}
 
       {tab === "blog" && (
         <BlogTab posts={posts} onChanged={loadPosts} onDelete={deletePost} />
+      )}
+
+      {tab === "contributors" && (
+        <ContributorTab posts={contribPosts} onChanged={loadContributors} onDelete={deleteContributorPost} />
       )}
 
       {tab === "pages" && <PagesTab />}
@@ -627,10 +655,12 @@ function ProfilesTab({
   profiles,
   onChanged,
   onDelete,
+  onReview,
 }: {
   profiles: EntrepreneurProfile[];
   onChanged: () => void;
   onDelete: (id: string) => void;
+  onReview: (id: string, action: "approved" | "rejected") => void;
 }) {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -673,6 +703,9 @@ function ProfilesTab({
                   <span className="font-medium text-ink">{p.full_name}</span>
                   <span className="text-sm text-muted ml-2">{p.title}{p.category ? ` · ${p.category}` : ""}</span>
                   <div className="flex items-center gap-2 mt-1">
+                    {p.status && p.status !== "approved" && (
+                      <span className={`text-[11px] font-medium uppercase ${statusColor[p.status]}`}>{p.status}</span>
+                    )}
                     {p.verified && (
                       <span className="text-[11px] font-medium text-ink bg-ink/[0.06] border border-ink/15 px-2 py-[2px]">✓ Verified</span>
                     )}
@@ -683,6 +716,16 @@ function ProfilesTab({
                 </div>
               </div>
               <div className="flex gap-3 shrink-0">
+                {p.status === "pending" && (
+                  <>
+                    <button onClick={() => onReview(p.id, "approved")} className="text-sm text-green-600 hover:underline">
+                      Approve
+                    </button>
+                    <button onClick={() => onReview(p.id, "rejected")} className="text-sm text-red-600 hover:underline">
+                      Reject
+                    </button>
+                  </>
+                )}
                 <button onClick={() => { setEditingId(p.id); setShowForm(false); }} className="text-sm text-muted hover:text-ink transition-colors">
                   Edit
                 </button>

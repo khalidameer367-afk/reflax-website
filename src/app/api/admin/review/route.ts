@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   // type: "freelancer" | "business"
   // action: "approved" | "rejected"
 
-  if (!["freelancer", "business"].includes(type)) {
+  if (!["freelancer", "business", "profile"].includes(type)) {
     return NextResponse.json({ error: "Invalid type" }, { status: 400 });
   }
   if (!["approved", "rejected"].includes(action)) {
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   }
 
   const db = supabaseAdmin();
-  const table = type === "freelancer" ? "freelancers" : "businesses";
+  const table = type === "freelancer" ? "freelancers" : type === "business" ? "businesses" : "profiles";
 
   const { data, error } = await db
     .from(table)
@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
     try {
       if (type === "freelancer") {
         await notifyFreelancerApproved(data.email, data.full_name);
+      } else if (type === "profile") {
+        // Professional profiles don't store an email, so there is nobody to notify.
       } else {
         await notifyBusinessApproved(data.email, data.company_name);
       }

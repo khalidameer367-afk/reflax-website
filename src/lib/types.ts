@@ -65,6 +65,7 @@ export interface EntrepreneurProfile extends SeoFields {
   avatar_url: string | null;
   featured: boolean;
   verified: boolean;
+  status?: FreelancerStatus;
 }
 
 export interface BlogPost extends SeoFields {
@@ -125,3 +126,28 @@ export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Accounting & Finance": "Keep your books clean and your finances under control with experienced bookkeepers, accountants, and financial analysts.",
   "Sales & Business Development": "Grow your pipeline with experienced sales professionals who know how to prospect, pitch, negotiate, and close.",
 };
+
+export interface ContributorPost extends SeoFields {
+  id: string;
+  created_at: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content: string;
+  featured_image_url: string | null;
+  author: string | null;
+  niche: string;
+}
+
+// Niches for guest posts (contributors). `value` is what is stored in the database.
+export const CONTRIBUTOR_NICHES = [
+  { value: "technology", label: "Technology" },
+  { value: "education", label: "Education" },
+  { value: "business", label: "Business" },
+  { value: "ai", label: "AI" },
+  { value: "digital-marketing", label: "Digital Marketing" },
+] as const;
+
+export function nicheLabel(value: string | null | undefined) {
+  return CONTRIBUTOR_NICHES.find((n) => n.value === value)?.label || value || "";
+}

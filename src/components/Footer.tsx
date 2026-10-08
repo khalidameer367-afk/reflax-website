@@ -74,9 +74,10 @@ export default function Footer() {
               <li><Link href="/businesses" className="hover:text-paper transition-colors">Businesses</Link></li>
               <li><Link href="/profiles" className="hover:text-paper transition-colors">Profiles</Link></li>
               <li><Link href="/blog" className="hover:text-paper transition-colors">Blog</Link></li>
+              <li><Link href="/contributor" className="hover:text-paper transition-colors">Contributors</Link></li>
               <li><Link href="/contact" className="hover:text-paper transition-colors">Contact Us</Link></li>
               <li><Link href="/write-for-us" className="hover:text-paper transition-colors">Write for Us</Link></li>
-              <li><Link href="/register" className="hover:text-paper transition-colors">Register</Link></li>
+              <li><Link href="/register" className="hover:text-paper transition-colors">Join Us</Link></li>
             </ul>
           </div>
 
@@ -94,6 +95,8 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-paper/60">
               <li><Link href="/hire-freelancers" className="hover:text-paper transition-colors">Hire Freelancers</Link></li>
               <li><Link href="/register" className="hover:text-paper transition-colors">Join as Freelancer</Link></li>
+              <li><Link href="/join/professional" className="hover:text-paper transition-colors">Join as Professional</Link></li>
+              <li><Link href="/join/business" className="hover:text-paper transition-colors">Join as a Business</Link></li>
             </ul>
           </div>
         </div>

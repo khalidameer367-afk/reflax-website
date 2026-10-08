@@ -55,14 +55,62 @@ function brandedEmail(bodyHtml: string) {
 </div>`;
 }
 
-export async function sendMail(to: string, subject: string, html: string) {
+export interface MailOptions {
+  replyTo?: string;
+  attachments?: { filename: string; content: Buffer }[];
+}
+
+export async function sendMail(to: string, subject: string, html: string, options: MailOptions = {}) {
   const transporter = getTransporter();
   await transporter.sendMail({
     from: `"Reflax" <${senderAddress()}>`,
     to,
     subject,
     html,
+    replyTo: options.replyTo,
+    attachments: options.attachments,
   });
+}
+
+// Escapes text before it is placed inside an email's HTML.
+export function escapeHtml(v: string) {
+  return v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// Guest post submitted from /write-for-us. The file is only attached to the email —
+// nothing is stored on the website or in the database.
+export async function notifyGuestPost(
+  name: string,
+  email: string,
+  niche: string,
+  file: { filename: string; content: Buffer }
+) {
+  const adminEmail = adminAddress();
+  if (!adminEmail) throw new Error("No admin email configured");
+  await sendMail(
+    adminEmail,
+    `Guest post submission (${niche}): ${name}`,
+    `<p><strong>Name:</strong> ${escapeHtml(name)}</p>
+     <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+     <p><strong>Niche:</strong> ${escapeHtml(niche)}</p>
+     <p>The article is attached to this email: <strong>${escapeHtml(file.filename)}</strong></p>
+     <p style="color:#888;font-size:12px">Reply to this email to contact the writer. To publish it, add it from Admin panel &rarr; Contributors.</p>`,
+    { replyTo: email, attachments: [file] }
+  );
+}
+
+// "Join as professional profile" form (profile is saved as pending in the database).
+export async function notifyAdminNewProfile(name: string, title: string, email: string, phone: string) {
+  const adminEmail = adminAddress();
+  if (!adminEmail) return;
+  await sendMail(
+    adminEmail,
+    `New professional profile: ${name}`,
+    `<p><strong>${escapeHtml(name)}</strong> (${escapeHtml(title)}) submitted a professional profile and is waiting for review.</p>
+     <p><strong>Email:</strong> ${escapeHtml(email)}${phone ? `<br/><strong>Phone:</strong> ${escapeHtml(phone)}` : ""}</p>
+     <p>Approve or reject it from Admin panel &rarr; Profiles.</p>`,
+    { replyTo: email }
+  );
 }
 
 export async function notifyContactForm(name: string, email: string, subject: string, message: string) {

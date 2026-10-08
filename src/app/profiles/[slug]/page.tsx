@@ -20,6 +20,8 @@ async function getProfile(slug: string) {
     .select("*")
     .eq(isUuid(slug) ? "id" : "slug", slug)
     .single();
+  // Profiles still waiting for approval are not public (older rows have no status).
+  if (data && data.status && data.status !== "approved") return null;
   return data;
 }
 

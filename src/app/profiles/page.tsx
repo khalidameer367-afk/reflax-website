@@ -26,7 +26,9 @@ export default async function ProfilesPage({
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
 
-  const { data: allProfiles } = await supabase.from("profiles").select("*");
+  const { data: allProfilesRaw } = await supabase.from("profiles").select("*");
+  // Hide profiles still waiting for approval (older rows have no status).
+  const allProfiles = (allProfilesRaw || []).filter((p) => !p.status || p.status === "approved");
   const shuffled = shuffleWithFeatured(allProfiles || []);
 
   const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));

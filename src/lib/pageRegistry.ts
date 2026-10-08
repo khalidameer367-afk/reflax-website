@@ -26,6 +26,7 @@ const CORE: PageDef[] = [
   { key: "businesses", label: "Businesses", group: "Main pages", path: "/businesses", title: "Businesses — Reflax", description: "A directory of businesses building with Reflax.", schemaType: "CollectionPage" },
   { key: "profiles", label: "Profiles", group: "Main pages", path: "/profiles", title: "Profiles — Reflax", description: "A directory of entrepreneurs and business leaders on Reflax.", schemaType: "CollectionPage" },
   { key: "blog", label: "Blog", group: "Main pages", path: "/blog", title: "Blog — Reflax", description: "Insights on hiring, growth, and building teams.", schemaType: "CollectionPage" },
+  { key: "contributor", label: "Contributors", group: "Main pages", path: "/contributor", title: "Contributor Posts — Reflax", description: "Guest posts from industry experts on technology, education, business, AI and digital marketing.", schemaType: "CollectionPage" },
   { key: "contact", label: "Contact Us", group: "Main pages", path: "/contact", title: "Contact Us — Reflax", description: "Questions about hiring or registering your business? Send us a message.", schemaType: "ContactPage" },
 
   { key: "services", label: "Services (main page)", group: "Services", path: "/services", title: "Services — Reflax", description: "Recruitment, talent acquisition, and business growth consultancy services from Reflax.", schemaType: "CollectionPage" },
