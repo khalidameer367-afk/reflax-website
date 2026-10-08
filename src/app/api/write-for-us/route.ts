@@ -42,6 +42,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("write-for-us failed:", err);
-    return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });
+    const msg = err instanceof Error ? err.message : String(err);
+    let reason = "Something went wrong. Please try again.";
+    if (msg.includes("No admin email")) {
+      reason = "Email is not set up on the server (ADMIN_EMAIL / SMTP settings missing).";
+    } else if (/EAUTH|Invalid login|auth/i.test(msg)) {
+      reason = "The server could not log in to the email account (check SMTP user/password).";
+    } else if (/size|552|too large|exceed/i.test(msg)) {
+      reason = "The mail server rejected the file because it is too large. Try a smaller file.";
+    } else if (/ECONN|ETIMEDOUT|ESOCKET|getaddrinfo/i.test(msg)) {
+      reason = "The server could not connect to the email server (check SMTP host/port).";
+    }
+    return NextResponse.json({ error: reason }, { status: 500 });
   }
 }

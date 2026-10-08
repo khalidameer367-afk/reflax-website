@@ -99,6 +99,30 @@ export async function notifyGuestPost(
   );
 }
 
+// Large guest post (over 4 MB): the file is stored privately in Supabase Storage
+// and the admin gets a download link instead of an attachment.
+export async function notifyGuestPostLink(
+  name: string,
+  email: string,
+  niche: string,
+  filename: string,
+  url: string
+) {
+  const adminEmail = adminAddress();
+  if (!adminEmail) throw new Error("No admin email configured");
+  await sendMail(
+    adminEmail,
+    `Guest post submission (${niche}): ${name}`,
+    `<p><strong>Name:</strong> ${escapeHtml(name)}</p>
+     <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+     <p><strong>Niche:</strong> ${escapeHtml(niche)}</p>
+     <p>The article is a large file, so it is not attached. Download it here (link works for 30 days):<br/>
+     <a href="${url}">${escapeHtml(filename)}</a></p>
+     <p style="color:#888;font-size:12px">Reply to this email to contact the writer. To publish it, add it from Admin panel &rarr; Contributors.</p>`,
+    { replyTo: email }
+  );
+}
+
 // "Join as professional profile" form (profile is saved as pending in the database).
 export async function notifyAdminNewProfile(name: string, title: string, email: string, phone: string) {
   const adminEmail = adminAddress();
