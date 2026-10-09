@@ -87,7 +87,7 @@ export default function WriteForUs() {
               href="#pitch-form"
               className="btn-pop mt-8 inline-flex items-center border border-accent bg-accent px-7 py-3.5 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors hover:border-ink"
             >
-              Pitch your article
+              Submit your article
             </a>
           </div>
           <div className="tilt-3d relative border border-line min-h-[280px] md:min-h-[420px] overflow-hidden">

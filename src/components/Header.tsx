@@ -39,11 +39,11 @@ export default function Header() {
 
   return (
     <>
-    <header className="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-white/15 bg-[#37766E]">
       <div className="container-x flex h-20 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image
-            src="/logo-black.webp"
+            src="/logo-white.webp"
             alt="Reflax"
             width={140}
             height={50}
@@ -57,8 +57,8 @@ export default function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className={`transition-colors hover:text-ink ${
-                isActive(item.href) ? "text-ink" : "text-muted"
+              className={`transition-colors hover:text-white ${
+                isActive(item.href) ? "text-white" : "text-white/75"
               }`}
             >
               {item.label}
@@ -72,8 +72,8 @@ export default function Header() {
           >
             <Link
               href="/services"
-              className={`flex items-center gap-1 transition-colors hover:text-ink ${
-                pathname.startsWith("/services") ? "text-ink" : "text-muted"
+              className={`flex items-center gap-1 transition-colors hover:text-white ${
+                pathname.startsWith("/services") ? "text-white" : "text-white/75"
               }`}
             >
               Services
@@ -98,16 +98,16 @@ export default function Header() {
 
           <Link
             href="/businesses"
-            className={`transition-colors hover:text-ink ${
-              isActive("/businesses") ? "text-ink" : "text-muted"
+            className={`transition-colors hover:text-white ${
+              isActive("/businesses") ? "text-white" : "text-white/75"
             }`}
           >
             Businesses
           </Link>
           <Link
             href="/profiles"
-            className={`transition-colors hover:text-ink ${
-              isActive("/profiles") ? "text-ink" : "text-muted"
+            className={`transition-colors hover:text-white ${
+              isActive("/profiles") ? "text-white" : "text-white/75"
             }`}
           >
             Profiles
@@ -118,7 +118,7 @@ export default function Header() {
           {loggedIn ? (
             <Link
               href="/dashboard"
-              className="inline-flex items-center border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-ink hover:text-paper hover:border-ink"
+              className="inline-flex items-center border border-white bg-white px-5 py-2.5 text-sm font-medium text-[#37766E] transition-colors hover:bg-ink hover:text-white hover:border-ink"
             >
               My Dashboard
             </Link>
@@ -126,7 +126,7 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setJoinOpen(true)}
-              className="inline-flex items-center border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-ink hover:text-paper hover:border-ink"
+              className="inline-flex items-center border border-white bg-white px-5 py-2.5 text-sm font-medium text-[#37766E] transition-colors hover:bg-ink hover:text-white hover:border-ink"
             >
               Join Us
             </button>
@@ -138,9 +138,9 @@ export default function Header() {
           className="lg:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setOpen((v) => !v)}
         >
-          <span className={`block h-[1.5px] w-6 bg-ink transition-transform ${open ? "translate-y-[6.5px] rotate-45" : ""}`} />
-          <span className={`block h-[1.5px] w-6 bg-ink transition-opacity ${open ? "opacity-0" : ""}`} />
-          <span className={`block h-[1.5px] w-6 bg-ink transition-transform ${open ? "-translate-y-[6.5px] -rotate-45" : ""}`} />
+          <span className={`block h-[1.5px] w-6 bg-white transition-transform ${open ? "translate-y-[6.5px] rotate-45" : ""}`} />
+          <span className={`block h-[1.5px] w-6 bg-white transition-opacity ${open ? "opacity-0" : ""}`} />
+          <span className={`block h-[1.5px] w-6 bg-white transition-transform ${open ? "-translate-y-[6.5px] -rotate-45" : ""}`} />
         </button>
       </div>
 

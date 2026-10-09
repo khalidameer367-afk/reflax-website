@@ -24,20 +24,20 @@ export default async function ContributorPage() {
     <div>
       <PageSchema pageKey="contributor" items={posts.map((p) => ({ name: p.title, path: `/contributor/${p.slug}` }))} />
       {/* Hero */}
-      <section className="bg-[#37766E] text-white">
-        <div className="container-x py-16 md:py-24">
-          <div className="text-sm text-white/70 mb-5">Contributors</div>
-          <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight max-w-3xl">
+      <section className="border-b border-line">
+        <div className="container-x py-14 md:py-20">
+          <div className="text-sm text-muted mb-5">Contributors</div>
+          <h1 className="display text-[2.4rem] md:text-5xl font-semibold leading-[1.1] tracking-tight text-ink max-w-3xl">
             Guest Posts from Industry Experts
           </h1>
-          <p className="mt-6 text-[16px] leading-relaxed text-white/85 max-w-2xl">
+          <p className="mt-6 text-[16px] leading-relaxed text-muted max-w-2xl">
             We accept guest posts from industry experts in technology, education, business, AI,
             digital marketing, and other relevant fields — Guest posts should be written by
             professionals with real-world industry experience.
           </p>
           <Link
             href="/write-for-us#pitch-form"
-            className="mt-8 inline-flex items-center bg-white px-7 py-3.5 text-sm font-medium text-[#37766E] hover:bg-ink hover:text-white transition-colors"
+            className="mt-8 inline-flex items-center border border-ink px-6 py-3 text-sm font-medium text-ink hover:bg-ink hover:text-paper transition-colors"
           >
             Write for Us
           </Link>
