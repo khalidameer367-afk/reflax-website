@@ -52,7 +52,7 @@ export default async function CategoryPage({
     );
   }
 
-  const PAGE_SIZE = 12;
+  const PAGE_SIZE = 15;
   const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
 
   const { data: freelancersRaw, error } = await supabase
@@ -109,30 +109,38 @@ export default async function CategoryPage({
         )}
 
         {freelancers && freelancers.length > 0 && (
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-10">
             {freelancers.map((f) => (
               <Link
                 key={f.id}
                 href={`/hire-freelancers/${category}/${f.slug || f.id}`}
-                className="tilt-3d group border border-line p-7 hover:border-ink transition-all duration-300"
+                className="group block text-center"
               >
-                <div className="h-14 w-14 rounded-full bg-ink/5 border border-line flex items-center justify-center text-lg font-semibold text-ink overflow-hidden">
+                <div className="aspect-square w-full overflow-hidden bg-ink/5">
                   {f.avatar_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img loading="lazy" decoding="async" src={f.avatar_url} alt={f.full_name} className="h-full w-full object-cover" />
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={f.avatar_url}
+                      alt={f.full_name}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
                   ) : (
-                    f.full_name.charAt(0)
+                    <div className="flex h-full w-full items-center justify-center text-6xl font-semibold text-ink/30">
+                      {f.full_name.charAt(0)}
+                    </div>
                   )}
                 </div>
-                <div className="mt-5 flex items-center gap-2 flex-wrap">
-                  <h3 className="display text-lg font-semibold text-ink">{f.full_name}</h3>
-                  {f.verified && <VerifiedBadge />}
-                </div>
-                <p className="mt-1 text-sm text-muted">{f.title}</p>
-                {f.location && <p className="mt-3 text-xs text-muted">{f.location}</p>}
-                <span className="mt-5 inline-block text-sm font-medium text-ink underline underline-offset-4">
-                  View profile
-                </span>
+                <h3 className="mt-3 display text-lg md:text-xl font-bold leading-snug text-ink">
+                  {f.full_name}
+                  {f.verified && (
+                    <span className="ml-1.5 inline-block align-middle">
+                      <VerifiedBadge />
+                    </span>
+                  )}
+                </h3>
+                <p className="mt-1 text-[15px] leading-snug text-muted">{f.title}</p>
               </Link>
             ))}
           </div>
