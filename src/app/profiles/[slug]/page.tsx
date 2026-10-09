@@ -82,7 +82,7 @@ export default async function EntrepreneurProfilePage({
               )}
               <h1 className="display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight text-paper flex items-center gap-3 flex-wrap">
                 {p.full_name}
-                {p.verified && <VerifiedBadge dark />}
+                {p.verified && <VerifiedBadge size={28} />}
               </h1>
               <p className="mt-3 text-lg text-paper/70">
                 {p.title}{p.company_name ? ` · ${p.company_name}` : ""}

@@ -1,29 +1,33 @@
+// Blue verified tick (same style as Facebook / Instagram verified badge).
 export default function VerifiedBadge({
   className = "",
-  dark = false,
+  size = 20,
 }: {
   className?: string;
+  size?: number;
+  // kept so existing <VerifiedBadge dark /> calls still work; the blue tick looks good on both backgrounds
   dark?: boolean;
 }) {
   return (
-    <span
-      className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-[3px] border ${
-        dark
-          ? "text-paper bg-paper/10 border-paper/25"
-          : "text-ink bg-ink/[0.06] border-ink/15"
-      } ${className}`}
-      title="Verified by Reflax"
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      role="img"
+      aria-label="Verified"
+      className={`inline-block shrink-0 align-middle ${className}`}
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <svg width="11" height="11" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M7.5 10.5L9 12L12.5 8M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      Verified
-    </span>
+      <title>Verified by Reflax</title>
+      <path d="M12.00 1.15 L12.42 1.21 L12.83 1.40 L13.22 1.70 L13.57 2.07 L13.89 2.49 L14.18 2.91 L14.45 3.31 L14.71 3.66 L14.98 3.93 L15.27 4.10 L15.60 4.18 L15.98 4.19 L16.41 4.13 L16.88 4.03 L17.39 3.93 L17.91 3.87 L18.42 3.85 L18.90 3.92 L19.33 4.07 L19.67 4.33 L19.93 4.67 L20.08 5.10 L20.15 5.58 L20.13 6.09 L20.07 6.61 L19.97 7.12 L19.87 7.59 L19.81 8.02 L19.82 8.40 L19.90 8.73 L20.07 9.02 L20.34 9.29 L20.69 9.55 L21.09 9.82 L21.51 10.11 L21.93 10.43 L22.30 10.78 L22.60 11.17 L22.79 11.58 L22.85 12.00 L22.79 12.42 L22.60 12.83 L22.30 13.22 L21.93 13.57 L21.51 13.89 L21.09 14.18 L20.69 14.45 L20.34 14.71 L20.07 14.98 L19.90 15.27 L19.82 15.60 L19.81 15.98 L19.87 16.41 L19.97 16.88 L20.07 17.39 L20.13 17.91 L20.15 18.42 L20.08 18.90 L19.93 19.33 L19.67 19.67 L19.33 19.93 L18.90 20.08 L18.42 20.15 L17.91 20.13 L17.39 20.07 L16.88 19.97 L16.41 19.87 L15.98 19.81 L15.60 19.82 L15.27 19.90 L14.98 20.07 L14.71 20.34 L14.45 20.69 L14.18 21.09 L13.89 21.51 L13.57 21.93 L13.22 22.30 L12.83 22.60 L12.42 22.79 L12.00 22.85 L11.58 22.79 L11.17 22.60 L10.78 22.30 L10.43 21.93 L10.11 21.51 L9.82 21.09 L9.55 20.69 L9.29 20.34 L9.02 20.07 L8.73 19.90 L8.40 19.82 L8.02 19.81 L7.59 19.87 L7.12 19.97 L6.61 20.07 L6.09 20.13 L5.58 20.15 L5.10 20.08 L4.67 19.93 L4.33 19.67 L4.07 19.33 L3.92 18.90 L3.85 18.42 L3.87 17.91 L3.93 17.39 L4.03 16.88 L4.13 16.41 L4.19 15.98 L4.18 15.60 L4.10 15.27 L3.93 14.98 L3.66 14.71 L3.31 14.45 L2.91 14.18 L2.49 13.89 L2.07 13.57 L1.70 13.22 L1.40 12.83 L1.21 12.42 L1.15 12.00 L1.21 11.58 L1.40 11.17 L1.70 10.78 L2.07 10.43 L2.49 10.11 L2.91 9.82 L3.31 9.55 L3.66 9.29 L3.93 9.02 L4.10 8.73 L4.18 8.40 L4.19 8.02 L4.13 7.59 L4.03 7.12 L3.93 6.61 L3.87 6.09 L3.85 5.58 L3.92 5.10 L4.07 4.67 L4.33 4.33 L4.67 4.07 L5.10 3.92 L5.58 3.85 L6.09 3.87 L6.61 3.93 L7.12 4.03 L7.59 4.13 L8.02 4.19 L8.40 4.18 L8.73 4.10 L9.02 3.93 L9.29 3.66 L9.55 3.31 L9.82 2.91 L10.11 2.49 L10.43 2.07 L10.78 1.70 L11.17 1.40 L11.58 1.21 Z" fill="#1877F2" />
+      <path
+        d="M7.6 12.3l3 3 5.9-6.4"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

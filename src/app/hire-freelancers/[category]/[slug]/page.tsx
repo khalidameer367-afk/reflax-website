@@ -76,7 +76,7 @@ export default async function FreelancerProfile({
             <div>
               <h1 className="display text-3xl md:text-4xl font-semibold tracking-tight text-ink flex items-center gap-3 flex-wrap">
                 {f.full_name}
-                {f.verified && <VerifiedBadge />}
+                {f.verified && <VerifiedBadge size={28} />}
               </h1>
               <p className="mt-2 text-muted">{f.title}</p>
             </div>

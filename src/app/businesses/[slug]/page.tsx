@@ -80,7 +80,7 @@ export default async function BusinessProfile({
             <h1 className="display text-3xl md:text-[2.6rem] font-semibold leading-[1.1] tracking-tight text-ink">
               {b.company_name}
             </h1>
-            {b.verified && <VerifiedBadge />}
+            {b.verified && <VerifiedBadge size={28} />}
           </div>
           <p className="text-sm text-muted mb-8">{b.industry}{b.location ? ` · ${b.location}` : ""}</p>
 

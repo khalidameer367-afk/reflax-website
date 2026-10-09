@@ -136,7 +136,7 @@ export default async function CategoryPage({
                   {f.full_name}
                   {f.verified && (
                     <span className="ml-1.5 inline-block align-middle">
-                      <VerifiedBadge />
+                      <VerifiedBadge size={20} />
                     </span>
                   )}
                 </h3>
