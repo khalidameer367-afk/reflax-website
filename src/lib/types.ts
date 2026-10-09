@@ -65,6 +65,8 @@ export interface EntrepreneurProfile extends SeoFields {
   avatar_url: string | null;
   featured: boolean;
   verified: boolean;
+  email?: string | null;
+  phone?: string | null;
   status?: FreelancerStatus;
 }
 
@@ -146,6 +148,7 @@ export const CONTRIBUTOR_NICHES = [
   { value: "business", label: "Business" },
   { value: "ai", label: "AI" },
   { value: "digital-marketing", label: "Digital Marketing" },
+  { value: "general", label: "General" },
 ] as const;
 
 export function nicheLabel(value: string | null | undefined) {

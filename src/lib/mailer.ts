@@ -14,8 +14,14 @@ function senderAddress() {
 }
 
 // Where admin notifications go (new applications, contact form).
+// Goes to ADMIN_EMAIL and ALSO to the SMTP mailbox itself (e.g. info@reflax.org), without duplicates.
 function adminAddress() {
-  return process.env.ADMIN_EMAIL || senderAddress();
+  const list = [process.env.ADMIN_EMAIL, senderAddress()]
+    .flatMap((v) => (v || "").split(","))
+    .map((v) => v.trim())
+    .filter(Boolean);
+  const unique = list.filter((v, i) => list.findIndex((x) => x.toLowerCase() === v.toLowerCase()) === i);
+  return unique.join(", ");
 }
 
 function getTransporter() {

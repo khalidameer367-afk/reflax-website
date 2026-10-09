@@ -122,11 +122,11 @@ export function ProfessionalJoinForm() {
           <input required name="title" maxLength={150} className={inputCls} placeholder="e.g. Founder & CEO" />
         </div>
         <div>
-          <label className={labelCls}>Email * <span className="text-muted font-normal">(not shown publicly)</span></label>
+          <label className={labelCls}>Email * <span className="text-muted font-normal">(shown on your profile)</span></label>
           <input required type="email" name="email" maxLength={150} className={inputCls} placeholder="you@example.com" />
         </div>
         <div>
-          <label className={labelCls}>Phone <span className="text-muted font-normal">(not shown publicly)</span></label>
+          <label className={labelCls}>Phone number <span className="text-muted font-normal">(shown on your profile)</span></label>
           <input name="phone" maxLength={40} className={inputCls} placeholder="Optional" />
         </div>
         <div>

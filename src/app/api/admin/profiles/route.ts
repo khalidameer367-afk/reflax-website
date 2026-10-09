@@ -12,6 +12,8 @@ const allowedFields = [
   "location",
   "website",
   "linkedin_url",
+  "email",
+  "phone",
   "avatar_url",
   "verified",
   "featured",

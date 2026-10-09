@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
           location: cleanText(body.location, 150) || null,
           website: cleanUrl(body.website) || null,
           linkedin_url: cleanUrl(body.linkedin_url) || null,
+          email,
+          phone: cleanText(body.phone, 40) || null,
           avatar_url: cleanImageDataUrl(body.avatar_url),
           status: "pending",
         })

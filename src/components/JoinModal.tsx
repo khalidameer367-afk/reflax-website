@@ -8,16 +8,19 @@ export const JOIN_OPTIONS = [
     title: "Join as Freelancer",
     desc: "Create your account and freelancer profile so businesses can hire you.",
     href: "/register",
+    color: "#37766E",
   },
   {
     title: "Join as Professional Profile",
     desc: "List yourself as an entrepreneur, founder or industry professional.",
     href: "/join/professional",
+    color: "#2F5D9E",
   },
   {
     title: "Join as a Business",
     desc: "Add your company to the Reflax business directory.",
     href: "/join/business",
+    color: "#C2692B",
   },
 ];
 
@@ -56,10 +59,11 @@ export default function JoinModal({ open, onClose }: { open: boolean; onClose: (
               key={o.href}
               href={o.href}
               onClick={onClose}
-              className="block border border-line p-4 hover:border-ink hover:bg-ink/[0.03] transition-colors"
+              style={{ backgroundColor: o.color }}
+              className="block p-4 text-white transition hover:brightness-110 hover:-translate-y-0.5"
             >
-              <div className="font-medium text-ink">{o.title}</div>
-              <div className="mt-1 text-sm text-muted">{o.desc}</div>
+              <div className="font-semibold">{o.title}</div>
+              <div className="mt-1 text-sm text-white/85">{o.desc}</div>
             </Link>
           ))}
         </div>

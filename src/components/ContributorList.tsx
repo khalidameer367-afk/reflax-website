@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { CONTRIBUTOR_NICHES, nicheLabel } from "@/lib/types";
+import { nicheLabel } from "@/lib/types";
 
 export interface ContributorCard {
   id: string;
@@ -16,35 +15,13 @@ export interface ContributorCard {
 }
 
 export default function ContributorList({ posts }: { posts: ContributorCard[] }) {
-  const [active, setActive] = useState<string>("all");
-
-  const visible = active === "all" ? posts : posts.filter((p) => p.niche === active);
-
-  const chip = (value: string, label: string) => (
-    <button
-      key={value}
-      type="button"
-      onClick={() => setActive(value)}
-      className={`border px-4 py-2 text-sm transition-colors ${
-        active === value
-          ? "border-accent bg-accent text-paper"
-          : "border-line text-muted hover:border-ink hover:text-ink"
-      }`}
-    >
-      {label}
-    </button>
-  );
+  const visible = posts;
 
   return (
     <div>
-      <div className="flex flex-wrap gap-3 mb-10">
-        {chip("all", "All")}
-        {CONTRIBUTOR_NICHES.map((n) => chip(n.value, n.label))}
-      </div>
-
       {visible.length === 0 && (
         <p className="text-muted">
-          {active === "all" ? "No posts yet — check back soon." : "No posts in this niche yet — check back soon."}
+          No posts yet — check back soon.
         </p>
       )}
 

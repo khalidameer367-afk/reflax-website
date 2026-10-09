@@ -124,14 +124,30 @@ export default async function EntrepreneurProfilePage({
           </dl>
 
           <div className="mt-7 pt-7 border-t border-line flex flex-col gap-3">
+            {p.email && (
+              <a
+                href={`mailto:${p.email}`}
+                className="inline-flex items-center justify-center bg-ink px-5 py-3 text-sm font-medium text-paper hover:bg-accent hover:text-paper transition-colors"
+              >
+                Email {p.full_name}
+              </a>
+            )}
+            {p.phone && (
+              <a
+                href={`tel:${p.phone}`}
+                className="inline-flex items-center justify-center border border-accent bg-accent px-5 py-3 text-sm font-medium text-paper hover:bg-ink hover:text-paper transition-colors hover:border-ink"
+              >
+                Contact {p.phone}
+              </a>
+            )}
             {p.website && (
               <a
                 href={p.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-ink px-5 py-3 text-sm font-medium text-paper hover:bg-accent hover:text-paper transition-colors"
+                className="inline-flex items-center justify-center border border-[#7C3AED] bg-[#7C3AED] px-5 py-3 text-sm font-medium text-white hover:bg-[#6D28D9] hover:border-[#6D28D9] transition-colors"
               >
-                Visit website
+                Visit Company
               </a>
             )}
             {p.linkedin_url && (

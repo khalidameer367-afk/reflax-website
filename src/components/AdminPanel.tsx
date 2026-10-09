@@ -828,6 +828,8 @@ function ProfileForm({
       <input name="location" defaultValue={profile?.location || ""} placeholder="Location" className={inputCls} />
       <input name="website" defaultValue={profile?.website || ""} placeholder="Website URL" className={inputCls} />
       <input name="linkedin_url" defaultValue={profile?.linkedin_url || ""} placeholder="LinkedIn URL" className={inputCls} />
+      <input type="email" name="email" defaultValue={profile?.email || ""} placeholder="Email (shown on profile)" className={inputCls} />
+      <input name="phone" defaultValue={profile?.phone || ""} placeholder="Phone number (shown on profile)" className={inputCls} />
 
       <div className="flex flex-wrap gap-6 border border-line p-4">
         <label className="flex items-center gap-2 text-sm text-ink cursor-pointer">

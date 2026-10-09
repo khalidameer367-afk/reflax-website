@@ -49,6 +49,10 @@ const TOPICS = [
     name: "Digital Marketing",
     desc: "SEO, GEO, Google Ads, SMO and SMM: tactics, case studies and strategies that drive measurable results.",
   },
+  {
+    name: "General",
+    desc: "Other relevant topics from your own field of expertise, as long as the article is based on real-world experience.",
+  },
 ];
 
 const BENEFITS = [
