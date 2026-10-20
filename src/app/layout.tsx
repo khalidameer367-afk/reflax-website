@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   // Google Search Console ownership verification (renders <meta name="google-site-verification">).
   verification: { google: "0qt-fMsGL6jXQuDHO7fBxN89QlZPiHAjA7w8C-tjNoE" },
   applicationName: SITE_NAME,
-  title: "Reflax — Hiring Platform for Experts & Freelancers",
+  title: "Hire Top Freelancers & Experts Online | Reflax",
   description:
     "Reflax connects businesses with verified, skilled freelancers and experts across every industry — and helps professionals find real opportunities.",
 };

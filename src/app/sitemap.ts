@@ -1,12 +1,9 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
 import { CATEGORIES } from "@/lib/types";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, categorySlug } from "@/lib/site";
 
 
-function slugify(cat: string) {
-  return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [{ data: freelancers }, { data: businesses }, { data: profilesRaw }, { data: posts }, { data: contribPosts }] = await Promise.all([
@@ -40,13 +37,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((c) => ({
-    url: `${SITE_URL}/hire-freelancers/${slugify(c)}`,
+    url: `${SITE_URL}/hire-freelancers/${categorySlug(c)}`,
     changeFrequency: "weekly",
     priority: 0.7,
   }));
 
   const freelancerPages: MetadataRoute.Sitemap = (freelancers || []).map((f) => ({
-    url: `${SITE_URL}/hire-freelancers/${slugify(f.category)}/${f.slug || f.id}`,
+    url: `${SITE_URL}/hire-freelancers/${categorySlug(f.category)}/${f.slug || f.id}`,
     lastModified: f.created_at,
     changeFrequency: "monthly",
     priority: 0.6,

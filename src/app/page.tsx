@@ -4,6 +4,7 @@ import SectionHeading from "@/components/SectionHeading";
 import HeroGraphic from "@/components/HeroGraphic";
 import Reveal from "@/components/Reveal";
 import { CATEGORIES } from "@/lib/types";
+import { categorySlug } from "@/lib/site";
 import { getPageMetadata } from "@/lib/pageSeo";
 import PageSchema from "@/components/PageSchema";
 
@@ -12,8 +13,8 @@ export const revalidate = 60;
 export async function generateMetadata() {
   return getPageMetadata(
     "home",
-    "Reflax — Hiring Platform for Experts & Freelancers",
-    "Reflax connects businesses with verified, skilled freelancers and experts across every industry."
+    "Hire Top Freelancers & Experts Online | Reflax",
+    "Find and hire skilled freelancers and experts on Reflax. Connect with talented professionals for your business needs and get started today."
   );
 }
 
@@ -206,9 +207,7 @@ export default async function Home() {
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat}
-                href={`/hire-freelancers/${encodeURIComponent(
-                  cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-                )}`}
+                href={`/hire-freelancers/${categorySlug(cat)}`}
                 className="tilt-3d group bg-paper p-7 flex items-center justify-between hover:bg-accent transition-colors relative z-0 hover:z-10"
               >
                 <span className="text-[15px] font-medium text-ink group-hover:text-paper transition-colors">

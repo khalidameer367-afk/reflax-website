@@ -4,6 +4,7 @@
 // (b) get automatic JSON-LD schema.
 import { CATEGORIES } from "@/lib/types";
 import { categorySlug } from "@/lib/site";
+import { findCategory } from "@/lib/categories";
 
 export type PageSchemaType = "WebPage" | "AboutPage" | "ContactPage" | "CollectionPage";
 
@@ -20,7 +21,7 @@ export interface PageDef {
 }
 
 const CORE: PageDef[] = [
-  { key: "home", label: "Home", group: "Main pages", path: "/", title: "Reflax — Hiring Platform for Experts & Freelancers", description: "Reflax connects businesses with verified, skilled freelancers and experts across every industry.", schemaType: "WebPage" },
+  { key: "home", label: "Home", group: "Main pages", path: "/", title: "Hire Top Freelancers & Experts Online | Reflax", description: "Find and hire skilled freelancers and experts on Reflax. Connect with talented professionals for your business needs and get started today.", schemaType: "WebPage" },
   { key: "about-us", label: "About Us", group: "Main pages", path: "/about-us", title: "About Us — Reflax", description: "Reflax is a strategic partner in talent, branding, and business growth.", schemaType: "AboutPage" },
   { key: "hire-freelancers", label: "Hire Freelancers", group: "Main pages", path: "/hire-freelancers", title: "Hire Freelancers — Reflax", description: "Browse verified freelancers by category on Reflax.", schemaType: "CollectionPage" },
   { key: "businesses", label: "Businesses", group: "Main pages", path: "/businesses", title: "Businesses — Reflax", description: "A directory of businesses building with Reflax.", schemaType: "CollectionPage" },
@@ -43,9 +44,12 @@ const CORE: PageDef[] = [
 export const categoryPageKey = (slug: string) => `hire-freelancers/${slug}`;
 
 export function categoryDefaults(cat: string) {
+  const c = findCategory(cat);
   return {
-    title: `${cat} Freelancers — Reflax`,
-    description: `Hire verified ${cat} freelancers on Reflax. Browse profiles, compare skills and experience, and contact experts directly.`,
+    title: c?.metaTitle ?? `Hire ${cat} Online | Reflax`,
+    description:
+      c?.metaDescription ??
+      `Hire verified ${cat} on Reflax. Browse profiles, compare skills and experience, and contact experts directly.`,
   };
 }
 

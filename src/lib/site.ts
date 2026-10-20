@@ -1,3 +1,5 @@
+import { categorySlugFor } from "@/lib/categories";
+
 // Central site config. Set NEXT_PUBLIC_SITE_URL in .env to change the domain.
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://reflax.org").replace(/\/+$/, "");
 export const SITE_NAME = "Reflax";
@@ -8,9 +10,9 @@ export const SITE_SAME_AS = [
   "https://www.facebook.com/share/1CwQuyJQ36/?mibextid=wwXIfr",
 ];
 
-/** "Social Media Marketing" -> "social-media-marketing" (same rule the category URLs use). */
+/** Category name -> URL slug, e.g. "Video Editors" -> "video-editors" (works with old names too). */
 export function categorySlug(cat: string): string {
-  return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  return categorySlugFor(cat);
 }
 
 /**

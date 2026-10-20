@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { CATEGORIES, CATEGORY_DESCRIPTIONS } from "@/lib/types";
+import { CATEGORY_DESCRIPTIONS } from "@/lib/types";
+import { findCategory, findCategoryBySlug } from "@/lib/categories";
 import { shuffleWithFeatured } from "@/lib/shuffle";
 import VerifiedBadge from "@/components/VerifiedBadge";
 import PageSchema from "@/components/PageSchema";
@@ -10,12 +11,8 @@ import { freelancerPath } from "@/lib/schema";
 
 export const revalidate = 60;
 
-function slugify(cat: string) {
-  return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-}
-
 function unslugify(slug: string) {
-  return CATEGORIES.find((c) => slugify(c) === slug) || null;
+  return findCategoryBySlug(slug)?.name || null;
 }
 
 export async function generateMetadata({
@@ -58,7 +55,8 @@ export default async function CategoryPage({
   const { data: freelancersRaw, error } = await supabase
     .from("freelancers")
     .select("*")
-    .eq("category", cat)
+    // also match the old category name until the SQL migration has been run
+    .in("category", [cat, findCategory(cat)?.legacy || cat])
     .eq("status", "approved");
   const shuffled = freelancersRaw ? shuffleWithFeatured(freelancersRaw) : [];
 

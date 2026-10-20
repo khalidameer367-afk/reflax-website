@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/types";
+import { categorySlug } from "@/lib/site";
 import SectionHeading from "@/components/SectionHeading";
 import { getPageMetadata } from "@/lib/pageSeo";
 import PageSchema from "@/components/PageSchema";
@@ -14,9 +15,6 @@ export async function generateMetadata() {
   );
 }
 
-function slugify(cat: string) {
-  return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-}
 
 const REASONS = [
   { title: "Every profile is reviewed", copy: "No anonymous accounts — our team checks each application before it goes live." },
@@ -27,7 +25,7 @@ const REASONS = [
 export default function HireFreelancers() {
   return (
     <div>
-      <PageSchema pageKey="hire-freelancers" items={CATEGORIES.map((c) => ({ name: `${c} Freelancers`, path: `/hire-freelancers/${slugify(c)}` }))} />
+      <PageSchema pageKey="hire-freelancers" items={CATEGORIES.map((c) => ({ name: c, path: `/hire-freelancers/${categorySlug(c)}` }))} />
       {/* Prominent hero with dot-grid background */}
       <section className="relative border-b border-line overflow-hidden bg-ink text-paper">
         <div className="absolute inset-0 dot-grid-bg opacity-[0.08]" style={{ filter: "invert(1)" }} />
@@ -78,7 +76,7 @@ export default function HireFreelancers() {
           {CATEGORIES.map((cat) => (
             <Link
               key={cat}
-              href={`/hire-freelancers/${slugify(cat)}`}
+              href={`/hire-freelancers/${categorySlug(cat)}`}
               className="tilt-3d group bg-paper p-8 flex flex-col justify-between min-h-[140px] hover:bg-accent transition-colors relative z-0 hover:z-10"
             >
               <span className="text-lg font-medium text-ink group-hover:text-paper transition-colors">
