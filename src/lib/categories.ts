@@ -107,15 +107,6 @@ export const CATEGORY_CONFIG: CategoryConfig[] = [
       "Hire reliable virtual assistants on Reflax to handle admin, scheduling, research and daily operations so you can focus on growing your business.",
   },
   {
-    name: "Accounting & Finance Experts",
-    slug: "accounting-finance-experts",
-    legacy: "Accounting & Finance",
-    oldSlugs: ["accounting-finance"],
-    metaTitle: "Hire Accounting & Finance Experts Online | Reflax",
-    metaDescription:
-      "Hire experienced accountants and finance experts on Reflax for bookkeeping, reporting, tax support and financial planning.",
-  },
-  {
     name: "Sales & Business Development Experts",
     slug: "sales-business-development-experts",
     legacy: "Sales & Business Development",
@@ -124,7 +115,55 @@ export const CATEGORY_CONFIG: CategoryConfig[] = [
     metaDescription:
       "Hire experienced sales and business development experts on Reflax to generate leads, close deals and grow your revenue.",
   },
+  {
+    name: "Chatbot Developers",
+    slug: "chatbot-developers",
+    legacy: "Chatbot Developers",
+    oldSlugs: [],
+    metaTitle: "Hire Chatbot Developers Online | Reflax",
+    metaDescription:
+      "Hire skilled chatbot developers on Reflax to build smart AI chatbots for customer support, lead generation and business automation. Find the right expert today.",
+  },
+  {
+    name: "AI Consultants",
+    slug: "ai-consultants",
+    legacy: "AI Consultants",
+    oldSlugs: [],
+    metaTitle: "Hire AI Consultants Online | Reflax",
+    metaDescription:
+      "Hire experienced AI consultants on Reflax to plan your AI strategy, choose the right tools and automate business workflows. Find the right expert today.",
+  },
+  {
+    name: "AI Video Creators",
+    slug: "ai-video-creators",
+    legacy: "AI Video Creators",
+    oldSlugs: [],
+    metaTitle: "Hire AI Video Creators Online | Reflax",
+    metaDescription:
+      "Hire talented AI video creators on Reflax to produce engaging AI-generated videos for marketing, social media and business. Find the right creator today.",
+  },
+  {
+    name: "AI Developers",
+    slug: "ai-developers",
+    legacy: "AI Developers",
+    oldSlugs: [],
+    metaTitle: "Hire AI Developers Online | Reflax",
+    metaDescription:
+      "Hire skilled AI developers on Reflax to build machine learning models, AI-powered apps and intelligent automation for your business.",
+  },
+  {
+    name: "Lead Generation",
+    slug: "lead-generation",
+    legacy: "Lead Generation",
+    oldSlugs: [],
+    metaTitle: "Hire Lead Generation Experts Online | Reflax",
+    metaDescription:
+      "Hire experienced lead generation experts on Reflax to find qualified prospects, grow your sales pipeline and boost revenue. Find the right expert today.",
+  },
 ];
+
+/** Categories that no longer exist: their old URLs redirect to /hire-freelancers. */
+export const REMOVED_CATEGORY_SLUGS = ["accounting-finance-experts", "accounting-finance"];
 
 const generic = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 

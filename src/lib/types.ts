@@ -114,8 +114,12 @@ export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Web Developers": "A fast, reliable, well-built website is the backbone of any modern business. Our web developers work across modern frameworks to build sites and apps that perform.",
   "App Developers": "From idea to app store, our mobile and app developers build reliable, well-designed products for iOS, Android, and the web.",
   "Virtual Assistants": "Free up your time by delegating the operational work — scheduling, inbox management, research, data entry, and more — to a reliable virtual assistant.",
-  "Accounting & Finance Experts": "Keep your books clean and your finances under control with experienced bookkeepers, accountants, and financial analysts.",
   "Sales & Business Development Experts": "Grow your pipeline with experienced sales professionals who know how to prospect, pitch, negotiate, and close.",
+  "Chatbot Developers": "Automate customer support and capture more leads with custom AI chatbots built by experienced chatbot developers.",
+  "AI Consultants": "Get expert guidance on where AI fits in your business — strategy, tool selection, and workflow automation — from experienced AI consultants.",
+  "AI Video Creators": "Produce engaging videos faster with creators who use AI tools for marketing, social media, explainers, and brand content.",
+  "AI Developers": "Build machine learning models, AI-powered apps, and intelligent automation with skilled AI developers.",
+  "Lead Generation": "Fill your sales pipeline with qualified prospects through proven lead generation experts and outreach specialists.",
 };
 
 export interface ContributorPost extends SeoFields {
