@@ -38,15 +38,9 @@ export default function HireFreelancers() {
           <p className="mt-6 text-[17px] leading-relaxed text-paper/70 max-w-xl">
             Every profile on Reflax is personally reviewed by our team
             before it goes live. Pick a category below to see real,
-            approved professionals — no bots, no spam, no guesswork.
+            approved professionals.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
-            <Link
-              href="#categories"
-              className="inline-flex items-center border border-accent bg-accent text-paper px-7 py-3.5 text-sm font-medium hover:bg-paper hover:text-ink hover:border-paper transition-colors duration-200"
-            >
-              Browse categories
-            </Link>
             <Link
               href="/register"
               className="inline-flex items-center border border-paper/60 px-7 py-3.5 text-sm font-medium text-paper hover:bg-paper hover:text-ink hover:border-paper transition-colors duration-200"

@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { CATEGORIES } from "@/lib/types";
 import { resizeImageToDataUrl } from "@/lib/image";
 
 const inputCls =
@@ -132,13 +131,6 @@ export function ProfessionalJoinForm() {
         <div>
           <label className={labelCls}>Company</label>
           <input name="company_name" maxLength={150} className={inputCls} placeholder="Optional" />
-        </div>
-        <div>
-          <label className={labelCls}>Category</label>
-          <select name="category" defaultValue="" className={inputCls}>
-            <option value="">No category (optional)</option>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
         </div>
         <div>
           <label className={labelCls}>Location</label>

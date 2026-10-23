@@ -701,7 +701,7 @@ function ProfilesTab({
                 </div>
                 <div>
                   <span className="font-medium text-ink">{p.full_name}</span>
-                  <span className="text-sm text-muted ml-2">{p.title}{p.category ? ` · ${p.category}` : ""}</span>
+                  <span className="text-sm text-muted ml-2">{p.title}</span>
                   <div className="flex items-center gap-2 mt-1">
                     {p.status && p.status !== "approved" && (
                       <span className={`text-[11px] font-medium uppercase ${statusColor[p.status]}`}>{p.status}</span>
@@ -813,10 +813,6 @@ function ProfileForm({
 
       <input required name="full_name" defaultValue={profile?.full_name} placeholder="Full name" className={inputCls} />
       <SlugField defaultValue={profile?.slug} urlPrefix="/profiles/" />
-      <select name="category" defaultValue={profile?.category || ""} className={inputCls}>
-        <option value="">No category (optional)</option>
-        {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-      </select>
       <input required name="title" defaultValue={profile?.title} placeholder="Title (e.g. Founder & CEO)" className={inputCls} />
       <input name="company_name" defaultValue={profile?.company_name || ""} placeholder="Company name" className={inputCls} />
 

@@ -77,9 +77,6 @@ export default async function EntrepreneurProfilePage({
               )}
             </div>
             <div>
-              {p.category && (
-                <div className="text-sm text-paper/50 mb-2 uppercase tracking-wide">{p.category}</div>
-              )}
               <h1 className="display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight text-paper flex items-center gap-3 flex-wrap">
                 {p.full_name}
                 {p.verified && <VerifiedBadge size={28} />}
@@ -103,12 +100,6 @@ export default async function EntrepreneurProfilePage({
 
         <aside className="md:sticky md:top-28 h-fit border border-line p-7">
           <dl className="space-y-5 text-sm">
-            {p.category && (
-              <div>
-                <dt className="text-muted">Category</dt>
-                <dd className="mt-1 text-ink font-medium">{p.category}</dd>
-              </div>
-            )}
             {p.company_name && (
               <div>
                 <dt className="text-muted">Company</dt>

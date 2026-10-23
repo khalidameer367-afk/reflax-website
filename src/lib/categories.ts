@@ -107,15 +107,6 @@ export const CATEGORY_CONFIG: CategoryConfig[] = [
       "Hire reliable virtual assistants on Reflax to handle admin, scheduling, research and daily operations so you can focus on growing your business.",
   },
   {
-    name: "Sales & Business Development Experts",
-    slug: "sales-business-development-experts",
-    legacy: "Sales & Business Development",
-    oldSlugs: ["sales-business-development"],
-    metaTitle: "Hire Sales & Business Development Experts | Reflax",
-    metaDescription:
-      "Hire experienced sales and business development experts on Reflax to generate leads, close deals and grow your revenue.",
-  },
-  {
     name: "Chatbot Developers",
     slug: "chatbot-developers",
     legacy: "Chatbot Developers",
@@ -163,7 +154,12 @@ export const CATEGORY_CONFIG: CategoryConfig[] = [
 ];
 
 /** Categories that no longer exist: their old URLs redirect to /hire-freelancers. */
-export const REMOVED_CATEGORY_SLUGS = ["accounting-finance-experts", "accounting-finance"];
+export const REMOVED_CATEGORY_SLUGS = [
+  "accounting-finance-experts",
+  "accounting-finance",
+  "sales-business-development-experts",
+  "sales-business-development",
+];
 
 const generic = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 

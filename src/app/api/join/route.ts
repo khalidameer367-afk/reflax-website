@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
           full_name,
           title,
           bio: plainToHtml(bio),
-          category: cleanText(body.category, 100) || null,
+          category: null,
           company_name: cleanText(body.company_name, 150) || null,
           location: cleanText(body.location, 150) || null,
           website: cleanUrl(body.website) || null,

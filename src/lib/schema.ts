@@ -301,7 +301,6 @@ export function profileSchema(p: EntrepreneurProfile) {
       url,
       worksFor: p.company_name ? { "@type": "Organization", name: p.company_name, url: p.website || undefined } : undefined,
       address: address(p.location),
-      knowsAbout: p.category,
       sameAs: [p.website, p.linkedin_url].filter(Boolean),
     }
   );
